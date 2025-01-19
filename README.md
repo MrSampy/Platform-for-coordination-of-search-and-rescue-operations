@@ -1,0 +1,1 @@
+# Platform-for-coordination-of-search-and-rescue-operations
