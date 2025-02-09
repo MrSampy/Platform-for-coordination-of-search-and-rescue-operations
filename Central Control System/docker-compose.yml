@@ -1,0 +1,16 @@
+services:
+  utilsservice:
+    container_name: utilsservice
+    build:
+      context: ./UtilsService/
+      dockerfile: Dockerfile
+    ports:
+      - "7089:8080" 
+      - "5031:8080"
+    depends_on:
+      - postgresql-server
+  postgresql-server:
+    container_name: postgresql-server
+    build:
+      context: .
+      dockerfile: sql.Dockerfile
