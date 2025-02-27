@@ -31,7 +31,7 @@ namespace UtilsService.API.Middleware
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var statusCode = HttpStatusCode.InternalServerError;
-            var message = exception is CustomException ? exception.Message : "An unexpected error occurred. Please try again later.";
+            var message = exception is UtilsServiceException ? exception.Message : "An unexpected error occurred. Please try again later.";
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;

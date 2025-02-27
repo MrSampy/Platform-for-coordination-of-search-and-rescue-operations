@@ -18,7 +18,7 @@ namespace UtilsService.Application.Queries.ResourceUnitQueries.GetResourceUnitBy
         {
             var result = await _repository.GetByGidAsync(request.GID, cancellationToken);
 
-            return result ?? throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(ResourceMeasurementUnit), request.GID.ToString()));
+            return result ?? throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(ResourceMeasurementUnit), request.GID.ToString()));
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UtilsService.API.Model;
 using UtilsService.Application.Commands.DistrictCommands.DeleteDistrict;
 using UtilsService.Application.Commands.DistrictCommands.UpdateDistrict;
+using UtilsService.Application.DTOs;
 using UtilsService.Application.Queries.DistrictQueries.CreateDistrict;
 using UtilsService.Application.Queries.DistrictQueries.GetAllDistricts;
 using UtilsService.Application.Queries.DistrictQueries.GetDistrictByGid;
@@ -12,27 +13,26 @@ namespace UtilsService.API.Controllers
 {
     [ApiController]
     [Route("utils/api/[controller]")]
+    [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
     public class DistrictController : ControllerBase
     {
         private readonly IMediator _mediator;
         public DistrictController(IMediator mediator) => _mediator = mediator;
 
         [HttpGet]
-        [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
         public async Task<IActionResult> GetDistricts([FromQuery] PaginationQuery paginationQuery, CancellationToken cancellationToken = default)
         {
             return Ok(await _mediator.Send(new GetAllDistrictsQuery() { PaginationQuery = paginationQuery }, cancellationToken));
         }
 
         [HttpGet("{gid}")]
-        [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
         public async Task<IActionResult> GetDistrictByGID(Guid gid, CancellationToken cancellationToken = default)
         {
             return Ok(await _mediator.Send(new GetDistrictByGidQuery() { GID = gid }, cancellationToken));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateDistrict([FromBody] District district)
+        public async Task<IActionResult> CreateDistrict([FromBody] CreateDistrictDTO district)
         {
             return Ok(await _mediator.Send(new CreateDistrictQuery() { District = district }));
         }

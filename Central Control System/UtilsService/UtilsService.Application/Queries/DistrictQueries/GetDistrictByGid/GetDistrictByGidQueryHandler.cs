@@ -18,7 +18,7 @@ namespace UtilsService.Application.Queries.DistrictQueries.GetDistrictByGid
         {
             var result = await _districtRepository.GetByGidAsync(request.GID, cancellationToken);
 
-            return result ?? throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(District), request.GID.ToString()));
+            return result ?? throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(District), request.GID.ToString()));
             ;
         }
     }

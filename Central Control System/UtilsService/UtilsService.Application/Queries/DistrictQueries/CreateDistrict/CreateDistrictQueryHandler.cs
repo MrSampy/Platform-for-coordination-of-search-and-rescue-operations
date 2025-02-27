@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using UtilsService.Domain.Entities;
 using UtilsService.Domain.Interfaces;
 
@@ -9,17 +10,19 @@ namespace UtilsService.Application.Queries.DistrictQueries.CreateDistrict
         private readonly IDistrictRepository _districtRepository;
         private readonly ICacheService<District> _cacheService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CreateDistrictQueryHandler(IDistrictRepository districtRepository, IUnitOfWork unitOfWork, ICacheService<District> cacheService)
+        public CreateDistrictQueryHandler(IDistrictRepository districtRepository, IUnitOfWork unitOfWork, ICacheService<District> cacheService, IMapper mapper)
         {
             _districtRepository = districtRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
+            _mapper = mapper;
         }
 
         public async Task<District> Handle(CreateDistrictQuery request, CancellationToken cancellationToken)
         {
-            var district = request.District;
+            var district = _mapper.Map<District>(request.District);
 
             district.GID = Guid.NewGuid();
 

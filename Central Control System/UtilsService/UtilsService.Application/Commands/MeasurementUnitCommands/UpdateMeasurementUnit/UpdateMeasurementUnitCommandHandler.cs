@@ -24,7 +24,7 @@ namespace UtilsService.Application.Commands.MeasurementUnitCommands.UpdateMeasur
 
             if (entity == null)
             {
-                throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(MeasurementUnit), request.MeasurementUnit.GID.ToString()));
+                throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(MeasurementUnit), request.MeasurementUnit.GID.ToString()));
             }
 
             await _measurementUnitRepository.UpdateAsync(request.MeasurementUnit);

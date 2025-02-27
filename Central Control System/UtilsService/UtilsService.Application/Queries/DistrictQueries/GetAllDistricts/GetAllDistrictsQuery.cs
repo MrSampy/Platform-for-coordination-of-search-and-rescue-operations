@@ -5,6 +5,6 @@ namespace UtilsService.Application.Queries.DistrictQueries.GetAllDistricts
 {
     public class GetAllDistrictsQuery : IRequest<IEnumerable<District>>
     {
-        public PaginationQuery PaginationQuery { get; set; }
+        public required PaginationQuery PaginationQuery { get; set; }
     }
 }

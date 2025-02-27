@@ -24,7 +24,7 @@ namespace UtilsService.Application.Commands.ResourceCommands.UpdateResource
 
             if (entity == null)
             {
-                throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(Resource), request.Resource.GID.ToString()));
+                throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(Resource), request.Resource.GID.ToString()));
             }
 
             await _resourceRepository.UpdateAsync(request.Resource);

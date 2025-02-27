@@ -24,7 +24,7 @@ namespace UtilsService.Application.Commands.DistrictCommands.UpdateDistrict
 
             if (entity == null)
             {
-                throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(District), request.District.GID.ToString()));
+                throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(District), request.District.GID.ToString()));
             }
 
             await _districtRepository.UpdateAsync(request.District);

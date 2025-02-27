@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using UtilsService.API.Model;
 using UtilsService.Application.Commands.ResourceUnitCommands.RemoveResourceFromUnit;
+using UtilsService.Application.DTOs;
 using UtilsService.Application.Queries.ResourceUnitQueries.AddResourceToUnit;
 using UtilsService.Application.Queries.ResourceUnitQueries.GetResourcesByUnitGid;
 using UtilsService.Application.Queries.ResourceUnitQueries.GetResourceUnitByGid;
@@ -12,6 +14,7 @@ namespace UtilsService.API.Controllers
 {
     [ApiController]
     [Route("utils/api/[controller]")]
+    [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
     public class ResourceMeasurementUnitController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -38,7 +41,7 @@ namespace UtilsService.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddResourceToUnit([FromBody] ResourceMeasurementUnit resourceUnit)
+        public async Task<IActionResult> AddResourceToUnit([FromBody] CreateResourceUnitDTO resourceUnit)
         {
             return Ok(await _mediator.Send(new AddResourceToUnitQuery { ResourceMeasurementUnit = resourceUnit }));
         }

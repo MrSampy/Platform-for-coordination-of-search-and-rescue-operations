@@ -26,7 +26,7 @@ namespace UtilsService.Application.Commands.ResourceCommands.DeleteResource
 
             if (entity == null)
             {
-                throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(Resource), request.GID.ToString()));
+                throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(Resource), request.GID.ToString()));
             }
 
             await _resourceRepository.DeleteAsync(entity);

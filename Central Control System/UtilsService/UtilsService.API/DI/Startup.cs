@@ -12,6 +12,8 @@ namespace UtilsService.API.DI
 
             services.AddRepositories();
 
+            services.AddMapperProfile();
+
             services.AddMediator();
 
             services.AddCacheServices();

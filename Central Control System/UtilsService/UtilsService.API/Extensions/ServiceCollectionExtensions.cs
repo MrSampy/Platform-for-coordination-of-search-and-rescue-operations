@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using UtilsService.Application.Interfaces;
+using UtilsService.Application.Mapper;
 using UtilsService.Domain.Entities;
 using UtilsService.Domain.Interfaces;
 using UtilsService.Persistence.DbContexts;
@@ -32,6 +33,12 @@ namespace UtilsService.API.Extensions
         public static IServiceCollection AddMediator(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("UtilsService.Application")));
+            return services;
+        }
+
+        public static IServiceCollection AddMapperProfile(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             return services;
         }
 

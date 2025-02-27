@@ -18,8 +18,7 @@ namespace UtilsService.Application.Queries.MeasurementUnitQueries.GetMeasurement
         {
             var result = await _measurementUnitRepository.GetByGidAsync(request.GID, cancellationToken);
 
-            return result ?? throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(MeasurementUnit), request.GID.ToString()));
-            ;
+            return result ?? throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(MeasurementUnit), request.GID.ToString()));
         }
     }
 }

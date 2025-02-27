@@ -24,7 +24,7 @@ namespace UtilsService.Application.Commands.ResourceUnitCommands.RemoveResourceF
 
             if (entity == null)
             {
-                throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(ResourceMeasurementUnit), request.GID.ToString()));
+                throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(ResourceMeasurementUnit), request.GID.ToString()));
             }
 
             await _repository.RemoveResourceFromMeasurementUnitAsync(entity);

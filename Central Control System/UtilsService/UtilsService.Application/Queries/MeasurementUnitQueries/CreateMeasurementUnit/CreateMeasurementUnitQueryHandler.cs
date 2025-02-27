@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using UtilsService.Domain.Entities;
 using UtilsService.Domain.Interfaces;
 
@@ -9,24 +10,28 @@ namespace UtilsService.Application.Queries.MeasurementUnitQueries.CreateMeasurem
         private readonly IMeasurementUnitRepository _measurementUnitRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService<MeasurementUnit> _cacheService;
-        public CreateMeasurementUnitQueryHandler(IMeasurementUnitRepository measurementUnitRepository, IUnitOfWork unitOfWork, ICacheService<MeasurementUnit> cacheService)
+        private readonly IMapper _mapper;
+        public CreateMeasurementUnitQueryHandler(IMeasurementUnitRepository measurementUnitRepository, IUnitOfWork unitOfWork, ICacheService<MeasurementUnit> cacheService, IMapper mapper)
         {
             _measurementUnitRepository = measurementUnitRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
+            _mapper = mapper;
         }
 
         public async Task<MeasurementUnit> Handle(CreateMeasurementUnitQuery request, CancellationToken cancellationToken)
         {
-            request.MeasurementUnit.GID = Guid.NewGuid();
+            var measurementUnit = _mapper.Map<MeasurementUnit>(request.MeasurementUnit);
 
-            await _measurementUnitRepository.AddAsync(request.MeasurementUnit);
+            measurementUnit.GID = Guid.NewGuid();
+
+            await _measurementUnitRepository.AddAsync(measurementUnit);
 
             await _unitOfWork.SaveChangesAsync();
 
             _cacheService.Reset();
 
-            return request.MeasurementUnit;
+            return measurementUnit;
         }
     }
 }

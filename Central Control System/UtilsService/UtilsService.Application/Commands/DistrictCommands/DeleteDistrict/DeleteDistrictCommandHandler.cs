@@ -24,7 +24,7 @@ namespace UtilsService.Application.Commands.DistrictCommands.DeleteDistrict
 
             if (entity == null)
             {
-                throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(District), request.GID.ToString()));
+                throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(District), request.GID.ToString()));
             }
 
             await _districtRepository.DeleteAsync(entity);

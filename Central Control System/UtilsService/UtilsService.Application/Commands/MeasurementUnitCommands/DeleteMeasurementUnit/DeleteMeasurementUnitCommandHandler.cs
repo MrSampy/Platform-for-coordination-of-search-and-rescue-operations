@@ -25,7 +25,7 @@ namespace UtilsService.Application.Commands.MeasurementUnitCommands.DeleteMeasur
 
             if (entity == null)
             {
-                throw new CustomException(string.Format(Constants.NotFoundEntityException, nameof(MeasurementUnit), request.GID.ToString()));
+                throw new UtilsServiceException(string.Format(Constants.NotFoundEntityException, nameof(MeasurementUnit), request.GID.ToString()));
             }
 
             await _measurementUnitRepository.DeleteAsync(entity);

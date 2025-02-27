@@ -5,6 +5,6 @@ namespace UtilsService.Application.Queries.MeasurementUnitQueries.GetAllMeasurem
 {
     public class GetAllMeasurementUnitsQuery : IRequest<IEnumerable<MeasurementUnit>>
     {
-        public PaginationQuery PaginationQuery { get; set; }
+        public required PaginationQuery PaginationQuery { get; set; }
     }
 }

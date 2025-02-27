@@ -1,11 +1,12 @@
 ﻿using MediatR;
+using UtilsService.Application.DTOs;
 using UtilsService.Domain.Entities;
 
 namespace UtilsService.Application.Queries.MeasurementUnitQueries.CreateMeasurementUnit
 {
     public class CreateMeasurementUnitQuery : IRequest<MeasurementUnit>
     {
-        public required MeasurementUnit MeasurementUnit { get; set; }
+        public required CreateMeasurementUnitDTO MeasurementUnit { get; set; }
     }
 
 }
