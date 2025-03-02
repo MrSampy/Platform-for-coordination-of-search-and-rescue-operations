@@ -9,6 +9,20 @@ services:
       - "5031:8080"
     depends_on:
       - postgresql-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  authservice:
+    container_name: authservice
+    build:
+      context: ./AuthService/
+      dockerfile: Dockerfile
+    ports:
+      - "5107:8080" 
+      - "7224:8080"
+    depends_on:
+      - postgresql-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
   postgresql-server:
     container_name: postgresql-server
     build:
