@@ -21,6 +21,11 @@ namespace UtilsService.API.DI
             services.AddControllers();
 
             services.AddDistributedMemoryCache();
+
+            services.AddEndpointsApiExplorer();
+
+            services.AddSwaggerGen();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -28,6 +33,8 @@ namespace UtilsService.API.DI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseRouting();
