@@ -1,3 +1,4 @@
+using AuthService.API.Config;
 using AuthService.API.Core.Interfaces;
 using AuthService.API.Core.Models;
 using AuthService.API.Core.Services;
@@ -70,7 +71,19 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.OperationFilter<AuthenticationHeadersFilter>();
+});
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<AuthDbContext>();
+    if (context.Database.GetPendingMigrations().Any()) context.Database.Migrate();
+}
 
 app.UseStaticFiles();
 app.UseCors(
@@ -81,6 +94,11 @@ app.UseCors(
         .AllowAnyHeader()
 );
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 //app.UseHttpsRedirection();
 
