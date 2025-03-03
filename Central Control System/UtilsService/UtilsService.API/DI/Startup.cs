@@ -1,5 +1,7 @@
-﻿using UtilsService.API.Extensions;
+﻿using Microsoft.EntityFrameworkCore;
+using UtilsService.API.Extensions;
 using UtilsService.API.Middleware;
+using UtilsService.Persistence.DbContexts;
 
 namespace UtilsService.API.DI
 {
@@ -35,6 +37,19 @@ namespace UtilsService.API.DI
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            }
+
+            var useInMemory = configuration.GetValue<bool>("UseInMemoryDatabase");
+
+            if (!useInMemory)
+            {
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+
+                    var context = services.GetRequiredService<UtilsDbContext>();
+                    if (context.Database.GetPendingMigrations().Any()) context.Database.Migrate();
+                }
             }
 
             app.UseRouting();
