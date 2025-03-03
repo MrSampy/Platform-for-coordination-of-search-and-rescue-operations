@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace AuthService.API.Config
@@ -7,11 +9,42 @@ namespace AuthService.API.Config
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            operation.Parameters.Add(new OpenApiParameter
+            var hasAuthHeader = false;
+
+            // Check if the method has RequiresAuthHeader attribute
+            if (context.MethodInfo.GetCustomAttributes(typeof(RequiresAuthHeaderAttribute), false).Any())
             {
-                Name = "token",
-                In = ParameterLocation.Header,
-                Required = false
+                hasAuthHeader = true;
+            }
+
+            // Check if the controller (declaring type) has RequiresAuthHeader attribute
+            var controllerActionDescriptor = context.ApiDescription.ActionDescriptor as ControllerActionDescriptor;
+            if (controllerActionDescriptor != null &&
+                controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes(typeof(RequiresAuthHeaderAttribute), false).Any())
+            {
+                hasAuthHeader = true;
+            }
+
+            if (!hasAuthHeader)
+            {
+                return; // Skip adding the parameter if the attribute is not present
+            }
+
+            if (operation.Security == null)
+                operation.Security = new List<OpenApiSecurityRequirement>();
+
+            var jwtSecurityScheme = new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            };
+
+            operation.Security.Add(new OpenApiSecurityRequirement
+            {
+                [jwtSecurityScheme] = new List<string>()
             });
         }
     }

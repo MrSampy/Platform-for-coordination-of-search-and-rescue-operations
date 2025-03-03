@@ -1,4 +1,5 @@
-﻿using AuthService.API.Core.Interfaces;
+﻿using AuthService.API.Config;
+using AuthService.API.Core.Interfaces;
 using AuthService.API.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,7 @@ namespace AuthService.API.Controllers
         }
 
         [HttpPost]
+        [RequiresAuthHeader]
         [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
         {
