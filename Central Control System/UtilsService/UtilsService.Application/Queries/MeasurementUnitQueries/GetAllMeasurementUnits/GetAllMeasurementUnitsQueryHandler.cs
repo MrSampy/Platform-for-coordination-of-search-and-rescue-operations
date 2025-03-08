@@ -20,7 +20,7 @@ namespace UtilsService.Application.Queries.MeasurementUnitQueries.GetAllMeasurem
         {
             if (!request.PaginationQuery.IsValid())
             {
-                throw new UtilsServiceException(Constants.InvalidPagonationQueryParametersException);
+                throw new UtilsServiceException(Constants.InvalidPaginationQueryParametersException);
             }
 
             string cacheKey = $"{nameof(GetAllMeasurementUnitsQueryHandler)}:{request.PaginationQuery.PageNumber}:{request.PaginationQuery.PageSize}";

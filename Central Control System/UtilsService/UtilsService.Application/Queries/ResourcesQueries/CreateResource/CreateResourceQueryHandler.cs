@@ -21,7 +21,7 @@ namespace UtilsService.Application.Queries.ResourcesQueries.CreateResource
 
         public async Task<Resource> Handle(CreateResourceQuery request, CancellationToken cancellationToken)
         {
-            var resource = _mapper.Map<Resource>(request);
+            var resource = _mapper.Map<Resource>(request.Resource);
 
             resource.GID = Guid.NewGuid();
 

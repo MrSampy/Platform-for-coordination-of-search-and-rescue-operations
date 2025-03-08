@@ -20,7 +20,7 @@ namespace UtilsService.Application.Queries.ResourcesQueries.GetAllResources
         {
             if (!request.PaginationQuery.IsValid())
             {
-                throw new UtilsServiceException(Constants.InvalidPagonationQueryParametersException);
+                throw new UtilsServiceException(Constants.InvalidPaginationQueryParametersException);
             }
 
             string cacheKey = $"{nameof(GetAllResourcesQueryHandler)}:{request.PaginationQuery.PageNumber}:{request.PaginationQuery.PageSize}";

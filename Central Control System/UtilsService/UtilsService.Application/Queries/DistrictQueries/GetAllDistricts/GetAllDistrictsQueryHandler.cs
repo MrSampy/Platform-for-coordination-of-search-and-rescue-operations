@@ -20,7 +20,7 @@ namespace UtilsService.Application.Queries.DistrictQueries.GetAllDistricts
         {
             if (!request.PaginationQuery.IsValid())
             {
-                throw new UtilsServiceException(Constants.InvalidPagonationQueryParametersException);
+                throw new UtilsServiceException(Constants.InvalidPaginationQueryParametersException);
             }
 
             string cacheKey = $"{nameof(GetAllDistrictsQueryHandler)}:{request.PaginationQuery.PageNumber}:{request.PaginationQuery.PageSize}";
