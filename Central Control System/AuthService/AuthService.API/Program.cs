@@ -3,6 +3,7 @@ using AuthService.API.Core.Interfaces;
 using AuthService.API.Core.Models;
 using AuthService.API.Core.Services;
 using AuthService.API.Infrastructure;
+using AuthService.API.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -134,6 +135,8 @@ if (app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 
 // Authentication & Authorization
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
