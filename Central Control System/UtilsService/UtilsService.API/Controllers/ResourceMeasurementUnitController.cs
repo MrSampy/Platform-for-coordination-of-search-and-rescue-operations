@@ -15,6 +15,7 @@ namespace UtilsService.API.Controllers
     [ApiController]
     [Route("utils/api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
+    [ApiExplorerSettings(GroupName = "ResourceMeasurementUnit")]
     public class ResourceMeasurementUnitController : ControllerBase
     {
         private readonly IMediator _mediator;

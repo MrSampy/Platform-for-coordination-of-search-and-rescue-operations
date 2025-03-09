@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using UtilsService.API.Extensions;
 using UtilsService.API.Middleware;
 using UtilsService.Persistence.DbContexts;
@@ -8,6 +9,9 @@ namespace UtilsService.API.DI
     internal sealed class Startup(IConfiguration configuration)
     {
         public IConfiguration Configuration { get; } = configuration;
+
+        private string[] controllers = new string[] { "District", "MeasurementUnit", "Resource", "ResourceMeasurementUnit" };
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRepositoryDbContext(Configuration);
@@ -26,7 +30,22 @@ namespace UtilsService.API.DI
 
             services.AddEndpointsApiExplorer();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(swagger =>
+            {
+                foreach (var controllerName in controllers)
+                {
+                    swagger.SwaggerDoc(controllerName, new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "API",
+                        Description = "API",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "itsfinniii"
+                        }
+                    });
+                }
+            });
 
         }
 
@@ -36,7 +55,13 @@ namespace UtilsService.API.DI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    foreach (var controllerName in controllers)
+                    {
+                        c.SwaggerEndpoint($"/swagger/{controllerName}/swagger.json", controllerName);
+                    }
+                });
             }
 
             var useInMemory = configuration.GetValue<bool>("UseInMemoryDatabase");
