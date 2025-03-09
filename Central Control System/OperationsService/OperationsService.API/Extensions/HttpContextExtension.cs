@@ -1,6 +1,6 @@
 ﻿using OperationsService.API.Model;
 
-namespace OperationsService.API.DI.Extensions
+namespace OperationsService.API.Extensions
 {
     public static class HttpContextExtension
     {

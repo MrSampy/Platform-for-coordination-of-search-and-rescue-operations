@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using OperationsService.API.DI.Extensions;
+using OperationsService.API.Extensions;
 using System.Net;
 
 namespace OperationsService.API.Middleware

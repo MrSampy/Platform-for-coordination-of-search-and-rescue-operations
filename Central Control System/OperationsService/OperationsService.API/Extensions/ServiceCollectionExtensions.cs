@@ -7,7 +7,7 @@ using OperationsService.Persistence.DbContexts;
 using OperationsService.Persistence.Repositories;
 using System.Reflection;
 
-namespace OperationsService.API.DI.Extensions
+namespace OperationsService.API.Extensions
 {
     public static class ServiceCollectionExtensions
     {
