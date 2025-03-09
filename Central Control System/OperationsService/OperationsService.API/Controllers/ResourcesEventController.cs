@@ -1,0 +1,57 @@
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using OperationsService.API.Model;
+using OperationsService.Application.Commands.ResourcesEventCommands.Delete;
+using OperationsService.Application.Commands.ResourcesEventCommands.Update;
+using OperationsService.Application.DTOs.Create;
+using OperationsService.Application.DTOs.Update;
+using OperationsService.Application.Queries.ResourcesEventQueries.Create;
+using OperationsService.Application.Queries.ResourcesEventQueries.GetAll;
+using OperationsService.Application.Queries.ResourcesEventQueries.GetByGID;
+using OperationsService.Domain.Entities;
+
+namespace OperationsService.API.Controllers
+{
+    [ApiController]
+    [Route("operations/api/[controller]")]
+    [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
+    [ApiExplorerSettings(GroupName = "ResourcesEvent")]
+    public class ResourcesEventController : ControllerBase
+    {
+        private readonly IMediator _mediator;
+        public ResourcesEventController(IMediator mediator) => _mediator = mediator;
+
+        [HttpGet]
+        public async Task<IActionResult> GetResourcesEvents([FromQuery] PaginationQuery paginationQuery, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _mediator.Send(new GetAllResourcesEventsQuery() { PaginationQuery = paginationQuery }, cancellationToken));
+        }
+
+        [HttpGet("{gid}")]
+        public async Task<IActionResult> GetResourcesEventByGID(Guid gid, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _mediator.Send(new GetResourcesEventByGidQuery() { GID = gid }, cancellationToken));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateResourcesEvent([FromBody] CreateResourcesEventDTO resourcesEventDto)
+        {
+            return Ok(await _mediator.Send(new CreateResourcesEventQuery() { ResourcesEvent = resourcesEventDto }));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateResourcesEvent([FromBody] UpdateResourcesEventDTO resourcesEventModel)
+        {
+            await _mediator.Send(new UpdateResourcesEventCommand() { ResourcesEvent = resourcesEventModel });
+            return NoContent();
+        }
+
+        [HttpDelete("{gid}")]
+        public async Task<IActionResult> DeleteResourcesEvent(Guid gid)
+        {
+            await _mediator.Send(new DeleteResourcesEventCommand() { GID = gid });
+            return NoContent();
+        }
+    }
+
+}
