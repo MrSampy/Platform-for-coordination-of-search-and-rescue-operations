@@ -23,6 +23,18 @@ services:
       - postgresql-server
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+  operationsservice:
+    container_name: operationsservice
+    build:
+      context: ./OperationsService/
+      dockerfile: Dockerfile
+    ports:
+      - "7088:8080" 
+      - "5160:8080"
+    depends_on:
+      - postgresql-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
   postgresql-server:
     container_name: postgresql-server
     build:
