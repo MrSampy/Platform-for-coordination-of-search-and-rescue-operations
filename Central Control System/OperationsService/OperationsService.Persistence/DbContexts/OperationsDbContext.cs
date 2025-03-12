@@ -100,9 +100,6 @@ namespace OperationsService.Persistence.DbContexts
                       .HasMaxLength(100);
                 entity.Property(ow => ow.SecondName)
                       .HasMaxLength(100);
-                entity.Property(ow => ow.FullName)
-                      .IsRequired()
-                      .HasMaxLength(250);
                 entity.Property(ow => ow.Email)
                       .IsRequired()
                       .HasMaxLength(150);
