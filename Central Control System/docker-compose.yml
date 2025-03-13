@@ -35,6 +35,18 @@ services:
       - postgresql-server
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+  volunteerservice:
+    container_name: volunteerservice
+    build:
+      context: ./VolunteerService/
+      dockerfile: Dockerfile
+    ports:
+      - "7105:8080" 
+      - "5083:8080"
+    depends_on:
+      - postgresql-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
   postgresql-server:
     container_name: postgresql-server
     build:
