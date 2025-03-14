@@ -13,7 +13,7 @@ using VolunteerService.Domain.Entities;
 namespace VolunteerService.API.Controllers
 {
     [ApiController]
-    [Route("operations/api/[controller]")]
+    [Route("volunteers/api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
     [ApiExplorerSettings(GroupName = "VolunteersDistricts")]
     public class VolunteersDistrictsController : ControllerBase
