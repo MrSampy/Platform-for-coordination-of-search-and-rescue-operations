@@ -8,9 +8,11 @@ services:
       - "7089:8080" 
       - "5031:8080"
     depends_on:
-      - postgresql-server
+      - authservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
   authservice:
     container_name: authservice
     build:
@@ -23,6 +25,8 @@ services:
       - postgresql-server
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
   operationsservice:
     container_name: operationsservice
     build:
@@ -35,6 +39,8 @@ services:
       - postgresql-server
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
   volunteerservice:
     container_name: volunteerservice
     build:
@@ -47,8 +53,15 @@ services:
       - postgresql-server
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
   postgresql-server:
     container_name: postgresql-server
     build:
       context: .
       dockerfile: sql.Dockerfile
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
+    driver: bridge

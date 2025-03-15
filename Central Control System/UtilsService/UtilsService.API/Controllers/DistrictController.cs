@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UtilsService.API.Config;
 using UtilsService.API.Model;
 using UtilsService.Application.Commands.DistrictCommands.DeleteDistrict;
 using UtilsService.Application.Commands.DistrictCommands.UpdateDistrict;
@@ -11,9 +13,11 @@ using UtilsService.Domain.Entities;
 
 namespace UtilsService.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("utils/api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
+    [RequiresAuthHeader]
     [ApiExplorerSettings(GroupName = "District")]
     public class DistrictController : ControllerBase
     {

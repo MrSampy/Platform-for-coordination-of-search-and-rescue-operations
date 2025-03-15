@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UtilsService.API.Config;
 using UtilsService.API.Model;
 using UtilsService.Application.Commands.ResourceCommands.DeleteResource;
 using UtilsService.Application.Commands.ResourceCommands.UpdateResource;
@@ -11,9 +13,11 @@ using UtilsService.Domain.Entities;
 
 namespace UtilsService.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("utils/api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
+    [RequiresAuthHeader]
     [ApiExplorerSettings(GroupName = "Resource")]
     public class ResourceController : ControllerBase
     {

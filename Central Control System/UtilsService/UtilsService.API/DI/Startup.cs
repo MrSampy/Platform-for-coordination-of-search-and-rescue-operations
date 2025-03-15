@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using UtilsService.API.Extensions;
-using UtilsService.API.Middleware;
-using UtilsService.Persistence.DbContexts;
+﻿using UtilsService.API.Extensions;
 
 namespace UtilsService.API.DI
 {
@@ -30,62 +26,20 @@ namespace UtilsService.API.DI
 
             services.AddEndpointsApiExplorer();
 
-            services.AddSwaggerGen(swagger =>
-            {
-                foreach (var controllerName in controllers)
-                {
-                    swagger.SwaggerDoc(controllerName, new OpenApiInfo
-                    {
-                        Version = "v1",
-                        Title = "API",
-                        Description = "API",
-                        Contact = new OpenApiContact
-                        {
-                            Name = "itsfinniii"
-                        }
-                    });
-                }
-            });
+            services.AddHttpClients(Configuration);
 
+            services.AddAuthorizationJWT(Configuration);
+
+            services.AddSwaggerDocWithAuth(controllers, Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    foreach (var controllerName in controllers)
-                    {
-                        c.SwaggerEndpoint($"/swagger/{controllerName}/swagger.json", controllerName);
-                    }
-                });
-            }
-
-            var useInMemory = configuration.GetValue<bool>("UseInMemoryDatabase");
-
-            if (!useInMemory)
-            {
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-
-                    var context = services.GetRequiredService<UtilsDbContext>();
-                    if (context.Database.GetPendingMigrations().Any()) context.Database.Migrate();
-                }
-            }
-
-            app.UseRouting();
-
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
-            app.UseMiddleware<RateLimitMiddleware>();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseCustomCors(Configuration)
+               .UseSwaggerWithEndpoints(env, controllers)
+               .ApplyDatabaseMigrations(Configuration)
+               .UseCustomMiddlewares()
+               .ConfigureAuthAndRouting();
         }
     }
 }
