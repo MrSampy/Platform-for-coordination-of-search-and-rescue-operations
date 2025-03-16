@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OperationsService.API.Config;
 using OperationsService.API.Model;
 using OperationsService.Application.Commands.EventCommands.Delete;
 using OperationsService.Application.Commands.EventCommands.Update;
@@ -12,6 +14,8 @@ using OperationsService.Domain.Entities;
 
 namespace OperationsService.API.Controllers
 {
+    [Authorize]
+    [RequiresAuthHeader]
     [ApiController]
     [Route("operations/api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]

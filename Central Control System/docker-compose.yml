@@ -36,7 +36,7 @@ services:
       - "7088:8080" 
       - "5160:8080"
     depends_on:
-      - postgresql-server
+      - authservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
@@ -50,7 +50,7 @@ services:
       - "7105:8080" 
       - "5083:8080"
     depends_on:
-      - postgresql-server
+      - authservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
