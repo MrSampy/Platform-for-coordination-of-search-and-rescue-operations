@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VolunteerService.API.Config;
 using VolunteerService.API.Model;
 using VolunteerService.Application.Commands.VolunteersDistrictsCommands.Delete;
 using VolunteerService.Application.Commands.VolunteersDistrictsCommands.Update;
@@ -12,6 +14,8 @@ using VolunteerService.Domain.Entities;
 
 namespace VolunteerService.API.Controllers
 {
+    [Authorize]
+    [RequiresAuthHeader]
     [ApiController]
     [Route("volunteers/api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
