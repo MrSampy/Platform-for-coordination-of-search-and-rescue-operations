@@ -10,6 +10,12 @@ namespace UtilsService.Persistence.DbContexts
         public DbSet<Resource> Resources { get; set; }
         public DbSet<ResourceMeasurementUnit> ResourceMeasurementUnits { get; set; }
 
+        public UtilsDbContext(DbContextOptions options)
+        : base(options)
+        {
+
+        }
+
         public UtilsDbContext(DbContextOptions options, bool ensureDeleted = false)
         : base(options)
         {
