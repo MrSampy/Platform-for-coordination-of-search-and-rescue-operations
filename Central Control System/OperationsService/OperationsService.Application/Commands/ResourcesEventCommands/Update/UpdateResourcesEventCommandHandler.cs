@@ -45,7 +45,7 @@ namespace OperationsService.Application.Commands.ResourcesEventCommands.Update
             var mappedEntity = _mapper.Map<ResourcesEvent>(request.ResourcesEvent);
 
             mappedEntity.CreatedAt = entity.CreatedAt;
-            mappedEntity.UpdatedAt = DateTime.Now;
+            mappedEntity.UpdatedAt = DateTime.UtcNow;
 
             await _resourcesEventRepository.UpdateAsync(mappedEntity);
             await _unitOfWork.SaveChangesAsync();

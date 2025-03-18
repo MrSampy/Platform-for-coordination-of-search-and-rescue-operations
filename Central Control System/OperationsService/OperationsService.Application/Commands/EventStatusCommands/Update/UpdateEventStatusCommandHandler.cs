@@ -32,7 +32,7 @@ namespace OperationsService.Application.Commands.EventStatusCommands.Update
             var mappedEntity = _mapper.Map<EventStatus>(request.EventStatus);
 
             mappedEntity.CreatedAt = entity.CreatedAt;
-            mappedEntity.UpdatedAt = DateTime.Now;
+            mappedEntity.UpdatedAt = DateTime.UtcNow;
 
             await _eventStatusRepository.UpdateAsync(mappedEntity);
             await _unitOfWork.SaveChangesAsync();

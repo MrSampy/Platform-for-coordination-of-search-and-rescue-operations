@@ -48,7 +48,7 @@ namespace OperationsService.Application.Queries.OperationTaskQueries.Create
 
             var operationTask = _mapper.Map<OperationTask>(request.OperationTask);
             operationTask.GID = Guid.NewGuid();
-            operationTask.CreatedAt = operationTask.UpdatedAt = DateTime.Now;
+            operationTask.CreatedAt = operationTask.UpdatedAt = DateTime.UtcNow;
             await _operationTaskRepository.AddAsync(operationTask);
             await _unitOfWork.SaveChangesAsync();
             _cacheService.Reset();

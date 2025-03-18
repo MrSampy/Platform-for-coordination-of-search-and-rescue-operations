@@ -41,7 +41,7 @@ namespace OperationsService.Application.Commands.GroupCommands.Update
             var mappedEntity = _mapper.Map<Group>(request.Group);
 
             mappedEntity.CreatedAt = entity.CreatedAt;
-            mappedEntity.UpdatedAt = DateTime.Now;
+            mappedEntity.UpdatedAt = DateTime.UtcNow;
 
             await _groupRepository.UpdateAsync(mappedEntity);
             await _unitOfWork.SaveChangesAsync();

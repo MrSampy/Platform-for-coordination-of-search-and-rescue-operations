@@ -49,7 +49,7 @@ namespace OperationsService.Application.Commands.EventCommands.Update
             var mappedEntity = _mapper.Map<Event>(request.Event);
 
             mappedEntity.CreatedAt = entity.CreatedAt;
-            mappedEntity.UpdatedAt = DateTime.Now;
+            mappedEntity.UpdatedAt = DateTime.UtcNow;
 
             await _eventRepository.UpdateAsync(mappedEntity);
             await _unitOfWork.SaveChangesAsync();

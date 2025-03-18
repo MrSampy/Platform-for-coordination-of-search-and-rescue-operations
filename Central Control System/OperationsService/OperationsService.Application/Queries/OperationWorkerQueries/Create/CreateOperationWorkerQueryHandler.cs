@@ -29,7 +29,7 @@ namespace OperationsService.Application.Queries.OperationWorkerQueries.Create
         {
             var operationWorker = _mapper.Map<OperationWorker>(request.OperationWorker);
             operationWorker.GID = Guid.NewGuid();
-            operationWorker.CreatedAt = operationWorker.UpdatedAt = DateTime.Now;
+            operationWorker.CreatedAt = operationWorker.UpdatedAt = DateTime.UtcNow;
             await _operationWorkerRepository.AddAsync(operationWorker);
             await _unitOfWork.SaveChangesAsync();
 

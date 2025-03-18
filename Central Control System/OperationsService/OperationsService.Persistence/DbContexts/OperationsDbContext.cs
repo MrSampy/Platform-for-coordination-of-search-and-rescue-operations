@@ -13,6 +13,11 @@ namespace OperationsService.Persistence.DbContexts
         public DbSet<OperationTaskStatus> OperationTaskStatuses { get; set; }
         public DbSet<OperationWorker> OperationWorkers { get; set; }
         public DbSet<ResourcesEvent> ResourcesEvents { get; set; }
+        public OperationsDbContext(DbContextOptions options)
+        : base(options)
+        {
+
+        }
 
         public OperationsDbContext(DbContextOptions options, bool ensureDeleted = false)
             : base(options)

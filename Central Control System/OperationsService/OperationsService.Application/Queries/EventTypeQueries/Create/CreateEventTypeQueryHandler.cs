@@ -25,7 +25,7 @@ namespace OperationsService.Application.Queries.EventTypeQueries.Create
         {
             var eventType = _mapper.Map<EventType>(request.EventType);
             eventType.GID = Guid.NewGuid();
-            eventType.CreatedAt = eventType.UpdatedAt = DateTime.Now;
+            eventType.CreatedAt = eventType.UpdatedAt = DateTime.UtcNow;
             await _eventTypeRepository.AddAsync(eventType);
             await _unitOfWork.SaveChangesAsync();
 

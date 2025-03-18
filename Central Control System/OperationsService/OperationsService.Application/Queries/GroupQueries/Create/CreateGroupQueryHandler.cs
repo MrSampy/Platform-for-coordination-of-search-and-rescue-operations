@@ -34,7 +34,7 @@ namespace OperationsService.Application.Queries.GroupQueries.Create
 
             var group = _mapper.Map<Group>(request.Group);
             group.GID = Guid.NewGuid();
-            group.CreatedAt = group.UpdatedAt = DateTime.Now;
+            group.CreatedAt = group.UpdatedAt = DateTime.UtcNow;
             await _groupRepository.AddAsync(group);
             await _unitOfWork.SaveChangesAsync();
 

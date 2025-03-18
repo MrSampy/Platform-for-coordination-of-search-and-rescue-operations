@@ -38,7 +38,7 @@ namespace OperationsService.Application.Queries.ResourcesEventQueries.Create
 
             var resourcesEvent = _mapper.Map<ResourcesEvent>(request.ResourcesEvent);
             resourcesEvent.GID = Guid.NewGuid();
-            resourcesEvent.CreatedAt = resourcesEvent.UpdatedAt = DateTime.Now;
+            resourcesEvent.CreatedAt = resourcesEvent.UpdatedAt = DateTime.UtcNow;
             await _resourcesEventRepository.AddAsync(resourcesEvent);
             await _unitOfWork.SaveChangesAsync();
 

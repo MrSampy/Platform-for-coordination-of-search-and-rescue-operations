@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using UtilsService.Domain.Exceptions;
-using UtilsService.Persistence.DbContexts;
+using OperationsService.Domain.Exceptions;
+using OperationsService.Persistence.DbContexts;
 
-namespace UtilsService.API.Config
+namespace OperationsService.API.Config
 {
-    public class UtilsDbContextFactory : IDesignTimeDbContextFactory<UtilsDbContext>
+    public class OperationsDbContextFactory : IDesignTimeDbContextFactory<OperationsDbContext>
     {
-        public UtilsDbContext CreateDbContext(string[] args)
+        public OperationsDbContext CreateDbContext(string[] args)
         {
             // Build configuration
             IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -20,15 +20,14 @@ namespace UtilsService.API.Config
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new UtilsServiceException("Connection string 'PostgreSQLConnection' is not found.");
+                throw new OperationsServiceException("Connection string 'PostgreSQLConnection' is not found.");
             }
 
             // Configure options
-            var optionsBuilder = new DbContextOptionsBuilder<UtilsDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<OperationsDbContext>();
             optionsBuilder.UseNpgsql(connectionString);
 
-            return new UtilsDbContext(optionsBuilder.Options);
+            return new OperationsDbContext(optionsBuilder.Options);
         }
     }
-
 }

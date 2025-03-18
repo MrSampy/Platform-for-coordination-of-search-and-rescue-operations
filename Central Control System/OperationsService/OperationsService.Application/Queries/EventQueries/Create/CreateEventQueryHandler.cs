@@ -43,7 +43,7 @@ namespace OperationsService.Application.Queries.EventQueries.Create
             var newEvent = _mapper.Map<Event>(request.Event);
             newEvent.GID = Guid.NewGuid();
 
-            newEvent.CreatedAt = newEvent.UpdatedAt = DateTime.Now;
+            newEvent.CreatedAt = newEvent.UpdatedAt = DateTime.UtcNow;
 
             await _eventRepository.AddAsync(newEvent);
             await _unitOfWork.SaveChangesAsync();

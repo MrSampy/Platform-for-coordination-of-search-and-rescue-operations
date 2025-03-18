@@ -25,7 +25,7 @@ namespace OperationsService.Application.Queries.OperationTaskStatusQueries.Creat
         {
             var entity = _mapper.Map<OperationTaskStatus>(request.OperationTaskStatus);
             entity.GID = Guid.NewGuid();
-            entity.CreatedAt = entity.UpdatedAt = DateTime.Now;
+            entity.CreatedAt = entity.UpdatedAt = DateTime.UtcNow;
             await _operationTaskStatusRepository.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync();
             _cacheService.Reset();

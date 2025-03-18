@@ -54,7 +54,7 @@ namespace OperationsService.Application.Commands.OperationTaskCommands.Update
             var mappedEntity = _mapper.Map<OperationTask>(request.OperationTask);
 
             mappedEntity.CreatedAt = entity.CreatedAt;
-            mappedEntity.UpdatedAt = DateTime.Now;
+            mappedEntity.UpdatedAt = DateTime.UtcNow;
 
             await _operationTaskRepository.UpdateAsync(mappedEntity);
             await _unitOfWork.SaveChangesAsync();

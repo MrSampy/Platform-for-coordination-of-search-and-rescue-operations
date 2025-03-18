@@ -25,7 +25,7 @@ namespace OperationsService.Application.Queries.EventStatusQueries.Create
         {
             var eventStatus = _mapper.Map<EventStatus>(request.EventStatus);
             eventStatus.GID = Guid.NewGuid();
-            eventStatus.CreatedAt = eventStatus.UpdatedAt = DateTime.Now;
+            eventStatus.CreatedAt = eventStatus.UpdatedAt = DateTime.UtcNow;
             await _eventStatusRepository.AddAsync(eventStatus);
             await _unitOfWork.SaveChangesAsync();
 
