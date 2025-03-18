@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using VolunteerService.Application.DTOs;
 using VolunteerService.Domain.Entities;
 using VolunteerService.Domain.Exceptions;
 using VolunteerService.Domain.Interfaces;
@@ -12,13 +13,15 @@ namespace VolunteerService.Application.Commands.VolunteerCommands.Update
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService<Volunteer> _cacheService;
         private readonly IMapper _mapper;
+        private readonly IApiBuilder _apiBuilder;
 
-        public UpdateVolunteerCommandHandler(IRepository<Volunteer> volunteerRepository, IUnitOfWork unitOfWork, ICacheService<Volunteer> cacheService, IMapper mapper)
+        public UpdateVolunteerCommandHandler(IRepository<Volunteer> volunteerRepository, IUnitOfWork unitOfWork, ICacheService<Volunteer> cacheService, IMapper mapper, IApiBuilder apiBuilder)
         {
             _volunteerRepository = volunteerRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
             _mapper = mapper;
+            _apiBuilder = apiBuilder;
         }
 
         public async Task Handle(UpdateVolunteerCommand request, CancellationToken cancellationToken)
@@ -28,6 +31,12 @@ namespace VolunteerService.Application.Commands.VolunteerCommands.Update
             if (entity == null)
             {
                 throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, nameof(Volunteer), request.VolunteerDTO.GID.ToString()));
+            }
+
+            var user = await _apiBuilder.GetRequest<UserDTO>($"api/user/bygid/{request.VolunteerDTO.UserGID}", Constants.AuthService, cancellationToken, request.Token);
+            if (user == null)
+            {
+                throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, "User", request.VolunteerDTO.UserGID.ToString()));
             }
 
             var mappedEntity = _mapper.Map<Volunteer>(request.VolunteerDTO);

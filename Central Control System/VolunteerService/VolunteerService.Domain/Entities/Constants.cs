@@ -8,6 +8,10 @@
 
         public static readonly string EmptyResponseException = "Response is empty.";
 
+        public static readonly string DefaultException = "An unexpected error occurred. Please try again later.";
+
         public static readonly string AuthService = "AuthService";
+
+        public static readonly string AuthServiceInMemory = "AuthServiceInMemory";
     }
 }

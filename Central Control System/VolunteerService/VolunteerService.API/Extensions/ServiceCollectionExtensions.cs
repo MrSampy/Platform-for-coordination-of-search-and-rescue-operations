@@ -119,7 +119,9 @@ namespace VolunteerService.API.Extensions
 
         public static IServiceCollection AddHttpClients(this IServiceCollection services, IConfiguration configuration)
         {
-            var authServiceLink = configuration.GetValue<string>(Constants.AuthService);
+            var useInMemory = configuration.GetValue<bool>("UseInMemoryDatabase");
+
+            var authServiceLink = useInMemory ? configuration.GetValue<string>(Constants.AuthServiceInMemory) : configuration.GetValue<string>(Constants.AuthService);
 
             if (!string.IsNullOrEmpty(authServiceLink))
             {

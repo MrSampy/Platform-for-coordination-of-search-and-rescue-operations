@@ -2,6 +2,7 @@
 using MediatR;
 using VolunteerService.Application.DTOs;
 using VolunteerService.Domain.Entities;
+using VolunteerService.Domain.Exceptions;
 using VolunteerService.Domain.Interfaces;
 
 namespace VolunteerService.Application.Queries.VolunteerQueries.Create
@@ -12,17 +13,25 @@ namespace VolunteerService.Application.Queries.VolunteerQueries.Create
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService<Volunteer> _cacheService;
         private readonly IMapper _mapper;
+        private readonly IApiBuilder _apiBuilder;
 
-        public CreateVolunteerQueryHandler(IRepository<Volunteer> volunteerRepository, IUnitOfWork unitOfWork, ICacheService<Volunteer> cacheService, IMapper mapper)
+        public CreateVolunteerQueryHandler(IRepository<Volunteer> volunteerRepository, IUnitOfWork unitOfWork, ICacheService<Volunteer> cacheService, IMapper mapper, IApiBuilder apiBuilder)
         {
             _volunteerRepository = volunteerRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
             _mapper = mapper;
+            _apiBuilder = apiBuilder;
         }
 
         public async Task<VolunteerDTO> Handle(CreateVolunteerQuery request, CancellationToken cancellationToken)
         {
+            var user = await _apiBuilder.GetRequest<UserDTO>($"api/user/bygid/{request.VolunteerDTO.UserGID}", Constants.AuthService, cancellationToken, request.Token);
+            if (user == null)
+            {
+                throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, "User", request.VolunteerDTO.UserGID.ToString()));
+            }
+
             var volunteer = _mapper.Map<Volunteer>(request.VolunteerDTO);
             volunteer.GID = Guid.NewGuid();
 

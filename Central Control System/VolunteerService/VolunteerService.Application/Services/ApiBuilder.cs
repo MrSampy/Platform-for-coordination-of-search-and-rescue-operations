@@ -15,9 +15,9 @@ namespace VolunteerService.Application.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<T> GetRequest<T>(string link, string clientName, CancellationToken cancellation)
+        public async Task<T> GetRequest<T>(string link, string clientName, CancellationToken cancellation, string token = "")
         {
-            var response = await GetClient(clientName).GetAsync(link, cancellation);
+            var response = await GetClient(clientName, token).GetAsync(link, cancellation);
 
             await CheckResponse(response);
 
@@ -26,10 +26,10 @@ namespace VolunteerService.Application.Services
             return JsonConvert.DeserializeObject<T>(res);
         }
 
-        public async Task<T> PostRequest<T>(string link, object value, string clientName, CancellationToken cancellation)
+        public async Task<T> PostRequest<T>(string link, object value, string clientName, CancellationToken cancellation, string token = "")
         {
             var json = JsonConvert.SerializeObject(value, new JsonSerializerSettings());
-            var response = await GetClient(clientName).PostAsync(link, new StringContent(json, null, "application/json"), cancellation);
+            var response = await GetClient(clientName, token).PostAsync(link, new StringContent(json, null, "application/json"), cancellation);
 
             await CheckResponse(response);
 
@@ -38,10 +38,10 @@ namespace VolunteerService.Application.Services
             return JsonConvert.DeserializeObject<T>(res);
         }
 
-        public async Task<HttpResponseMessage> PostRequestWithoutDeserializing(string link, object value, string clientName, CancellationToken cancellation)
+        public async Task<HttpResponseMessage> PostRequestWithoutDeserializing(string link, object value, string clientName, CancellationToken cancellation, string token = "")
         {
             var json = JsonConvert.SerializeObject(value, new JsonSerializerSettings());
-            var response = await GetClient(clientName).PostAsync(link, new StringContent(json, null, "application/json"), cancellation);
+            var response = await GetClient(clientName, token).PostAsync(link, new StringContent(json, null, "application/json"), cancellation);
 
             await CheckResponse(response);
 
@@ -50,10 +50,10 @@ namespace VolunteerService.Application.Services
 
         }
 
-        public async Task<T> PutRequest<T>(string link, object value, string clientName, CancellationToken cancellation)
+        public async Task<T> PutRequest<T>(string link, object value, string clientName, CancellationToken cancellation, string token = "")
         {
             var json = JsonConvert.SerializeObject(value, new JsonSerializerSettings());
-            var response = await GetClient(clientName).PutAsync(link, new StringContent(json, null, "application/json"), cancellation);
+            var response = await GetClient(clientName, token).PutAsync(link, new StringContent(json, null, "application/json"), cancellation);
 
             await CheckResponse(response);
 
@@ -62,10 +62,10 @@ namespace VolunteerService.Application.Services
             return JsonConvert.DeserializeObject<T>(res);
         }
 
-        public async Task<HttpResponseMessage> PutRequestWithoutDeserializing(string link, object value, string clientName, CancellationToken cancellation)
+        public async Task<HttpResponseMessage> PutRequestWithoutDeserializing(string link, object value, string clientName, CancellationToken cancellation, string token = "")
         {
             var json = JsonConvert.SerializeObject(value, new JsonSerializerSettings());
-            var response = await GetClient(clientName).PutAsync(link, new StringContent(json, null, "application/json"), cancellation);
+            var response = await GetClient(clientName, token).PutAsync(link, new StringContent(json, null, "application/json"), cancellation);
 
             await CheckResponse(response);
 
@@ -74,10 +74,10 @@ namespace VolunteerService.Application.Services
 
         }
 
-        public async Task<HttpResponseMessage> DeleteRequest(string link, object value, string clientName, CancellationToken cancellation)
+        public async Task<HttpResponseMessage> DeleteRequest(string link, object value, string clientName, CancellationToken cancellation, string token = "")
         {
             var json = JsonConvert.SerializeObject(value, new JsonSerializerSettings());
-            var response = await GetClient(clientName).DeleteAsync(link, cancellation);
+            var response = await GetClient(clientName, token).DeleteAsync(link, cancellation);
 
             await CheckResponse(response);
 
@@ -86,7 +86,17 @@ namespace VolunteerService.Application.Services
 
         }
 
-        private HttpClient GetClient(string clientName) => _httpClientFactory.CreateClient(clientName);
+        private HttpClient GetClient(string clientName, string? token = null)
+        {
+            var client = _httpClientFactory.CreateClient(clientName);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
+
+            return client;
+        }
 
         private async Task CheckResponse(HttpResponseMessage? response)
         {
@@ -98,7 +108,7 @@ namespace VolunteerService.Application.Services
             if (response.StatusCode == HttpStatusCode.InternalServerError || response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.NotFound)
             {
                 string res = await response.Content.ReadAsStringAsync();
-                throw new VolunteerServiceException(res);
+                throw new VolunteerServiceException(string.IsNullOrEmpty(res) ? Constants.DefaultException : res);
             }
         }
     }

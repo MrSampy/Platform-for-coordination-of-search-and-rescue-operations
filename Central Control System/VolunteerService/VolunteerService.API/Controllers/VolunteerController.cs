@@ -40,13 +40,17 @@ namespace VolunteerService.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateVolunteer([FromBody] CreateVolunteerDTO volunteerDto)
         {
-            return Ok(await _mediator.Send(new CreateVolunteerQuery { VolunteerDTO = volunteerDto }));
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            return Ok(await _mediator.Send(new CreateVolunteerQuery { VolunteerDTO = volunteerDto, Token = token }));
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateVolunteer([FromBody] UpdateVolunteerDTO volunteerModel)
         {
-            await _mediator.Send(new UpdateVolunteerCommand { VolunteerDTO = volunteerModel });
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            await _mediator.Send(new UpdateVolunteerCommand { VolunteerDTO = volunteerModel, Token = token });
             return NoContent();
         }
 

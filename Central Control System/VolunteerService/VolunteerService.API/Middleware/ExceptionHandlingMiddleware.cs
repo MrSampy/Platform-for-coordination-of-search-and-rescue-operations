@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using VolunteerService.Domain.Entities;
 using VolunteerService.Domain.Exceptions;
 
 namespace VolunteerService.API.Middleware
@@ -31,7 +32,7 @@ namespace VolunteerService.API.Middleware
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var statusCode = HttpStatusCode.InternalServerError;
-            var message = exception is VolunteerServiceException ? exception.Message : "An unexpected error occurred. Please try again later.";
+            var message = exception is VolunteerServiceException ? exception.Message : Constants.DefaultException;
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
