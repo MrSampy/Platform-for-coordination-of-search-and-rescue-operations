@@ -11,17 +11,27 @@ namespace VolunteerService.Application.Mapper
         public AutoMapperProfile()
         {
             // Volunteer Mapping
-            CreateMap<Volunteer, VolunteerDTO>().ReverseMap();
+            CreateMap<Volunteer, VolunteerDTO>()
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt != null ? DateTime.SpecifyKind(src.CreatedAt.Value, DateTimeKind.Utc) : src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt != null ? DateTime.SpecifyKind(src.UpdatedAt.Value, DateTimeKind.Utc) : src.UpdatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.SpecifyKind(src.BirthDate, DateTimeKind.Utc)))
+                .ReverseMap();
             CreateMap<CreateVolunteerDTO, Volunteer>();
             CreateMap<UpdateVolunteerDTO, Volunteer>();
 
             // VolunteersDistricts Mapping
-            CreateMap<VolunteersDistricts, VolunteersDistrictsDTO>().ReverseMap();
+            CreateMap<VolunteersDistricts, VolunteersDistrictsDTO>()
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt != null ? DateTime.SpecifyKind(src.CreatedAt.Value, DateTimeKind.Utc) : src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt != null ? DateTime.SpecifyKind(src.UpdatedAt.Value, DateTimeKind.Utc) : src.UpdatedAt))
+                .ReverseMap();
             CreateMap<CreateVolunteersDistrictsDTO, VolunteersDistricts>();
             CreateMap<UpdateVolunteersDistrictsDTO, VolunteersDistricts>();
 
             // VolunteersGroups Mapping
-            CreateMap<VolunteersGroups, VolunteersGroupsDTO>().ReverseMap();
+            CreateMap<VolunteersGroups, VolunteersGroupsDTO>()
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt != null ? DateTime.SpecifyKind(src.CreatedAt.Value, DateTimeKind.Utc) : src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt != null ? DateTime.SpecifyKind(src.UpdatedAt.Value, DateTimeKind.Utc) : src.UpdatedAt))
+                .ReverseMap();
             CreateMap<CreateVolunteersGroupsDTO, VolunteersGroups>();
             CreateMap<UpdateVolunteersGroupsDTO, VolunteersGroups>();
         }

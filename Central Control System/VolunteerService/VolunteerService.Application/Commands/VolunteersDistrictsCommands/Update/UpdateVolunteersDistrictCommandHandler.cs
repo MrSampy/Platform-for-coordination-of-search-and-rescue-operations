@@ -38,7 +38,7 @@ namespace VolunteerService.Application.Commands.VolunteersDistrictsCommands.Upda
             }
 
             var mappedEntity = _mapper.Map(request.VolunteersDistrictDTO, entity);
-            mappedEntity.UpdatedAt = DateTime.Now;
+            mappedEntity.UpdatedAt = DateTime.UtcNow;
             await _repository.UpdateAsync(mappedEntity);
             await _unitOfWork.SaveChangesAsync();
             _cacheService.Reset();

@@ -40,7 +40,7 @@ namespace VolunteerService.Application.Commands.VolunteersGroupsCommands.Update
 
             var mappedEntity = _mapper.Map<VolunteersGroups>(request.VolunteerGroupDTO);
             mappedEntity.CreatedAt = entity.CreatedAt;
-            mappedEntity.UpdatedAt = DateTime.Now;
+            mappedEntity.UpdatedAt = DateTime.UtcNow;
 
             await _volunteerGroupRepository.UpdateAsync(mappedEntity);
             await _unitOfWork.SaveChangesAsync();

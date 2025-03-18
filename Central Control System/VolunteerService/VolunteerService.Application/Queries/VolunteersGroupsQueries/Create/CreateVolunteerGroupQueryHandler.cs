@@ -34,7 +34,7 @@ namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.Create
 
             var volunteerGroup = _mapper.Map<VolunteersGroups>(request.VolunteerGroupDTO);
             volunteerGroup.GID = Guid.NewGuid();
-            volunteerGroup.CreatedAt = volunteerGroup.UpdatedAt = DateTime.Now;
+            volunteerGroup.CreatedAt = volunteerGroup.UpdatedAt = DateTime.UtcNow;
 
             await _volunteerGroupRepository.AddAsync(volunteerGroup);
             await _unitOfWork.SaveChangesAsync();

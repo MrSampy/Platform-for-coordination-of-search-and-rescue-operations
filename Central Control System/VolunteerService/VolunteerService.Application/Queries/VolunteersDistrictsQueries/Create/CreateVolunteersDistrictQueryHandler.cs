@@ -34,7 +34,7 @@ namespace VolunteerService.Application.Queries.VolunteersDistrictsQueries.Create
 
             var entity = _mapper.Map<VolunteersDistricts>(request.VolunteersDistrictDTO);
             entity.GID = Guid.NewGuid();
-            entity.CreatedAt = entity.UpdatedAt = DateTime.Now;
+            entity.CreatedAt = entity.UpdatedAt = DateTime.UtcNow;
             await _repository.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync();
             _cacheService.Reset();

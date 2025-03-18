@@ -33,7 +33,7 @@ namespace VolunteerService.Application.Commands.VolunteerCommands.Update
             var mappedEntity = _mapper.Map<Volunteer>(request.VolunteerDTO);
 
             mappedEntity.CreatedAt = entity.CreatedAt;
-            mappedEntity.UpdatedAt = DateTime.Now;
+            mappedEntity.UpdatedAt = DateTime.UtcNow;
 
             await _volunteerRepository.UpdateAsync(mappedEntity);
 

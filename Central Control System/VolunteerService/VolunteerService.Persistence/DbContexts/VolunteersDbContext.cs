@@ -17,7 +17,11 @@ namespace VolunteerService.Persistence.DbContexts
                 Database.EnsureDeleted();
             }
         }
+        public VolunteersDbContext(DbContextOptions options)
+            : base(options)
+        {
 
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Exclude BaseEntity from being mapped to a table

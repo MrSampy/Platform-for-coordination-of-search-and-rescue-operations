@@ -26,7 +26,7 @@ namespace VolunteerService.Application.Queries.VolunteerQueries.Create
             var volunteer = _mapper.Map<Volunteer>(request.VolunteerDTO);
             volunteer.GID = Guid.NewGuid();
 
-            volunteer.CreatedAt = volunteer.UpdatedAt = DateTime.Now;
+            volunteer.CreatedAt = volunteer.UpdatedAt = DateTime.UtcNow;
 
             await _volunteerRepository.AddAsync(volunteer);
             await _unitOfWork.SaveChangesAsync();
