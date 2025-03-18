@@ -69,10 +69,7 @@ namespace AuthService.API.Core.Services
                 UserName = model.Username
             };
 
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Volunteer))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Volunteer));
-            }
+            await CreateRoles();
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -119,6 +116,16 @@ namespace AuthService.API.Core.Services
                 throw new AuthServiceException("User creation failed! Please check user details and try again.");
             }
 
+            await CreateRoles();
+
+            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _userManager.AddToRolesAsync(user, new List<string> { UserRoles.Admin, UserRoles.Volunteer });
+            }
+        }
+
+        private async Task CreateRoles()
+        {
             if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
             {
                 await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
@@ -129,14 +136,14 @@ namespace AuthService.API.Core.Services
                 await _roleManager.CreateAsync(new IdentityRole(UserRoles.Volunteer));
             }
 
-            if (!await _roleManager.RoleExistsAsync(UserRoles.OperationWorker))
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Dispatcher))
             {
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.OperationWorker));
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Dispatcher));
             }
 
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Coordinator))
             {
-                await _userManager.AddToRolesAsync(user, new List<string> { UserRoles.Admin, UserRoles.Volunteer });
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Coordinator));
             }
         }
 

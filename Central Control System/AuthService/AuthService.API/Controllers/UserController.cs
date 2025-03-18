@@ -27,6 +27,12 @@ namespace AuthService.API.Controllers
             return Ok(_userSevice.GetAllUsers());
         }
 
+        [HttpGet("bygid/{gid}")]
+        public IActionResult GetByGID([FromRoute] Guid gid)
+        {
+            return Ok(_userSevice.GetByGID(gid));
+        }
+
         [HttpGet]
         [Route("{roleName}")]
         public IActionResult GetAllUsers([FromRoute] string roleName)

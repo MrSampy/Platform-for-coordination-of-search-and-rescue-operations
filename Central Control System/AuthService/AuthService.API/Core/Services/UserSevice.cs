@@ -40,6 +40,25 @@ namespace AuthService.API.Core.Services
                     }).ToList();
         }
 
+        public UserDTO? GetByGID(Guid gid)
+        {
+            return (from user in _dbContext.Users
+                    where user.Id == gid.ToString()
+                    select new UserDTO
+                    {
+                        Id = new Guid(user.Id),
+                        Name = user.UserName ?? string.Empty,
+                        Roles = (from userRole in _dbContext.UserRoles
+                                 join role in _dbContext.Roles on userRole.RoleId equals role.Id
+                                 where userRole.UserId == user.Id
+                                 select new RoleDTO
+                                 {
+                                     Id = new Guid(role.Id),
+                                     Name = role.Name ?? string.Empty
+                                 }).ToList()
+                    }).FirstOrDefault();
+        }
+
         public IEnumerable<string> GetAllUserIdsByRole(string roleName)
         {
             return (from user in _dbContext.Users
