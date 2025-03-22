@@ -14,14 +14,17 @@ namespace VolunteerService.Application.Queries.VolunteersDistrictsQueries.Create
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService<VolunteersDistricts> _cacheService;
         private readonly IMapper _mapper;
+        private readonly IApiBuilder _apiBuilder;
 
-        public CreateVolunteersDistrictQueryHandler(IRepository<VolunteersDistricts> repository, IRepository<Volunteer> volunteerRepository, IUnitOfWork unitOfWork, ICacheService<VolunteersDistricts> cacheService, IMapper mapper)
+        public CreateVolunteersDistrictQueryHandler(IRepository<VolunteersDistricts> repository, IRepository<Volunteer> volunteerRepository,
+            IUnitOfWork unitOfWork, ICacheService<VolunteersDistricts> cacheService, IMapper mapper, IApiBuilder apiBuilder)
         {
             _repository = repository;
             _volunteerRepository = volunteerRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
             _mapper = mapper;
+            _apiBuilder = apiBuilder;
         }
 
         public async Task<VolunteersDistrictsDTO> Handle(CreateVolunteersDistrictQuery request, CancellationToken cancellationToken)
@@ -30,6 +33,12 @@ namespace VolunteerService.Application.Queries.VolunteersDistrictsQueries.Create
             if (volunteer == null)
             {
                 throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, nameof(Volunteer), request.VolunteersDistrictDTO.VolunteerGID.ToString()));
+            }
+
+            var district = await _apiBuilder.GetRequest<DistrictDTO>($"utils/api/district/{request.VolunteersDistrictDTO.DistrictGID}", Constants.UtilsService, cancellationToken, request.Token);
+            if (district == null)
+            {
+                throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, "District", request.VolunteersDistrictDTO.DistrictGID.ToString()));
             }
 
             var entity = _mapper.Map<VolunteersDistricts>(request.VolunteersDistrictDTO);

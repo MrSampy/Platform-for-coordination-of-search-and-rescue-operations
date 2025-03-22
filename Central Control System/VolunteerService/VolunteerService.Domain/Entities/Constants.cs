@@ -12,6 +12,14 @@
 
         public static readonly string AuthService = "AuthService";
 
+        public static readonly string UtilsService = "UtilsService";
+
+        public static readonly string OperatrionsService = "OperatrionsService";
+
         public static readonly string AuthServiceInMemory = "AuthServiceInMemory";
+
+        public static readonly string OperatrionsServiceInMemory = "OperatrionsServiceInMemory";
+
+        public static readonly string UtilsServiceInMemory = "UtilsServiceInMemory";
     }
 }

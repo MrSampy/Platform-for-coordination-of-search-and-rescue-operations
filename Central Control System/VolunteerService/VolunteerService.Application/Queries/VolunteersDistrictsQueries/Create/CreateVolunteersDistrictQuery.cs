@@ -7,5 +7,6 @@ namespace VolunteerService.Application.Queries.VolunteersDistrictsQueries.Create
     public class CreateVolunteersDistrictQuery : IRequest<VolunteersDistrictsDTO>
     {
         public required CreateVolunteersDistrictsDTO VolunteersDistrictDTO { get; set; }
+        public string Token { get; set; }
     }
 }

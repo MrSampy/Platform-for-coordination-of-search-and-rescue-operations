@@ -123,11 +123,31 @@ namespace VolunteerService.API.Extensions
 
             var authServiceLink = useInMemory ? configuration.GetValue<string>(Constants.AuthServiceInMemory) : configuration.GetValue<string>(Constants.AuthService);
 
+            var operationsServiceLink = useInMemory ? configuration.GetValue<string>(Constants.OperatrionsServiceInMemory) : configuration.GetValue<string>(Constants.OperatrionsService);
+
+            var utilsServiceLink = useInMemory ? configuration.GetValue<string>(Constants.UtilsServiceInMemory) : configuration.GetValue<string>(Constants.UtilsService);
+
             if (!string.IsNullOrEmpty(authServiceLink))
             {
                 services.AddHttpClient(Constants.AuthService, client =>
                 {
                     client.BaseAddress = new Uri(authServiceLink);
+                });
+            }
+
+            if (!string.IsNullOrEmpty(operationsServiceLink))
+            {
+                services.AddHttpClient(Constants.OperatrionsService, client =>
+                {
+                    client.BaseAddress = new Uri(operationsServiceLink);
+                });
+            }
+
+            if (!string.IsNullOrEmpty(utilsServiceLink))
+            {
+                services.AddHttpClient(Constants.UtilsService, client =>
+                {
+                    client.BaseAddress = new Uri(utilsServiceLink);
                 });
             }
 

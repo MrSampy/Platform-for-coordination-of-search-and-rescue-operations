@@ -1,6 +1,6 @@
 ﻿namespace VolunteerService.Application.DTOs
 {
-    public class UserDTO
+    internal class UserDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

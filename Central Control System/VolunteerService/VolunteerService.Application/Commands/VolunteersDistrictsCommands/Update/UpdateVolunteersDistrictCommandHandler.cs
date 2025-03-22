@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using VolunteerService.Application.DTOs;
 using VolunteerService.Domain.Entities;
 using VolunteerService.Domain.Exceptions;
 using VolunteerService.Domain.Interfaces;
@@ -13,14 +14,17 @@ namespace VolunteerService.Application.Commands.VolunteersDistrictsCommands.Upda
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService<VolunteersDistricts> _cacheService;
         private readonly IMapper _mapper;
+        private readonly IApiBuilder _apiBuilder;
 
-        public UpdateVolunteersDistrictCommandHandler(IRepository<VolunteersDistricts> repository, IRepository<Volunteer> volunteerRepository, IUnitOfWork unitOfWork, ICacheService<VolunteersDistricts> cacheService, IMapper mapper)
+        public UpdateVolunteersDistrictCommandHandler(IRepository<VolunteersDistricts> repository, IRepository<Volunteer> volunteerRepository,
+            IUnitOfWork unitOfWork, ICacheService<VolunteersDistricts> cacheService, IMapper mapper, IApiBuilder apiBuilder)
         {
             _repository = repository;
             _volunteerRepository = volunteerRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
             _mapper = mapper;
+            _apiBuilder = apiBuilder;
         }
 
         public async Task Handle(UpdateVolunteersDistrictCommand request, CancellationToken cancellationToken)
@@ -35,6 +39,12 @@ namespace VolunteerService.Application.Commands.VolunteersDistrictsCommands.Upda
             if (volunteer == null)
             {
                 throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, nameof(Volunteer), request.VolunteersDistrictDTO.VolunteerGID.ToString()));
+            }
+
+            var district = await _apiBuilder.GetRequest<DistrictDTO>($"utils/api/district/{request.VolunteersDistrictDTO.DistrictGID}", Constants.UtilsService, cancellationToken, request.Token);
+            if (district == null)
+            {
+                throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, "District", request.VolunteersDistrictDTO.DistrictGID.ToString()));
             }
 
             var mappedEntity = _mapper.Map(request.VolunteersDistrictDTO, entity);

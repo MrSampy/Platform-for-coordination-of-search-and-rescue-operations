@@ -14,14 +14,17 @@ namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.Create
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService<VolunteersGroups> _cacheService;
         private readonly IMapper _mapper;
+        private readonly IApiBuilder _apiBuilder;
 
-        public CreateVolunteerGroupQueryHandler(IRepository<VolunteersGroups> volunteerGroupRepository, IRepository<Volunteer> volunteerRepository, IUnitOfWork unitOfWork, ICacheService<VolunteersGroups> cacheService, IMapper mapper)
+        public CreateVolunteerGroupQueryHandler(IRepository<VolunteersGroups> volunteerGroupRepository, IRepository<Volunteer> volunteerRepository,
+            IUnitOfWork unitOfWork, ICacheService<VolunteersGroups> cacheService, IMapper mapper, IApiBuilder apiBuilder)
         {
             _volunteerGroupRepository = volunteerGroupRepository;
             _volunteerRepository = volunteerRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
             _mapper = mapper;
+            _apiBuilder = apiBuilder;
         }
 
         public async Task<VolunteersGroupsDTO> Handle(CreateVolunteerGroupQuery request, CancellationToken cancellationToken)
@@ -30,6 +33,12 @@ namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.Create
             if (volunteer == null)
             {
                 throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, nameof(Volunteer), request.VolunteerGroupDTO.VolunteerGID.ToString()));
+            }
+
+            var group = await _apiBuilder.GetRequest<DistrictDTO>($"operations/api/group/{request.VolunteerGroupDTO.GroupGID}", Constants.OperatrionsService, cancellationToken, request.Token);
+            if (group == null)
+            {
+                throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, "Group", request.VolunteerGroupDTO.GroupGID.ToString()));
             }
 
             var volunteerGroup = _mapper.Map<VolunteersGroups>(request.VolunteerGroupDTO);

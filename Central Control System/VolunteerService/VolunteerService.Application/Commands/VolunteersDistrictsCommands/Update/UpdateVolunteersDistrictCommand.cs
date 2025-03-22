@@ -6,6 +6,7 @@ namespace VolunteerService.Application.Commands.VolunteersDistrictsCommands.Upda
     public class UpdateVolunteersDistrictCommand : IRequest
     {
         public required UpdateVolunteersDistrictsDTO VolunteersDistrictDTO { get; set; }
+        public string Token { get; set; }
     }
 
 }
