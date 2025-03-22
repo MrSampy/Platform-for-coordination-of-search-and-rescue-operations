@@ -40,13 +40,17 @@ namespace OperationsService.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventDTO eventDto)
         {
-            return Ok(await _mediator.Send(new CreateEventQuery() { Event = eventDto }));
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            return Ok(await _mediator.Send(new CreateEventQuery() { Event = eventDto, Token = token }));
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateEvent([FromBody] UpdateEventDTO eventModel)
         {
-            await _mediator.Send(new UpdateEventCommand() { Event = eventModel });
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            await _mediator.Send(new UpdateEventCommand() { Event = eventModel, Token = token });
             return NoContent();
         }
 

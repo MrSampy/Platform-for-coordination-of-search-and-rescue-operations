@@ -7,5 +7,4 @@
         public required decimal RequiredQuantity { get; set; }
         public required decimal AvailableQuantity { get; set; }
     }
-
 }

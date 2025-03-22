@@ -7,5 +7,6 @@ namespace OperationsService.Application.Queries.ResourcesEventQueries.Create
     public class CreateResourcesEventQuery : IRequest<ResourcesEventDTO>
     {
         public required CreateResourcesEventDTO ResourcesEvent { get; set; }
+        public string Token { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using OperationsService.Domain.Exceptions;
+﻿using OperationsService.Domain.Entities;
+using OperationsService.Domain.Exceptions;
 using System.Net;
 using System.Text.Json;
 
@@ -31,7 +32,7 @@ namespace OperationsService.API.Middleware
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var statusCode = HttpStatusCode.InternalServerError;
-            var message = exception is OperationsServiceException ? exception.Message : "An unexpected error occurred. Please try again later.";
+            var message = exception is OperationsServiceException ? exception.Message : Constants.DefaultException;
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;

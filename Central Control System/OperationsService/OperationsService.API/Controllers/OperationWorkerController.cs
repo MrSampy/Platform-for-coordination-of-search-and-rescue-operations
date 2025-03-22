@@ -40,13 +40,17 @@ namespace OperationsService.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOperationWorker([FromBody] CreateOperationWorkerDTO operationWorkerDto)
         {
-            return Ok(await _mediator.Send(new CreateOperationWorkerQuery() { OperationWorker = operationWorkerDto }));
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            return Ok(await _mediator.Send(new CreateOperationWorkerQuery() { OperationWorker = operationWorkerDto, Token = token }));
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateOperationWorker([FromBody] UpdateOperationWorkerDTO operationWorkerModel)
         {
-            await _mediator.Send(new UpdateOperationWorkerCommand() { OperationWorker = operationWorkerModel });
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            await _mediator.Send(new UpdateOperationWorkerCommand() { OperationWorker = operationWorkerModel, Token = token });
             return NoContent();
         }
 

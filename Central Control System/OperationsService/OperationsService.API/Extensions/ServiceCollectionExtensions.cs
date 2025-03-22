@@ -119,13 +119,25 @@ namespace OperationsService.API.Extensions
 
         public static IServiceCollection AddHttpClients(this IServiceCollection services, IConfiguration configuration)
         {
-            var authServiceLink = configuration.GetValue<string>(Constants.AuthService);
+            var useInMemory = configuration.GetValue<bool>("UseInMemoryDatabase");
+
+            var authServiceLink = useInMemory ? configuration.GetValue<string>(Constants.AuthServiceInMemory) : configuration.GetValue<string>(Constants.AuthService);
+
+            var utilsServiceLink = useInMemory ? configuration.GetValue<string>(Constants.UtilsServiceInMemory) : configuration.GetValue<string>(Constants.UtilsService);
 
             if (!string.IsNullOrEmpty(authServiceLink))
             {
                 services.AddHttpClient(Constants.AuthService, client =>
                 {
                     client.BaseAddress = new Uri(authServiceLink);
+                });
+            }
+
+            if (!string.IsNullOrEmpty(utilsServiceLink))
+            {
+                services.AddHttpClient(Constants.UtilsService, client =>
+                {
+                    client.BaseAddress = new Uri(utilsServiceLink);
                 });
             }
 

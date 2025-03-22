@@ -7,6 +7,7 @@ namespace OperationsService.Application.Queries.OperationWorkerQueries.Create
     public class CreateOperationWorkerQuery : IRequest<OperationWorkerDTO>
     {
         public required CreateOperationWorkerDTO OperationWorker { get; set; }
+        public string Token { get; set; }
     }
 
 }

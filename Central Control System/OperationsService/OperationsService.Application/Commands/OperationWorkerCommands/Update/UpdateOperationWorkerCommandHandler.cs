@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using OperationsService.Application.DTOs;
 using OperationsService.Domain.Entities;
 using OperationsService.Domain.Exceptions;
 using OperationsService.Domain.Interfaces;
@@ -12,17 +13,20 @@ namespace OperationsService.Application.Commands.OperationWorkerCommands.Update
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService<OperationWorker> _cacheService;
         private readonly IMapper _mapper;
+        private readonly IApiBuilder _apiBuilder;
 
         public UpdateOperationWorkerCommandHandler(
             IRepository<OperationWorker> operationWorkerRepository,
             IUnitOfWork unitOfWork,
             ICacheService<OperationWorker> cacheService,
-            IMapper mapper)
+            IMapper mapper,
+            IApiBuilder apiBuilder)
         {
             _operationWorkerRepository = operationWorkerRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
             _mapper = mapper;
+            _apiBuilder = apiBuilder;
         }
 
         public async Task Handle(UpdateOperationWorkerCommand request, CancellationToken cancellationToken)
@@ -32,6 +36,12 @@ namespace OperationsService.Application.Commands.OperationWorkerCommands.Update
             if (entity == null)
             {
                 throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, nameof(OperationWorker), request.OperationWorker.GID.ToString()));
+            }
+
+            var user = await _apiBuilder.GetRequest<UserDTO>($"api/user/bygid/{request.OperationWorker.UserGID}", Constants.AuthService, cancellationToken, request.Token);
+            if (user == null)
+            {
+                throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, "User", request.OperationWorker.UserGID.ToString()));
             }
 
             var mappedEntity = _mapper.Map<OperationWorker>(request.OperationWorker);
