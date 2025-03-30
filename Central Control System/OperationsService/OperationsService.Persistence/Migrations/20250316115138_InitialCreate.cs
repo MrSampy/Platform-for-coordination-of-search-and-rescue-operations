@@ -16,6 +16,8 @@ namespace OperationsService.Persistence.Migrations
                 {
                     GID = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Longitude = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Latitude = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     EventTypeGID = table.Column<Guid>(type: "uuid", nullable: false),
                     DistrictGID = table.Column<Guid>(type: "uuid", nullable: false),
                     CoordinatorGID = table.Column<Guid>(type: "uuid", nullable: false),

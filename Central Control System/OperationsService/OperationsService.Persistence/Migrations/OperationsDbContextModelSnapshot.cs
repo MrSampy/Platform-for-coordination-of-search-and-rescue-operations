@@ -31,6 +31,12 @@ namespace OperationsService.Persistence.Migrations
                     b.Property<Guid>("CoordinatorGID")
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
