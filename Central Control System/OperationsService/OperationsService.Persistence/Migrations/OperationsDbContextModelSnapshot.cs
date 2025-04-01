@@ -281,6 +281,8 @@ namespace OperationsService.Persistence.Migrations
                         .HasForeignKey("EventGID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                    b.Property<Guid>("LeaderGID")
+                        .HasColumnType("uuid");
                 });
 
             modelBuilder.Entity("OperationsService.Domain.Entities.OperationTask", b =>

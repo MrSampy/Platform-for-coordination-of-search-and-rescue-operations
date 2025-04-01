@@ -7,5 +7,6 @@ namespace OperationsService.Application.Queries.GroupQueries.Create
     public class CreateGroupQuery : IRequest<GroupDTO>
     {
         public required CreateGroupDTO Group { get; set; }
+        public string Token { get; set; }
     }
 }

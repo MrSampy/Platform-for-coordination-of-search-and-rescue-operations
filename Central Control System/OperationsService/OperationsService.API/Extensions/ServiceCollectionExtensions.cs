@@ -125,6 +125,8 @@ namespace OperationsService.API.Extensions
 
             var utilsServiceLink = useInMemory ? configuration.GetValue<string>(Constants.UtilsServiceInMemory) : configuration.GetValue<string>(Constants.UtilsService);
 
+            var volunteerServiceLink = useInMemory ? configuration.GetValue<string>(Constants.VolunteerServiceInMemory) : configuration.GetValue<string>(Constants.VolunteerService);
+
             if (!string.IsNullOrEmpty(authServiceLink))
             {
                 services.AddHttpClient(Constants.AuthService, client =>
@@ -138,6 +140,14 @@ namespace OperationsService.API.Extensions
                 services.AddHttpClient(Constants.UtilsService, client =>
                 {
                     client.BaseAddress = new Uri(utilsServiceLink);
+                });
+            }
+
+            if (!string.IsNullOrEmpty(volunteerServiceLink))
+            {
+                services.AddHttpClient(Constants.VolunteerService, client =>
+                {
+                    client.BaseAddress = new Uri(volunteerServiceLink);
                 });
             }
 

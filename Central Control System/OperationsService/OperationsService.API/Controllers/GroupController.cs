@@ -40,13 +40,17 @@ namespace OperationsService.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGroup([FromBody] CreateGroupDTO groupDto)
         {
-            return Ok(await _mediator.Send(new CreateGroupQuery() { Group = groupDto }));
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            return Ok(await _mediator.Send(new CreateGroupQuery() { Group = groupDto, Token = token }));
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateGroup([FromBody] UpdateGroupDTO groupModel)
         {
-            await _mediator.Send(new UpdateGroupCommand() { Group = groupModel });
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            await _mediator.Send(new UpdateGroupCommand() { Group = groupModel, Token = token });
             return NoContent();
         }
 

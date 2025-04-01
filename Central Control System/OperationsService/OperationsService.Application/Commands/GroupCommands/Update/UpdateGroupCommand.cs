@@ -6,5 +6,6 @@ namespace OperationsService.Application.Commands.GroupCommands.Update
     public class UpdateGroupCommand : IRequest
     {
         public UpdateGroupDTO Group { get; set; }
+        public string Token { get; set; }
     }
 }

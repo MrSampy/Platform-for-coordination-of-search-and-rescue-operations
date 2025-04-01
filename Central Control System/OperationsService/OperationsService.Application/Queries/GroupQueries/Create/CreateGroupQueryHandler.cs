@@ -14,14 +14,17 @@ namespace OperationsService.Application.Queries.GroupQueries.Create
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService<Group> _cacheService;
         private readonly IMapper _mapper;
+        private readonly IApiBuilder _apiBuilder;
 
-        public CreateGroupQueryHandler(IRepository<Group> groupRepository, IRepository<Event> eventRepository, IUnitOfWork unitOfWork, ICacheService<Group> cacheService, IMapper mapper)
+        public CreateGroupQueryHandler(IRepository<Group> groupRepository, IRepository<Event> eventRepository, IUnitOfWork unitOfWork,
+            ICacheService<Group> cacheService, IMapper mapper, IApiBuilder apiBuilder)
         {
             _groupRepository = groupRepository;
             _eventRepository = eventRepository;
             _unitOfWork = unitOfWork;
             _cacheService = cacheService;
             _mapper = mapper;
+            _apiBuilder = apiBuilder;
         }
 
         public async Task<GroupDTO> Handle(CreateGroupQuery request, CancellationToken cancellationToken)
@@ -31,7 +34,11 @@ namespace OperationsService.Application.Queries.GroupQueries.Create
             {
                 throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, nameof(Event), request.Group.EventGID.ToString()));
             }
-
+            var volunteer = await _apiBuilder.GetRequest<VolunteerDTO>($"volunteers/api/volunteer/{request.Group.LeaderGID}", Constants.VolunteerService, cancellationToken, request.Token);
+            if (volunteer == null)
+            {
+                throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, "Volunteer", request.Group.LeaderGID.ToString()));
+            }
             var group = _mapper.Map<Group>(request.Group);
             group.GID = Guid.NewGuid();
             group.CreatedAt = group.UpdatedAt = DateTime.UtcNow;
