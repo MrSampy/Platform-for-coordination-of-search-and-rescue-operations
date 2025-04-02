@@ -33,7 +33,6 @@ namespace VolunteerService.Application.Mapper
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt != null ? DateTime.SpecifyKind(src.UpdatedAt.Value, DateTimeKind.Utc) : src.UpdatedAt))
                 .ReverseMap();
             CreateMap<CreateVolunteersGroupsDTO, VolunteersGroups>();
-            CreateMap<UpdateVolunteersGroupsDTO, VolunteersGroups>();
         }
     }
 

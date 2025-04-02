@@ -18,28 +18,33 @@ namespace VolunteerService.API.Extensions
     {
         public static IServiceCollection AddAuthorizationJWT(this IServiceCollection services, IConfiguration configuration)
         {
-            services
-                .AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.SaveToken = true;
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
+            var useInMemory = configuration.GetValue<bool>("UseInMemoryDatabase");
+            if (!useInMemory)
+            {
+                services
+                    .AddAuthentication(options =>
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidAudience = configuration["ValidAudience"],
-                        ValidIssuer = configuration["ValidIssuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Secret"] ?? string.Empty))
-                    };
-                });
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
+                    .AddJwtBearer(options =>
+                    {
+                        options.SaveToken = true;
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidAudience = configuration["ValidAudience"],
+                            ValidIssuer = configuration["ValidIssuer"],
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Secret"] ?? string.Empty))
+                        };
+                    }
+                );
 
-            services.AddCors();
+                services.AddCors();
+            }
 
             return services;
         }
