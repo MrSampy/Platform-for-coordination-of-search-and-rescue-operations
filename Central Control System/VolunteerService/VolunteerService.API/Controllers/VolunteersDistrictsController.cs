@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using VolunteerService.API.Config;
 using VolunteerService.API.Model;
 using VolunteerService.Application.Commands.VolunteersDistrictsCommands.Delete;
-using VolunteerService.Application.Commands.VolunteersDistrictsCommands.Update;
 using VolunteerService.Application.DTOs.Create;
-using VolunteerService.Application.DTOs.Update;
 using VolunteerService.Application.Queries.VolunteersDistrictsQueries.Create;
 using VolunteerService.Application.Queries.VolunteersDistrictsQueries.GetAll;
 using VolunteerService.Application.Queries.VolunteersDistrictsQueries.GetByGID;
+using VolunteerService.Application.Queries.VolunteersDistrictsQueries.GetDistrictsByVolunteerGID;
+using VolunteerService.Application.Queries.VolunteersDistrictsQueries.GetVolunteersByDistrictGIDQuery;
+using VolunteerService.Application.Queries.VolunteersDistrictsQueries.IsVolunteerinDistrict;
 using VolunteerService.Domain.Entities;
 
 namespace VolunteerService.API.Controllers
@@ -31,6 +32,20 @@ namespace VolunteerService.API.Controllers
             return Ok(await _mediator.Send(new GetAllVolunteersDistrictsQuery { PaginationQuery = paginationQuery }, cancellationToken));
         }
 
+        [HttpGet("by-volunteer/{volunteerGid}")]
+        public async Task<IActionResult> GetDistrictsByVolunteerGID(Guid volunteerGid, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetDistrictsByVolunteerGIDQuery { VolunteerGID = volunteerGid }, cancellationToken);
+            return Ok(result);
+        }
+
+        [HttpGet("by-district/{groupGid}")]
+        public async Task<IActionResult> GetVolunteersByDistrictGID(Guid districtGID, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetVolunteersByDistrictGIDQueryQuery { DistrictGID = districtGID }, cancellationToken);
+            return Ok(result);
+        }
+
         [HttpGet("{gid}")]
         public async Task<IActionResult> GetVolunteersDistrictByGID(Guid gid, CancellationToken cancellationToken = default)
         {
@@ -45,20 +60,18 @@ namespace VolunteerService.API.Controllers
             return Ok(await _mediator.Send(new CreateVolunteersDistrictQuery { VolunteersDistrictDTO = districtDto, Token = token }));
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateVolunteersDistrict([FromBody] UpdateVolunteersDistrictsDTO districtModel)
-        {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            await _mediator.Send(new UpdateVolunteersDistrictCommand { VolunteersDistrictDTO = districtModel, Token = token });
-            return NoContent();
-        }
-
         [HttpDelete("{gid}")]
         public async Task<IActionResult> DeleteVolunteersDistrict(Guid gid)
         {
             await _mediator.Send(new DeleteVolunteersDistrictCommand { GID = gid });
             return NoContent();
+        }
+
+        [HttpPost("exists")]
+        public async Task<IActionResult> IsVolunteerinDistrict([FromBody] CreateVolunteersDistrictsDTO volunteersDistrictsDTO, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new IsVolunteerinDistrictQuery { VolunteersDistrictsDTO = volunteersDistrictsDTO }, cancellationToken);
+            return Ok(result);
         }
     }
 }

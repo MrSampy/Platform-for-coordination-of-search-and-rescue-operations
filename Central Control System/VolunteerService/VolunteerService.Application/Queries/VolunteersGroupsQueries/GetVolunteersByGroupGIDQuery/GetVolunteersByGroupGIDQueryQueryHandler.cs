@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using VolunteerService.Application.DTOs;
+using VolunteerService.Application.Queries.VolunteersGroupsQueries.GetAll;
 using VolunteerService.Application.Queries.VolunteersGroupsQueries.GetGroupsByVolunteerGID;
 using VolunteerService.Domain.Entities;
 using VolunteerService.Domain.Interfaces;
@@ -30,11 +31,20 @@ namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.GetVolunt
                 return _mapper.Map<IEnumerable<VolunteersGroupsDTO>>(cachedEntities);
             }
 
-            var result = (await _volunteerGroupRepository.GetAllAsync(cancellationToken)).Where(v => v.GroupGID == request.GroupGID);
+            string getAllCacheKey = $"{nameof(GetAllVolunteerGroupsQuery)}";
+
+            var getAllCachedEntities = _cacheService.Get(getAllCacheKey);
+
+            if (getAllCachedEntities == null)
+            {
+                getAllCachedEntities = (await _volunteerGroupRepository.GetAllAsync(cancellationToken)).ToList();
+                _cacheService.Set(getAllCacheKey, getAllCachedEntities);
+            }
+
+            var result = getAllCachedEntities.Where(v => v.GroupGID == request.GroupGID);
             _cacheService.Set(cacheKey, result.ToList());
 
             return _mapper.Map<IEnumerable<VolunteersGroupsDTO>>(result);
         }
-
     }
 }
