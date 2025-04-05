@@ -93,7 +93,43 @@ namespace AuthService.API.Core.Services
             return savedUser.Id;
         }
 
+        private async Task CreateRoles()
+        {
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            }
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Volunteer))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Volunteer));
+            }
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Dispatcher))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Dispatcher));
+            }
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Coordinator))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Coordinator));
+            }
+        }
+        public async Task RegisterCoordinator(RegisterModel model)
+        {
+            await RegisterWithRoles(model, new List<string> { UserRoles.Coordinator, UserRoles.Volunteer });
+        }
+
+        public async Task RegisterDispatcher(RegisterModel model)
+        {
+            await RegisterWithRoles(model, new List<string> { UserRoles.Dispatcher, UserRoles.Volunteer });
+        }
         public async Task RegisterAdmin(RegisterModel model)
+        {
+            await RegisterWithRoles(model, new List<string> { UserRoles.Admin, UserRoles.Volunteer });
+        }
+
+        private async Task RegisterWithRoles(RegisterModel model, List<string> roles)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
 
@@ -118,34 +154,22 @@ namespace AuthService.API.Core.Services
 
             await CreateRoles();
 
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            var validRoles = new List<string>();
+
+            foreach (var role in roles)
             {
-                await _userManager.AddToRolesAsync(user, new List<string> { UserRoles.Admin, UserRoles.Volunteer });
+                if (await _roleManager.RoleExistsAsync(role))
+                {
+                    validRoles.Add(role);
+                }
+            }
+
+            if (validRoles.Any())
+            {
+                await _userManager.AddToRolesAsync(user, validRoles);
             }
         }
 
-        private async Task CreateRoles()
-        {
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-            }
-
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Volunteer))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Volunteer));
-            }
-
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Dispatcher))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Dispatcher));
-            }
-
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Coordinator))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Coordinator));
-            }
-        }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {

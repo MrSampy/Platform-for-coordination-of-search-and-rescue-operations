@@ -39,5 +39,25 @@ namespace AuthService.API.Controllers
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
+
+        [HttpPost]
+        [RequiresAuthHeader]
+        [Route("register-dispatcher")]
+        public async Task<IActionResult> RegisterDispatcher([FromBody] RegisterModel model)
+        {
+            await _authenticateSevice.RegisterDispatcher(model);
+
+            return Ok(new Response { Status = "Success", Message = "Dispatcher created successfully!" });
+        }
+
+        [HttpPost]
+        [RequiresAuthHeader]
+        [Route("register-coordinator")]
+        public async Task<IActionResult> RegisterCoordinator([FromBody] RegisterModel model)
+        {
+            await _authenticateSevice.RegisterCoordinator(model);
+
+            return Ok(new Response { Status = "Success", Message = "Coordinator created successfully!" });
+        }
     }
 }

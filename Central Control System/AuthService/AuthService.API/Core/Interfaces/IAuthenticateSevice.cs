@@ -8,5 +8,7 @@ namespace AuthService.API.Core.Interfaces
         Task<string> Register(RegisterModel model);
         Task RegisterAdmin(RegisterModel model);
         Task<TokenInfoDTO> Login(LoginModel model);
+        Task RegisterCoordinator(RegisterModel model);
+        Task RegisterDispatcher(RegisterModel model);
     }
 }
