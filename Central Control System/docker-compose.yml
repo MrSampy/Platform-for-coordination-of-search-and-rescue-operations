@@ -55,6 +55,23 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - mynetwork
+  gateway:
+    container_name: gateway
+    build:
+      context: ./Gateway/
+      dockerfile: Dockerfile
+    ports:
+      - "7038:8080" 
+      - "5065:8080"
+    depends_on:
+      - volunteerservice
+      - operationsservice
+      - authservice
+      - utilsservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
   postgresql-server:
     container_name: postgresql-server
     build:
