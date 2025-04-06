@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using VolunteerService.Application.DTOs;
 using VolunteerService.Application.Queries.VolunteersDistrictsQueries.GetAll;
 using VolunteerService.Domain.Entities;
 using VolunteerService.Domain.Interfaces;
 
 namespace VolunteerService.Application.Queries.VolunteersDistrictsQueries.IsVolunteerinDistrict
 {
-    public class IsVolunteerinDistrictQueryHandler : IRequestHandler<IsVolunteerinDistrictQuery, bool>
+    public class IsVolunteerinDistrictQueryHandler : IRequestHandler<IsVolunteerinDistrictQuery, IsExistModel>
     {
         private readonly IRepository<VolunteersDistricts> _repository;
         private readonly ICacheService<VolunteersDistricts> _cacheService;
@@ -19,7 +20,7 @@ namespace VolunteerService.Application.Queries.VolunteersDistrictsQueries.IsVolu
             _cacheService = cacheService;
         }
 
-        public async Task<bool> Handle(IsVolunteerinDistrictQuery request, CancellationToken cancellationToken)
+        public async Task<IsExistModel> Handle(IsVolunteerinDistrictQuery request, CancellationToken cancellationToken)
         {
             string getAllCacheKey = $"{nameof(GetAllVolunteersDistrictsQuery)}";
 
@@ -31,8 +32,11 @@ namespace VolunteerService.Application.Queries.VolunteersDistrictsQueries.IsVolu
                 _cacheService.Set(getAllCacheKey, getAllCachedEntities);
             }
 
-            return getAllCachedEntities.Any(vg => vg.VolunteerGID == request.VolunteersDistrictsDTO.VolunteerGID
-                && vg.DistrictGID == request.VolunteersDistrictsDTO.DistrictGID);
+            return new IsExistModel()
+            {
+                IsExist = getAllCachedEntities.Any(vg => vg.VolunteerGID == request.VolunteersDistrictsDTO.VolunteerGID
+                && vg.DistrictGID == request.VolunteersDistrictsDTO.DistrictGID)
+            };
         }
     }
 }

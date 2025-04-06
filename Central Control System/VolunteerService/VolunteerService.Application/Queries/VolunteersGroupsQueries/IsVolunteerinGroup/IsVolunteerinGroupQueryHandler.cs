@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using VolunteerService.Application.DTOs;
 using VolunteerService.Application.Queries.VolunteersGroupsQueries.GetAll;
 using VolunteerService.Domain.Entities;
 using VolunteerService.Domain.Interfaces;
 
 namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.IsVolunteerinGroup
 {
-    public class IsVolunteerinGroupQueryHandler : IRequestHandler<IsVolunteerinGroupQuery, bool>
+    public class IsVolunteerinGroupQueryHandler : IRequestHandler<IsVolunteerinGroupQuery, IsExistModel>
     {
         private readonly IRepository<VolunteersGroups> _repository;
         private readonly ICacheService<VolunteersGroups> _cacheService;
@@ -19,7 +20,7 @@ namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.IsVolunte
             _cacheService = cacheService;
         }
 
-        public async Task<bool> Handle(IsVolunteerinGroupQuery request, CancellationToken cancellationToken)
+        public async Task<IsExistModel> Handle(IsVolunteerinGroupQuery request, CancellationToken cancellationToken)
         {
             string getAllCacheKey = $"{nameof(GetAllVolunteerGroupsQuery)}";
 
@@ -31,8 +32,11 @@ namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.IsVolunte
                 _cacheService.Set(getAllCacheKey, getAllCachedEntities);
             }
 
-            return getAllCachedEntities.Any(vg => vg.VolunteerGID == request.VolunteersGroupsDTO.VolunteerGID
-                && vg.GroupGID == request.VolunteersGroupsDTO.GroupGID);
+            return new IsExistModel()
+            {
+                IsExist = getAllCachedEntities.Any(vg => vg.VolunteerGID == request.VolunteersGroupsDTO.VolunteerGID
+                && vg.GroupGID == request.VolunteersGroupsDTO.GroupGID)
+            };
         }
     }
 }
