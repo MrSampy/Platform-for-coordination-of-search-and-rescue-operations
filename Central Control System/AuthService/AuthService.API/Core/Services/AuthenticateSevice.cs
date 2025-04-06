@@ -56,7 +56,7 @@ namespace AuthService.API.Core.Services
             };
         }
 
-        public async Task<string> Register(RegisterModel model)
+        public async Task<UserDTO> Register(RegisterModel model)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
 
@@ -90,7 +90,7 @@ namespace AuthService.API.Core.Services
                 throw new AuthServiceException("User creation failed! Please check user details and try again.");
             }
 
-            return savedUser.Id;
+            return await GetUserFromIdentity(savedUser);
         }
 
         private async Task CreateRoles()
@@ -115,21 +115,21 @@ namespace AuthService.API.Core.Services
                 await _roleManager.CreateAsync(new IdentityRole(UserRoles.Coordinator));
             }
         }
-        public async Task RegisterCoordinator(RegisterModel model)
+        public async Task<UserDTO> RegisterCoordinator(RegisterModel model)
         {
-            await RegisterWithRoles(model, new List<string> { UserRoles.Coordinator, UserRoles.Volunteer });
+            return await RegisterWithRoles(model, new List<string> { UserRoles.Coordinator, UserRoles.Volunteer });
         }
 
-        public async Task RegisterDispatcher(RegisterModel model)
+        public async Task<UserDTO> RegisterDispatcher(RegisterModel model)
         {
-            await RegisterWithRoles(model, new List<string> { UserRoles.Dispatcher, UserRoles.Volunteer });
+            return await RegisterWithRoles(model, new List<string> { UserRoles.Dispatcher, UserRoles.Volunteer });
         }
-        public async Task RegisterAdmin(RegisterModel model)
+        public async Task<UserDTO> RegisterAdmin(RegisterModel model)
         {
-            await RegisterWithRoles(model, new List<string> { UserRoles.Admin, UserRoles.Volunteer });
+            return await RegisterWithRoles(model, new List<string> { UserRoles.Admin, UserRoles.Volunteer });
         }
 
-        private async Task RegisterWithRoles(RegisterModel model, List<string> roles)
+        private async Task<UserDTO> RegisterWithRoles(RegisterModel model, List<string> roles)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
 
@@ -168,6 +168,15 @@ namespace AuthService.API.Core.Services
             {
                 await _userManager.AddToRolesAsync(user, validRoles);
             }
+
+            var savedUser = await _userManager.FindByNameAsync(model.Username);
+
+            if (savedUser == null)
+            {
+                throw new AuthServiceException("User creation failed! Please check user details and try again.");
+            }
+
+            return await GetUserFromIdentity(savedUser);
         }
 
 
@@ -184,6 +193,32 @@ namespace AuthService.API.Core.Services
             );
 
             return token;
+        }
+
+        private async Task<UserDTO> GetUserFromIdentity(IdentityUser user)
+        {
+            var roleNames = await _userManager.GetRolesAsync(user);
+
+            var roles = new List<RoleDTO>();
+
+            if (roleNames != null)
+            {
+                foreach (var roleName in roleNames)
+                {
+                    var role = await _roleManager.FindByNameAsync(roleName);
+
+                    if (role != null)
+                    {
+                        roles.Add(new RoleDTO
+                        {
+                            Id = Guid.Parse(role.Id),
+                            Name = role.Name!
+                        });
+                    }
+                }
+            }
+
+            return new UserDTO { Id = new Guid(user.Id), Name = user.UserName!, Roles = roles };
         }
     }
 }

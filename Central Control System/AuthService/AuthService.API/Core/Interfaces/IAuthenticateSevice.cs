@@ -5,10 +5,10 @@ namespace AuthService.API.Core.Interfaces
 {
     public interface IAuthenticateSevice
     {
-        Task<string> Register(RegisterModel model);
-        Task RegisterAdmin(RegisterModel model);
         Task<TokenInfoDTO> Login(LoginModel model);
-        Task RegisterCoordinator(RegisterModel model);
-        Task RegisterDispatcher(RegisterModel model);
+        Task<UserDTO> Register(RegisterModel model);
+        Task<UserDTO> RegisterAdmin(RegisterModel model);
+        Task<UserDTO> RegisterCoordinator(RegisterModel model);
+        Task<UserDTO> RegisterDispatcher(RegisterModel model);
     }
 }

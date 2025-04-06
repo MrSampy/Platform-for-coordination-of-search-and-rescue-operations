@@ -35,9 +35,7 @@ namespace AuthService.API.Controllers
         [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
         {
-            await _authenticateSevice.RegisterAdmin(model);
-
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            return Ok(await _authenticateSevice.RegisterAdmin(model));
         }
 
         [HttpPost]
@@ -45,9 +43,7 @@ namespace AuthService.API.Controllers
         [Route("register-dispatcher")]
         public async Task<IActionResult> RegisterDispatcher([FromBody] RegisterModel model)
         {
-            await _authenticateSevice.RegisterDispatcher(model);
-
-            return Ok(new Response { Status = "Success", Message = "Dispatcher created successfully!" });
+            return Ok(await _authenticateSevice.RegisterDispatcher(model));
         }
 
         [HttpPost]
@@ -55,9 +51,7 @@ namespace AuthService.API.Controllers
         [Route("register-coordinator")]
         public async Task<IActionResult> RegisterCoordinator([FromBody] RegisterModel model)
         {
-            await _authenticateSevice.RegisterCoordinator(model);
-
-            return Ok(new Response { Status = "Success", Message = "Coordinator created successfully!" });
+            return Ok(await _authenticateSevice.RegisterCoordinator(model));
         }
     }
 }
