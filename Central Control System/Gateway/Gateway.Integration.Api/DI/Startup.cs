@@ -6,7 +6,7 @@ namespace Gateway.Integration.Api.DI
     {
         public IConfiguration Configuration { get; } = configuration;
 
-        private string[] controllers = new string[] { "Authenticate", "Role", "User" };
+        private string[] controllers = new string[] { "Authenticate", "Role", "User", "District", "MeasurementUnit", "Resource", "ResourceMeasurementUnit" };
 
         public void ConfigureServices(IServiceCollection services)
         {
