@@ -166,6 +166,8 @@ namespace Gateway.Integration.Api.Extensions
         {
             services.AddSingleton<IAuthGateway, AuthGateway>();
 
+            services.AddSingleton<IUtilsGateway, UtilsGateway>();
+
             return services;
         }
         public static IServiceCollection AddValidators(this IServiceCollection services)
