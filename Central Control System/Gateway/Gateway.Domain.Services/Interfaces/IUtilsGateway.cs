@@ -17,16 +17,16 @@ namespace Gateway.Domain.Services.Interfaces
         #region Resource
         Task<IEnumerable<ResourceDTO>> GetResources(PaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
         Task<ResourceDTO> GetResourceByGID(Guid gid, CancellationToken cancellationToken, string token);
-        Task<ResourceDTO> CreateResource(CreateResourceDTO district, string token);
-        Task UpdateResource(ResourceDTO district, string token);
+        Task<ResourceDTO> CreateResource(CreateResourceDTO resource, string token);
+        Task UpdateResource(ResourceDTO resource, string token);
         Task DeleteResource(Guid gid, string token);
         #endregion
 
         #region MeasurementUnit
         Task<IEnumerable<MeasurementUnitDTO>> GetMeasurementUnits(PaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
         Task<MeasurementUnitDTO> GetMeasurementUnitByGID(Guid gid, CancellationToken cancellationToken, string token);
-        Task<MeasurementUnitDTO> CreateMeasurementUnit(CreateMeasurementUnitDTO district, string token);
-        Task UpdateMeasurementUnit(MeasurementUnitDTO district, string token);
+        Task<MeasurementUnitDTO> CreateMeasurementUnit(CreateMeasurementUnitDTO measurementUnit, string token);
+        Task UpdateMeasurementUnit(MeasurementUnitDTO measurementUnit, string token);
         Task DeleteMeasurementUnit(Guid gid, string token);
         #endregion
 

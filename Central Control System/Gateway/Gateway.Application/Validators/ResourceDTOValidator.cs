@@ -13,3 +13,4 @@ namespace Gateway.Application.Validators
                 .WithMessage(string.Format(SharedConstants.FieldIsRequierdException, nameof(ResourceDTO.Name)));
         }
     }
+}
