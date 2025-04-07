@@ -74,9 +74,8 @@ namespace Gateway.Application.Builders
 
         }
 
-        public async Task<HttpResponseMessage> DeleteRequest(string link, object value, string clientName, CancellationToken cancellation, string token = "")
+        public async Task<HttpResponseMessage> DeleteRequest(string link, string clientName, CancellationToken cancellation, string token = "")
         {
-            var json = JsonConvert.SerializeObject(value, new JsonSerializerSettings());
             var response = await GetClient(clientName, token).DeleteAsync(link, cancellation);
 
             await CheckResponse(response);
