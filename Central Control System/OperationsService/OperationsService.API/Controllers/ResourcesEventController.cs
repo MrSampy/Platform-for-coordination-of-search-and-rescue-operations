@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OperationsService.API.Config;
 using OperationsService.API.Model;
 using OperationsService.Application.Commands.ResourcesEventCommands.Delete;
-using OperationsService.Application.Commands.ResourcesEventCommands.Update;
 using OperationsService.Application.DTOs.Create;
-using OperationsService.Application.DTOs.Update;
 using OperationsService.Application.Queries.ResourcesEventQueries.Create;
 using OperationsService.Application.Queries.ResourcesEventQueries.GetAll;
 using OperationsService.Application.Queries.ResourcesEventQueries.GetByGID;
@@ -43,15 +41,6 @@ namespace OperationsService.API.Controllers
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
             return Ok(await _mediator.Send(new CreateResourcesEventQuery() { ResourcesEvent = resourcesEventDto, Token = token }));
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateResourcesEvent([FromBody] UpdateResourcesEventDTO resourcesEventModel)
-        {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            await _mediator.Send(new UpdateResourcesEventCommand() { ResourcesEvent = resourcesEventModel, Token = token });
-            return NoContent();
         }
 
         [HttpDelete("{gid}")]
