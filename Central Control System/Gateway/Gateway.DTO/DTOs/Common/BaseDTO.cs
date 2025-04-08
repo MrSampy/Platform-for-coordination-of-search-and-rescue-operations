@@ -1,4 +1,4 @@
-﻿namespace Gateway.DTO.DTOs.Volunteers
+﻿namespace Gateway.DTO.DTOs.Common
 {
     public class BaseDTO
     {
