@@ -4,6 +4,10 @@
     {
         public static readonly string FieldIsRequierdException = "{0} is required.";
 
+        public const string InvalidEmailFormat = "Invalid email format.";
+
+        public const string InvalidBirthDate = "Birth date must be in the past.";
+
         public static readonly string InvalidFieldFormatException = "Invalid {0} format.";
 
         public static readonly string NotFoundEntityException = "No {0} with such gid: {1}.";
