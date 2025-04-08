@@ -124,7 +124,7 @@ namespace Gateway.Integration.Api.Extensions
 
             var volunteerServiceLink = useInMemory ? configuration.GetValue<string>(SharedConstants.VolunteerServiceInMemory) : configuration.GetValue<string>(SharedConstants.VolunteerService);
 
-            var operationsServiceLink = useInMemory ? configuration.GetValue<string>(SharedConstants.OperatrionsServiceInMemory) : configuration.GetValue<string>(SharedConstants.OperatrionsService);
+            var operationsServiceLink = useInMemory ? configuration.GetValue<string>(SharedConstants.OperationsServiceInMemory) : configuration.GetValue<string>(SharedConstants.OperationsService);
 
             if (!string.IsNullOrEmpty(authServiceLink))
             {
@@ -144,7 +144,7 @@ namespace Gateway.Integration.Api.Extensions
 
             if (!string.IsNullOrEmpty(operationsServiceLink))
             {
-                services.AddHttpClient(SharedConstants.OperatrionsService, client =>
+                services.AddHttpClient(SharedConstants.OperationsService, client =>
                 {
                     client.BaseAddress = new Uri(operationsServiceLink);
                 });
@@ -169,6 +169,8 @@ namespace Gateway.Integration.Api.Extensions
             services.AddSingleton<IUtilsGateway, UtilsGateway>();
 
             services.AddSingleton<IVolunteersGateway, VolunteersGateway>();
+
+            services.AddSingleton<IOperationsGateway, OperationsGateway>();
 
             return services;
         }
