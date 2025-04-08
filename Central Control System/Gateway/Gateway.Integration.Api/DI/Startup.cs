@@ -6,8 +6,11 @@ namespace Gateway.Integration.Api.DI
     {
         public IConfiguration Configuration { get; } = configuration;
 
-        private string[] controllers = new string[] { "Authenticate", "Role", "User", "District", "MeasurementUnit", "Resource", "ResourceMeasurementUnit",
-                                                        "Volunteer", "VolunteersDistricts", "VolunteersGroups"};
+        private string[] controllers = new string[] { "Authenticate", "Role", "User", "District", "MeasurementUnit",
+                                                        "Resource", "ResourceMeasurementUnit",
+                                                        "Volunteer", "VolunteersDistricts", "VolunteersGroups",
+                                                        "Event", "EventStatus", "EventType", "Group",
+                                                        "OperationTask", "OperationTaskStatus", "OperationWorker", "ResourcesEvent"};
 
         public void ConfigureServices(IServiceCollection services)
         {
