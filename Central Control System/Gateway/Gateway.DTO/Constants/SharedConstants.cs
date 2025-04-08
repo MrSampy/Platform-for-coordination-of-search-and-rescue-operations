@@ -2,11 +2,15 @@
 {
     public static class SharedConstants
     {
+        #region RegExps
+        public static readonly string MobilePhomeRegexp = @"^\+?[0-9\s\-]{7,15}$";
+
+        #endregion
+
+        #region Exception
         public static readonly string FieldIsRequierdException = "{0} is required.";
 
-        public const string InvalidEmailFormat = "Invalid email format.";
-
-        public const string InvalidBirthDate = "Birth date must be in the past.";
+        public static readonly string InvalidBirthDateException = "Birth date must be in the past.";
 
         public static readonly string InvalidFieldFormatException = "Invalid {0} format.";
 
@@ -19,6 +23,9 @@
         public static readonly string EmptyResponseException = "Response is empty.";
 
         public static readonly string DefaultException = "An unexpected error occurred. Please try again later.";
+        #endregion
+
+        #region ServiceNames
 
         public static readonly string AuthService = "AuthService";
 
@@ -35,5 +42,6 @@
         public static readonly string VolunteerServiceInMemory = "VolunteerServiceInMemory";
 
         public static readonly string OperatrionsServiceInMemory = "OperatrionsServiceInMemory";
+        #endregion
     }
 }

@@ -23,15 +23,17 @@ namespace Gateway.Application.Validators
             RuleFor(x => x.Email)
                 .NotEmpty()
                 .EmailAddress()
-                .WithMessage(SharedConstants.InvalidEmailFormat);
+                .WithMessage(string.Format(SharedConstants.InvalidFieldFormatException, nameof(VolunteerDTO.Email)));
 
             RuleFor(x => x.MobilePhone)
                 .NotEmpty()
-                .WithMessage(string.Format(SharedConstants.FieldIsRequierdException, nameof(VolunteerDTO.MobilePhone)));
+                .WithMessage(string.Format(SharedConstants.FieldIsRequierdException, nameof(VolunteerDTO.MobilePhone)))
+                .Matches(SharedConstants.MobilePhomeRegexp)
+                .WithMessage(string.Format(SharedConstants.InvalidFieldFormatException, nameof(VolunteerDTO.MobilePhone)));
 
             RuleFor(x => x.BirthDate)
                 .LessThan(DateTime.Today)
-                .WithMessage(SharedConstants.InvalidBirthDate);
+                .WithMessage(SharedConstants.InvalidBirthDateException);
 
             RuleFor(x => x.UserGID)
                 .NotEmpty()
