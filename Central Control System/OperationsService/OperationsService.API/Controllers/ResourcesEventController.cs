@@ -10,6 +10,8 @@ using OperationsService.Application.DTOs.Update;
 using OperationsService.Application.Queries.ResourcesEventQueries.Create;
 using OperationsService.Application.Queries.ResourcesEventQueries.GetAll;
 using OperationsService.Application.Queries.ResourcesEventQueries.GetByGID;
+using OperationsService.Application.Queries.ResourcesEventQueries.GetEventsByResourceGID;
+using OperationsService.Application.Queries.ResourcesEventQueries.GetResourcesByEventGID;
 using OperationsService.Domain.Entities;
 
 namespace OperationsService.API.Controllers
@@ -24,6 +26,20 @@ namespace OperationsService.API.Controllers
     {
         private readonly IMediator _mediator;
         public ResourcesEventController(IMediator mediator) => _mediator = mediator;
+
+        [HttpGet("by-event/{eventGID}")]
+        public async Task<IActionResult> GetResourcesByEventGID(Guid eventGID, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetResourcesByEventGIDQuery { EventGID = eventGID }, cancellationToken);
+            return Ok(result);
+        }
+
+        [HttpGet("by-resource/{resourceGID}")]
+        public async Task<IActionResult> GetEventsByResourceGID(Guid resourceGID, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetEventsByResourceGIDQuery { ResourceGID = resourceGID }, cancellationToken);
+            return Ok(result);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetResourcesEvents([FromQuery] PaginationQuery paginationQuery, CancellationToken cancellationToken = default)
