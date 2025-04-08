@@ -33,7 +33,7 @@
 
         public static readonly string VolunteerService = "VolunteerService";
 
-        public static readonly string OperatrionsService = "OperatrionsService";
+        public static readonly string OperationsService = "OperationsService";
 
         public static readonly string AuthServiceInMemory = "AuthServiceInMemory";
 
@@ -41,7 +41,7 @@
 
         public static readonly string VolunteerServiceInMemory = "VolunteerServiceInMemory";
 
-        public static readonly string OperatrionsServiceInMemory = "OperatrionsServiceInMemory";
+        public static readonly string OperationsServiceInMemory = "OperationsServiceInMemory";
         #endregion
     }
 }
