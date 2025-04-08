@@ -168,6 +168,8 @@ namespace Gateway.Integration.Api.Extensions
 
             services.AddSingleton<IUtilsGateway, UtilsGateway>();
 
+            services.AddSingleton<IVolunteersGateway, VolunteersGateway>();
+
             return services;
         }
         public static IServiceCollection AddValidators(this IServiceCollection services)
