@@ -1,6 +1,7 @@
 ﻿using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.DTOs.Common;
 using Gateway.DTO.DTOs.Operations.Create;
+using Gateway.DTO.DTOs.Operations.Update;
 using Gateway.Integration.Api.Config;
 using Gateway.Integration.Api.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -44,5 +45,19 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _operationsGateway.CreateEventStatus(dto, token));
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateEventStatus([FromBody] UpdateEventStatusDTO dto)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            await _operationsGateway.UpdateEventStatus(dto, token);
+            return NoContent();
+        }
+
+        [HttpDelete("{gid}")]
+        public async Task<IActionResult> DeleteEventStatus(Guid gid)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            await _operationsGateway.DeleteEventStatus(gid, token);
+            return NoContent();
+        }
     }
-}
