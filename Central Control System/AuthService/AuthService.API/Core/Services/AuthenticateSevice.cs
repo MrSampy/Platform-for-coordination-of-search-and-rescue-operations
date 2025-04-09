@@ -62,13 +62,15 @@ namespace AuthService.API.Core.Services
 
             if (userExists != null) throw new KeyNotFoundException("User already exists!");
 
+            var emailExists = await _userManager.FindByEmailAsync(model.Email);
+            if (userExists != null) throw new KeyNotFoundException("User with such email already exists!");
+
             IdentityUser user = new()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
-
             await CreateRoles();
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -137,6 +139,9 @@ namespace AuthService.API.Core.Services
             {
                 throw new AuthServiceException("User already exists!");
             }
+
+            var emailExists = await _userManager.FindByEmailAsync(model.Email);
+            if (userExists != null) throw new KeyNotFoundException("User with such email already exists!");
 
             IdentityUser user = new()
             {

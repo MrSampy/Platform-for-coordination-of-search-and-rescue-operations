@@ -36,6 +36,13 @@ namespace OperationsService.Application.Queries.OperationWorkerQueries.Create
                 throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, "User", request.OperationWorker.UserGID.ToString()));
             }
 
+            var entityWithSameEmail = (await _operationWorkerRepository.GetAllAsync(cancellationToken)).FirstOrDefault(v => v.Email == request.OperationWorker.Email);
+
+            if (entityWithSameEmail != null)
+            {
+                throw new OperationsServiceException(Constants.OperationWorkerWithSuchEmailException);
+            }
+
             var operationWorker = _mapper.Map<OperationWorker>(request.OperationWorker);
             operationWorker.GID = Guid.NewGuid();
             operationWorker.CreatedAt = operationWorker.UpdatedAt = DateTime.UtcNow;

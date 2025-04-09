@@ -32,6 +32,13 @@ namespace VolunteerService.Application.Queries.VolunteerQueries.Create
                 throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, "User", request.VolunteerDTO.UserGID.ToString()));
             }
 
+            var entityWithSameEmail = (await _volunteerRepository.GetAllAsync(cancellationToken)).FirstOrDefault(v => v.Email == request.VolunteerDTO.Email);
+
+            if (entityWithSameEmail != null)
+            {
+                throw new VolunteerServiceException(Constants.VolunteerWithSuchEmailException);
+            }
+
             var volunteer = _mapper.Map<Volunteer>(request.VolunteerDTO);
             volunteer.GID = Guid.NewGuid();
 
