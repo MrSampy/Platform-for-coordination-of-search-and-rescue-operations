@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OperationsService.API.Config;
 using OperationsService.API.Middleware;
 using OperationsService.Persistence.DbContexts;
 
@@ -50,6 +51,8 @@ namespace OperationsService.API.Extensions
                     {
                         context.Database.Migrate();
                     }
+
+                    DbSeeder.Seed(context);
                 }
             }
             return app;

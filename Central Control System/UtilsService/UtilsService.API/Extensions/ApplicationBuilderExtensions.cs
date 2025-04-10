@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UtilsService.API.Config;
 using UtilsService.API.Middleware;
 using UtilsService.Persistence.DbContexts;
 
@@ -49,6 +50,8 @@ namespace UtilsService.API.Extensions
                     if (context.Database.GetPendingMigrations().Any())
                     {
                         context.Database.Migrate();
+
+                        DbSeeder.Seed(context);
                     }
                 }
             }
