@@ -11,7 +11,7 @@ namespace Gateway.Integration.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("utils/api/[controller]")]
+    [Route("gateway.integration.api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
     [RequiresAuthHeader]
     [ApiExplorerSettings(GroupName = "MeasurementUnit")]
