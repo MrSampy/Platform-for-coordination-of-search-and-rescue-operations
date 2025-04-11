@@ -38,6 +38,13 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _operationsGateway.GetEventByGID(gid, cancellationToken, token));
         }
 
+        [HttpGet("by-eventstatus/{gid}")]
+        public async Task<IActionResult> GetByStatusGID(Guid eventStatusGid, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsGateway.GetByStatusGID(eventStatusGid, cancellationToken, token));
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventDTO dto)
         {

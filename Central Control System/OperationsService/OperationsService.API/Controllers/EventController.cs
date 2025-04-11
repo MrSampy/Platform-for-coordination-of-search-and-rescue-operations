@@ -10,6 +10,7 @@ using OperationsService.Application.DTOs.Update;
 using OperationsService.Application.Queries.EventQueries.Create;
 using OperationsService.Application.Queries.EventQueries.GetAll;
 using OperationsService.Application.Queries.EventQueries.GetByGID;
+using OperationsService.Application.Queries.EventQueries.GetByStatusGID;
 using OperationsService.Domain.Entities;
 
 namespace OperationsService.API.Controllers
@@ -35,6 +36,12 @@ namespace OperationsService.API.Controllers
         public async Task<IActionResult> GetEventByGID(Guid gid, CancellationToken cancellationToken = default)
         {
             return Ok(await _mediator.Send(new GetEventByGidQuery() { GID = gid }, cancellationToken));
+        }
+
+        [HttpGet("by-eventstatus/{eventStatusGid}")]
+        public async Task<IActionResult> GetEventByEventGID(Guid eventStatusGid, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _mediator.Send(new GetByStatusGIDQuery() { EventStatusGID = eventStatusGid }, cancellationToken));
         }
 
         [HttpPost]

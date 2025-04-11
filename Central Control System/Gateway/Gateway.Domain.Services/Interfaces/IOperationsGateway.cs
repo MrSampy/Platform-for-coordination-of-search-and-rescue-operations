@@ -9,6 +9,7 @@ namespace Gateway.Domain.Services.Interfaces
     {
         #region Event
         Task<IEnumerable<EventDTO>> GetEvents(PaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<EventDTO>> GetByStatusGID(Guid eventStatusGID, CancellationToken cancellationToken, string token);
         Task<EventDTO> GetEventByGID(Guid gid, CancellationToken cancellationToken, string token);
         Task<EventDTO> CreateEvent(CreateEventDTO Event, string token);
         Task UpdateEvent(UpdateEventDTO Event, string token);
