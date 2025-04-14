@@ -1,22 +1,22 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from 'react';
+import { Password } from 'primereact/password';
+import { InputText } from 'primereact/inputtext';
+import { classNames } from 'primereact/utils';
 import { Link } from "react-router-dom";
-import { Password } from "primereact/password";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
 import { login } from "../services/authService";
 import { LoginModel } from "../types/authTypes";
 import { useNavigate } from "react-router-dom";
 import { ErrorModel } from "../types/commonTypes";
 import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
+import '../styles/auth.css'
 
-export default function Login() {
+const LoginPage = () => {
   const [model, setModel] = useState<LoginModel>({ username: "", password: "" });
   const navigate = useNavigate();
   const toast = useRef<Toast>(null);
   
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     try {
       const tokenInfo = await login(model);
       localStorage.setItem("token", tokenInfo.token);
@@ -31,44 +31,52 @@ export default function Login() {
       });
     }
   };
+    const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': true });
 
-  return (
-    <div className="wrapper signIn">
-      <Toast ref={toast} />
-      <div className="form">
-        <div className="heading">LOGIN</div>
-        <form onSubmit={handleSubmit}>
-          <div className="authFormInputs">
-            <InputText
-              id="name"
-              value={model.username}
-              onChange={(e) => setModel({ ...model, username: e.target.value })}
-              placeholder="Enter your name"
-              className="w-full"
-            />
-          </div>
+    return (
+        <div className={containerClassName}>
+            <Toast ref={toast} />
+            <div className="flex flex-column align-items-center justify-content-center authForm">
+                <div
+                    style={{
+                        borderRadius: '56px',
+                        padding: '0.3rem',
+                        background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 50%)'
+                    }}
+                >
+                    <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
+                        <div className="text-center mb-5">
+                            <span className="text-900 text-3xl font-medium mb-3">Sign in to continue</span>
+                        </div>
 
-          <div className="authFormInputs">
-            <Password
-              id="password"
-              value={model.password}
-              onChange={(e) => setModel({ ...model, password: e.target.value })}
-              placeholder="Enter your password"
-              toggleMask
-              className="w-full authFormPassword"
-              inputClassName="w-full"
-              feedback={true}
-              promptLabel="Choose a password" weakLabel="Too simple" mediumLabel="Average complexity" strongLabel="Complex password"
-            />
-          </div>
+                        <div>
+                            <label htmlFor="Username1" className="block text-900 text-xl font-medium mb-2">
+                                Username
+                            </label>
+                            <InputText id="Username1" value={model.username} onChange={(e) => setModel({ ...model, username: e.target.value })} type="text" placeholder="Username" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
 
-          <Button label="Submit" type="submit" className="w-full mt-4"  />
-        </form>
+                            <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
+                                Password
+                            </label>
+                            <Password inputId="password1" feedback={false} value={model.password} onChange={(e) => setModel({ ...model, password: e.target.value })} placeholder="Password" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
+                            <label htmlFor="" className="block text-900 text-xl font-medium mb-2">
+                            </label>
+                            <Button label="Log In" onClick={handleSubmit} className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
 
-        <p>
-          Don't have an account? <Link to="/signup" className="p-0">Sign Up</Link>
-        </p>
-      </div>
-    </div>
-  );
-}
+                            <div className="flex align-items-center justify-content-between mb-5 gap-5">
+                                <div className="flex align-items-center">
+                                    <label htmlFor="rememberme1">Don't have an account?</label>
+                                </div>
+                                <Link to="/signup" className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
+                                     Sign Up
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default LoginPage;
