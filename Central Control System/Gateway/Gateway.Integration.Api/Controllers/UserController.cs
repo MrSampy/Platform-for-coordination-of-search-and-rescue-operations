@@ -31,6 +31,22 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(_authGateway.GetAllUsers(cancellationToken, token));
         }
 
+        [HttpGet("byname/{userName}")]
+        public IActionResult GetByUserName([FromRoute] string userName, CancellationToken cancellationToken)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            return Ok(_authGateway.GetByUserName(userName, cancellationToken, token));
+        }
+
+        [HttpGet("byemail/{email}")]
+        public IActionResult GetByEmail([FromRoute] string email, CancellationToken cancellationToken)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            return Ok(_authGateway.GetByEmail(email, cancellationToken, token));
+        }
+
         [HttpGet("bygid/{gid}")]
         public IActionResult GetByGID([FromRoute] Guid gid, CancellationToken cancellationToken)
         {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.API.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [ApiController]
     [RequiresAuthHeader]
     [Route("api/[controller]")]
@@ -31,6 +31,18 @@ namespace AuthService.API.Controllers
         public IActionResult GetByGID([FromRoute] Guid gid)
         {
             return Ok(_userSevice.GetByGID(gid));
+        }
+
+        [HttpGet("byname/{userName}")]
+        public IActionResult GetByUserName([FromRoute] string userName)
+        {
+            return Ok(_userSevice.GetByUserName(userName));
+        }
+
+        [HttpGet("byemail/{email}")]
+        public IActionResult GetByEmail([FromRoute] string email)
+        {
+            return Ok(_userSevice.GetByEmail(email));
         }
 
         [HttpGet]

@@ -6,6 +6,8 @@ namespace AuthService.API.Core.Interfaces
     {
         IEnumerable<UserDTO> GetAllUsers();
         UserDTO? GetByGID(Guid gid);
+        UserDTO? GetByUserName(string userName);
+        UserDTO? GetByEmail(string email);
         IEnumerable<string> GetAllUserIdsByRole(string roleName);
         Task<UserDTO> UpdateUserRoles(UserDTO query);
     }
