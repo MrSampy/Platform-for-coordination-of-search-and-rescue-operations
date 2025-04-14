@@ -26,7 +26,7 @@ const LoginPage = () => {
       toast.current?.show({
         severity: "error",
         summary: "Login Failed",
-        detail: apiError?.message || "An error occurred",
+        detail: apiError?.message || "Сталася помилка",
         life: 3000
       });
     }
@@ -46,29 +46,27 @@ const LoginPage = () => {
                 >
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
                         <div className="text-center mb-5">
-                            <span className="text-900 text-3xl font-medium mb-3">Sign in to continue</span>
+                            <span className="text-900 text-3xl font-medium mb-3">Увійдіть, щоб продовжити</span>
                         </div>
 
                         <div>
                             <label htmlFor="Username1" className="block text-900 text-xl font-medium mb-2">
-                                Username
                             </label>
                             <InputText id="Username1" value={model.username} onChange={(e) => setModel({ ...model, username: e.target.value })} type="text" placeholder="Username" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
 
                             <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
-                                Password
                             </label>
                             <Password inputId="password1" feedback={false} value={model.password} onChange={(e) => setModel({ ...model, password: e.target.value })} placeholder="Password" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
                             <label htmlFor="" className="block text-900 text-xl font-medium mb-2">
                             </label>
-                            <Button label="Log In" onClick={handleSubmit} className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
+                            <Button label="Логін" onClick={handleSubmit} className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">
                                 <div className="flex align-items-center">
-                                    <label htmlFor="rememberme1">Don't have an account?</label>
+                                    <label htmlFor="rememberme1">Ще не маєте акаунту?</label>
                                 </div>
                                 <Link to="/signup" className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
-                                     Sign Up
+                                     Реєстрація
                                 </Link>
                             </div>
                         </div>

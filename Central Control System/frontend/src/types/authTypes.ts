@@ -1,3 +1,5 @@
+export type Nullable<T> = T | null | undefined;
+
 export type LoginModel = {
     username: string;
     password: string;
@@ -11,7 +13,7 @@ export type LoginModel = {
   
   export interface TokenInfoDTO {
     token: string;
-    expiration: string; // або Date
+    expiration: string;
   }
   
   export interface RoleDTO {
@@ -23,5 +25,15 @@ export type LoginModel = {
     id: string;
     name: string;
     roles: RoleDTO[];
+  }
+  export interface RegisterRequest {
+    username: string;
+    email: string;
+    password: string;
+    name: string;
+    surname: string;
+    secondName: string;
+    identificationCode: string;
+    birthDate: Nullable<Date>;
   }
   
