@@ -13,10 +13,12 @@ namespace Gateway.Integration.Api.Controllers
     public class AuthenticateController : ControllerBase
     {
         private readonly IAuthGateway _authGateway;
+        private readonly IAuthService _authService;
 
-        public AuthenticateController(IAuthGateway authGateway)
+        public AuthenticateController(IAuthGateway authGateway, IAuthService authService)
         {
             _authGateway = authGateway;
+            _authService = authService;
         }
 
         [HttpPost]
@@ -38,12 +40,18 @@ namespace Gateway.Integration.Api.Controllers
 
         [HttpPost]
         [RequiresAuthHeader]
+        [Route("register-worker")]
+        public async Task<IActionResult> RegisterWorker([FromBody] RegisterWorkerModel model)
+        {
+            return Ok(await _authService.RegisterWorker(model));
+        }
+
+        [HttpPost]
         [Route("register-dispatcher")]
         public async Task<IActionResult> RegisterDispatcher([FromBody] RegisterModel model)
         {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            return Ok(await _authGateway.RegisterDispatcher(model, token));
+            return Ok(await _authGateway.RegisterDispatcher(model));
         }
 
         [HttpPost]

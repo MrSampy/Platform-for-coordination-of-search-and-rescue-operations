@@ -57,14 +57,13 @@ namespace Gateway.Infrastructure.Services.Gateways
             return response;
         }
 
-        public async Task<UserDTO> RegisterDispatcher(RegisterModel model, string token)
+        public async Task<UserDTO> RegisterDispatcher(RegisterModel model)
         {
             var response = await _apiBuilder.PostRequest<UserDTO>(
                 "api/authenticate/register-dispatcher",
                 model,
                 SharedConstants.AuthService,
-                CancellationToken.None,
-                token);
+                CancellationToken.None);
             return response;
         }
 

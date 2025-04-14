@@ -26,6 +26,8 @@ namespace Gateway.Integration.Api.DI
 
             services.AddValidators();
 
+            services.AddServices();
+
             services.AddAuthorizationJWT(Configuration);
 
             services.AddSwaggerDocWithAuth(controllers, Configuration);

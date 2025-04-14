@@ -39,7 +39,6 @@ namespace AuthService.API.Controllers
         }
 
         [HttpPost]
-        [RequiresAuthHeader]
         [Route("register-dispatcher")]
         public async Task<IActionResult> RegisterDispatcher([FromBody] RegisterModel model)
         {

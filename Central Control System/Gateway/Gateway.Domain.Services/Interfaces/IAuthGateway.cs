@@ -8,7 +8,7 @@ namespace Gateway.Domain.Services.Interfaces
         Task<UserDTO> RegisterAdmin(RegisterModel model, string token);
         Task<TokenInfoDTO> Login(LoginModel model);
         Task<UserDTO> RegisterCoordinator(RegisterModel model, string token);
-        Task<UserDTO> RegisterDispatcher(RegisterModel model, string token);
+        Task<UserDTO> RegisterDispatcher(RegisterModel model);
         IEnumerable<RoleDTO> GetAllRoles(CancellationToken cancellationToken, string token);
         IEnumerable<UserDTO> GetAllUsers(CancellationToken cancellationToken, string token);
         UserDTO? GetByGID(Guid gid, CancellationToken cancellationToken, string token);

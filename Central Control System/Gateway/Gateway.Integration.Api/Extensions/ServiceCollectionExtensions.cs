@@ -4,6 +4,7 @@ using Gateway.Application.Validators;
 using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.Constants;
 using Gateway.Infrastructure.Services.Gateways;
+using Gateway.Infrastructure.Services.Services;
 using Gateway.Integration.Api.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -162,15 +163,21 @@ namespace Gateway.Integration.Api.Extensions
 
             return services;
         }
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddTransient<IAuthService, AuthService>();
+
+            return services;
+        }
         public static IServiceCollection AddGateways(this IServiceCollection services)
         {
-            services.AddSingleton<IAuthGateway, AuthGateway>();
+            services.AddTransient<IAuthGateway, AuthGateway>();
 
-            services.AddSingleton<IUtilsGateway, UtilsGateway>();
+            services.AddTransient<IUtilsGateway, UtilsGateway>();
 
-            services.AddSingleton<IVolunteersGateway, VolunteersGateway>();
+            services.AddTransient<IVolunteersGateway, VolunteersGateway>();
 
-            services.AddSingleton<IOperationsGateway, OperationsGateway>();
+            services.AddTransient<IOperationsGateway, OperationsGateway>();
 
             return services;
         }
