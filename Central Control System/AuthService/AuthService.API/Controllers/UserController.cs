@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.API.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -17,7 +16,7 @@ namespace AuthService.API.Controllers
         {
             _userSevice = userSevice;
         }
-
+        [Authorize]
         [RequiresAuthHeader]
         [HttpGet]
         [Route("collection")]
@@ -25,7 +24,7 @@ namespace AuthService.API.Controllers
         {
             return Ok(_userSevice.GetAllUsers());
         }
-
+        [Authorize]
         [RequiresAuthHeader]
         [HttpGet("bygid/{gid}")]
         public IActionResult GetByGID([FromRoute] Guid gid)
@@ -44,7 +43,7 @@ namespace AuthService.API.Controllers
         {
             return Ok(_userSevice.GetByEmail(email));
         }
-
+        [Authorize]
         [RequiresAuthHeader]
         [HttpGet]
         [Route("{roleName}")]
@@ -52,7 +51,7 @@ namespace AuthService.API.Controllers
         {
             return Ok(_userSevice.GetAllUserIdsByRole(roleName));
         }
-
+        [Authorize]
         [RequiresAuthHeader]
         [HttpPut]
         public async Task<IActionResult> UpdateUserRoles(UserDTO query)
