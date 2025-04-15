@@ -1,5 +1,6 @@
 ﻿using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.DTOs.Auth;
+using Gateway.DTO.DTOs.Common;
 using Gateway.DTO.DTOs.Operations.Create;
 using Gateway.DTO.Exceptions;
 
@@ -62,6 +63,26 @@ namespace Gateway.Infrastructure.Services.Services
             }
 
             return token;
+        }
+
+        public IsExistModel IsUserWithSuchName(string name, CancellationToken cancellationToken)
+        {
+
+            var user = _authGateway.GetByUserName(name, cancellationToken);
+
+            return new IsExistModel
+            {
+                IsExist = user != null,
+            };
+        }
+        public IsExistModel IsUserWithSuchEmail(string email, CancellationToken cancellationToken)
+        {
+            var user = _authGateway.GetByEmail(email, cancellationToken);
+
+            return new IsExistModel
+            {
+                IsExist = user != null,
+            };
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Gateway.Domain.Services.Interfaces
         IEnumerable<RoleDTO> GetAllRoles(CancellationToken cancellationToken, string token);
         IEnumerable<UserDTO> GetAllUsers(CancellationToken cancellationToken, string token);
         UserDTO? GetByGID(Guid gid, CancellationToken cancellationToken, string token);
-        UserDTO? GetByUserName(string userName, CancellationToken cancellationToken, string token);
-        UserDTO? GetByEmail(string email, CancellationToken cancellationToken, string token);
+        UserDTO? GetByUserName(string userName, CancellationToken cancellationToken);
+        UserDTO? GetByEmail(string email, CancellationToken cancellationToken);
         IEnumerable<string> GetAllUserIdsByRole(string roleName, CancellationToken cancellationToken, string token);
         Task<UserDTO> UpdateUserRoles(UserDTO query, string token);
     }

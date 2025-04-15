@@ -9,19 +9,21 @@ namespace Gateway.Integration.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [RequiresAuthHeader]
     [Route("gateway.integration.api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
     [ApiExplorerSettings(GroupName = "User")]
     public class UserController : ControllerBase
     {
         private readonly IAuthGateway _authGateway;
+        private readonly IAuthService _authService;
 
-        public UserController(IAuthGateway authGateway)
+        public UserController(IAuthGateway authGateway, IAuthService authService)
         {
             _authGateway = authGateway;
+            _authService = authService;
         }
 
+        [RequiresAuthHeader]
         [HttpGet]
         [Route("collection")]
         public IActionResult GetAllUsers(CancellationToken cancellationToken)
@@ -34,19 +36,16 @@ namespace Gateway.Integration.Api.Controllers
         [HttpGet("byname/{userName}")]
         public IActionResult GetByUserName([FromRoute] string userName, CancellationToken cancellationToken)
         {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            return Ok(_authGateway.GetByUserName(userName, cancellationToken, token));
+            return Ok(_authService.IsUserWithSuchName(userName, cancellationToken));
         }
 
         [HttpGet("byemail/{email}")]
         public IActionResult GetByEmail([FromRoute] string email, CancellationToken cancellationToken)
         {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            return Ok(_authGateway.GetByEmail(email, cancellationToken, token));
+            return Ok(_authService.IsUserWithSuchEmail(email, cancellationToken));
         }
 
+        [RequiresAuthHeader]
         [HttpGet("bygid/{gid}")]
         public IActionResult GetByGID([FromRoute] Guid gid, CancellationToken cancellationToken)
         {
@@ -55,6 +54,7 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(_authGateway.GetByGID(gid, cancellationToken, token));
         }
 
+        [RequiresAuthHeader]
         [HttpGet]
         [Route("{roleName}")]
         public IActionResult GetAllUsers([FromRoute] string roleName, CancellationToken cancellationToken)
@@ -64,6 +64,7 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(_authGateway.GetAllUserIdsByRole(roleName, cancellationToken, token));
         }
 
+        [RequiresAuthHeader]
         [HttpPut]
         public async Task<IActionResult> UpdateUserRoles(UserDTO query)
         {

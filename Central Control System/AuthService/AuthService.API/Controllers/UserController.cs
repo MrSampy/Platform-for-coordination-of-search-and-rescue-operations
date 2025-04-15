@@ -8,7 +8,6 @@ namespace AuthService.API.Controllers
 {
     [Authorize]
     [ApiController]
-    [RequiresAuthHeader]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
@@ -19,7 +18,7 @@ namespace AuthService.API.Controllers
             _userSevice = userSevice;
         }
 
-
+        [RequiresAuthHeader]
         [HttpGet]
         [Route("collection")]
         public IActionResult GetAllUsers()
@@ -27,6 +26,7 @@ namespace AuthService.API.Controllers
             return Ok(_userSevice.GetAllUsers());
         }
 
+        [RequiresAuthHeader]
         [HttpGet("bygid/{gid}")]
         public IActionResult GetByGID([FromRoute] Guid gid)
         {
@@ -45,6 +45,7 @@ namespace AuthService.API.Controllers
             return Ok(_userSevice.GetByEmail(email));
         }
 
+        [RequiresAuthHeader]
         [HttpGet]
         [Route("{roleName}")]
         public IActionResult GetAllUsers([FromRoute] string roleName)
@@ -52,6 +53,7 @@ namespace AuthService.API.Controllers
             return Ok(_userSevice.GetAllUserIdsByRole(roleName));
         }
 
+        [RequiresAuthHeader]
         [HttpPut]
         public async Task<IActionResult> UpdateUserRoles(UserDTO query)
         {

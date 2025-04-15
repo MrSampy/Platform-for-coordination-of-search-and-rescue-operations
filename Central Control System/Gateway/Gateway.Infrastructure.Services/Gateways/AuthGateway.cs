@@ -102,26 +102,24 @@ namespace Gateway.Infrastructure.Services.Gateways
                 .GetAwaiter()
                 .GetResult();
         }
-        public UserDTO? GetByUserName(string userName, CancellationToken cancellationToken, string token)
+        public UserDTO? GetByUserName(string userName, CancellationToken cancellationToken)
         {
             return _apiBuilder
                 .GetRequest<UserDTO>(
                     $"api/user/byname/{userName}",
                     SharedConstants.AuthService,
-                    cancellationToken,
-                    token)
+                    cancellationToken)
                 .GetAwaiter()
                 .GetResult();
         }
 
-        public UserDTO? GetByEmail(string email, CancellationToken cancellationToken, string token)
+        public UserDTO? GetByEmail(string email, CancellationToken cancellationToken)
         {
             return _apiBuilder
                 .GetRequest<UserDTO>(
                     $"api/user/byemail/{email}",
                     SharedConstants.AuthService,
-                    cancellationToken,
-                    token)
+                    cancellationToken)
                 .GetAwaiter()
                 .GetResult();
         }
