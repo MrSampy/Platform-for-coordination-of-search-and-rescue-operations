@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.Integration.Api.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("gateway.integration.api/[controller]")]
     [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
@@ -24,6 +23,7 @@ namespace Gateway.Integration.Api.Controllers
         }
 
         [RequiresAuthHeader]
+        [Authorize]
         [HttpGet]
         [Route("collection")]
         public IActionResult GetAllUsers(CancellationToken cancellationToken)
@@ -46,6 +46,7 @@ namespace Gateway.Integration.Api.Controllers
         }
 
         [RequiresAuthHeader]
+        [Authorize]
         [HttpGet("bygid/{gid}")]
         public IActionResult GetByGID([FromRoute] Guid gid, CancellationToken cancellationToken)
         {
@@ -55,6 +56,7 @@ namespace Gateway.Integration.Api.Controllers
         }
 
         [RequiresAuthHeader]
+        [Authorize]
         [HttpGet]
         [Route("{roleName}")]
         public IActionResult GetAllUsers([FromRoute] string roleName, CancellationToken cancellationToken)
@@ -65,6 +67,7 @@ namespace Gateway.Integration.Api.Controllers
         }
 
         [RequiresAuthHeader]
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateUserRoles(UserDTO query)
         {
