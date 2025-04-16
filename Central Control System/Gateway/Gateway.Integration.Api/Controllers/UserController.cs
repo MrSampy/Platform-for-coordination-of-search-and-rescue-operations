@@ -33,16 +33,28 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(_authGateway.GetAllUsers(cancellationToken, token));
         }
 
-        [HttpGet("byname/{userName}")]
-        public IActionResult GetByUserName([FromRoute] string userName, CancellationToken cancellationToken)
+        [HttpGet("check/byname/{userName}")]
+        public IActionResult CheckByUserName([FromRoute] string userName, CancellationToken cancellationToken)
         {
             return Ok(_authService.IsUserWithSuchName(userName, cancellationToken));
         }
 
-        [HttpGet("byemail/{email}")]
-        public IActionResult GetByEmail([FromRoute] string email, CancellationToken cancellationToken)
+        [HttpGet("check/byemail/{email}")]
+        public IActionResult CheckByEmail([FromRoute] string email, CancellationToken cancellationToken)
         {
             return Ok(_authService.IsUserWithSuchEmail(email, cancellationToken));
+        }
+
+        [HttpGet("get/byname/{userName}")]
+        public IActionResult GetByUserName([FromRoute] string userName, CancellationToken cancellationToken)
+        {
+            return Ok(_authGateway.GetByUserName(userName, cancellationToken));
+        }
+
+        [HttpGet("get/byemail/{email}")]
+        public IActionResult GetByEmail([FromRoute] string email, CancellationToken cancellationToken)
+        {
+            return Ok(_authGateway.GetByEmail(email, cancellationToken));
         }
 
         [RequiresAuthHeader]
