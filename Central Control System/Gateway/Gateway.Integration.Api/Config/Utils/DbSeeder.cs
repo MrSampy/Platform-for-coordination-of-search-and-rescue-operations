@@ -3,6 +3,8 @@ using Gateway.DTO.Constants;
 using Gateway.DTO.DTOs.Auth;
 using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Operations.Create;
+using Gateway.DTO.DTOs.Volunteers;
+using Gateway.DTO.DTOs.Volunteers.Create;
 
 namespace Gateway.Integration.Api.Config.Utils
 {
@@ -16,7 +18,11 @@ namespace Gateway.Integration.Api.Config.Utils
         private IVolunteersGateway _volunteersGateway;
         private List<OperationWorkerDTO> _coordinators = new List<OperationWorkerDTO>();
         private List<OperationWorkerDTO> _dispatchers = new List<OperationWorkerDTO>();
+        private List<OperationWorkerDTO> _admins = new List<OperationWorkerDTO>();
+        private List<VolunteerDTO> _volunteers = new List<VolunteerDTO>();
         private List<EventDTO> _events = new List<EventDTO>();
+        private List<GroupDTO> _groups = new List<GroupDTO>();
+        private readonly Random _random = new Random();
 
         public DbSeeder(IAuthGateway authGateway, IOperationsGateway operationsGateway, IVolunteersGateway volunteersGateway)
         {
@@ -29,19 +35,75 @@ namespace Gateway.Integration.Api.Config.Utils
         public async Task SeedAsync()
         {
             Task.Delay(2000).Wait();
+
             await CreateUsersAsync();
-            await CreateOperationServiceModels();
-        }
-        public async Task CreateOperationServiceModels()
-        {
+
             if (_users == null || _users.Count != _userCount * 4)
             {
                 return;
             }
 
-            var dispatchers = _users.Where(x => x.Roles.Any(r => r.Name == "Dispatcher")).ToList();
+            await CreateOperationWorkersAndEvents();
+
+            await CreateVolunteers();
+        }
+
+        public async Task CreateVolunteers()
+        {
+            var volunteers = _users.Where(x => x.Roles.Any(r => r.Name == "Volunteer")).ToList();
+
+            for (int i = 0; i < _userCount; i++)
+            {
+                var createEntity = new CreateVolunteerDTO
+                {
+                    Name = $"VolunteerN{i}",
+                    Surname = $"VolunteerS{i}",
+                    SecondName = $"VolunteerS{i}",
+                    MobilePhone = $"+38098984211{i}",
+                    BirthDate = DateTime.UtcNow.AddYears(-20 - i),
+                    UserGID = volunteers[i].Id,
+                    Email = volunteers[i].Email
+                };
+                var volunteer = await _volunteersGateway.CreateVolunteer(createEntity, _token);
+                _volunteers.Add(volunteer);
+            }
+
+            for (int i = 0; i < _userCount; i++)
+            {
+                List<int> numbers = new List<int>();
+                for (int k = 0; k < 3; k++)
+                {
+                    var number = GenRandomNumber(numbers, SharedConstants.Districts.Count - 1);
+                    var volunteerInDistrict = new CreateVolunteersDistrictsDTO
+                    {
+                        VolunteerGID = _volunteers[i].GID,
+                        DistrictGID = SharedConstants.Districts[number].GID
+                    };
+                    var volunteerDistrict = await _volunteersGateway.CreateVolunteersDistrict(volunteerInDistrict, _token);
+                }
+            }
+        }
+
+        public int GenRandomNumber(List<int> numbers, int maxNumber)
+        {
+            while (true)
+            {
+                int number = _random.Next(0, maxNumber + 1);
+                if (!numbers.Contains(number))
+                {
+                    numbers.Add(number);
+                    return number;
+                }
+            }
+        }
+
+        public async Task CreateOperationWorkersAndEvents()
+        {
+            var dispatchers = _users.Where(x => x.Roles.Any(r => r.Name == "Dispatcher") && x.Roles.Count == 1).ToList();
 
             var coordinators = _users.Where(x => x.Roles.Any(r => r.Name == "Coordinator")).ToList();
+
+            var admins = _users.Where(x => x.Roles.Any(r => r.Name == "Admin")).ToList();
 
             for (int i = 0; i < _userCount; i++)
             {
@@ -50,8 +112,8 @@ namespace Gateway.Integration.Api.Config.Utils
                     Name = $"DispatcherN{i}",
                     Surname = $"DispatcherS{i}",
                     SecondName = $"DispatcherS{i}",
-                    IdentificationCode = $"123456789{i}",
-                    BirthDate = DateTime.UtcNow.AddYears(-20 + i),
+                    IdentificationCode = $"143456789{i}",
+                    BirthDate = DateTime.UtcNow.AddYears(-20 - i),
                     UserGID = dispatchers[i].Id,
                     Email = dispatchers[i].Email
                 };
@@ -66,13 +128,29 @@ namespace Gateway.Integration.Api.Config.Utils
                     Name = $"CoordinatorN{i}",
                     Surname = $"CoordinatorS{i}",
                     SecondName = $"CoordinatorS{i}",
-                    IdentificationCode = $"123456789{i}",
-                    BirthDate = DateTime.UtcNow.AddYears(-20 + i),
+                    IdentificationCode = $"133456789{i}",
+                    BirthDate = DateTime.UtcNow.AddYears(-30 - i),
                     UserGID = coordinators[i].Id,
                     Email = coordinators[i].Email
                 };
                 var coordinator = await _operationsGateway.CreateOperationWorker(creteEntity, _token);
                 _coordinators.Add(coordinator);
+            }
+
+            for (int i = 0; i < _userCount; i++)
+            {
+                var creteEntity = new CreateOperationWorkerDTO
+                {
+                    Name = $"AdminN{i}",
+                    Surname = $"AdminS{i}",
+                    SecondName = $"AdminS{i}",
+                    IdentificationCode = $"123456789{i}",
+                    BirthDate = DateTime.UtcNow.AddYears(-40 - i),
+                    UserGID = admins[i].Id,
+                    Email = admins[i].Email
+                };
+                var admin = await _operationsGateway.CreateOperationWorker(creteEntity, _token);
+                _admins.Add(admin);
             }
 
             for (int i = 0; i < _userCount; i++)
@@ -107,7 +185,6 @@ namespace Gateway.Integration.Api.Config.Utils
                 _events.Add(createdEvent1);
                 _events.Add(createdEvent2);
             }
-
         }
         public async Task CreateUsersAsync()
         {
