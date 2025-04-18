@@ -117,7 +117,7 @@ namespace Gateway.Infrastructure.Services.Gateways
                 $"volunteers/api/VolunteersGroups/{gid}", SharedConstants.VolunteerService, cancellationToken, token);
         }
 
-        public async Task<VolunteersGroupsDTO> AddVolunteerToGroup(CreateVolunteersDistrictsDTO volunteersGroups, string token)
+        public async Task<VolunteersGroupsDTO> AddVolunteerToGroup(CreateVolunteersGroupsDTO volunteersGroups, string token)
         {
             return await _apiBuilder.PostRequest<VolunteersGroupsDTO>(
                 "volunteers/api/VolunteersGroups", volunteersGroups, SharedConstants.VolunteerService, CancellationToken.None, token);

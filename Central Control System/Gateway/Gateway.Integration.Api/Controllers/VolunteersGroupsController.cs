@@ -52,7 +52,7 @@ namespace Gateway.Integration.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddVolunteerToGroup([FromBody] CreateVolunteersDistrictsDTO dto)
+        public async Task<IActionResult> AddVolunteerToGroup([FromBody] CreateVolunteersGroupsDTO dto)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _volunteersGateway.AddVolunteerToGroup(dto, token));

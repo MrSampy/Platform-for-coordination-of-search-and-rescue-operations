@@ -22,6 +22,7 @@ namespace Gateway.Integration.Api.Config.Utils
         private List<VolunteerDTO> _volunteers = new List<VolunteerDTO>();
         private List<EventDTO> _events = new List<EventDTO>();
         private List<GroupDTO> _groups = new List<GroupDTO>();
+        public List<OperationTaskDTO> _operationTaskDTOs = new List<OperationTaskDTO>();
         private readonly Random _random = new Random();
 
         public DbSeeder(IAuthGateway authGateway, IOperationsGateway operationsGateway, IVolunteersGateway volunteersGateway)
@@ -46,6 +47,58 @@ namespace Gateway.Integration.Api.Config.Utils
             await CreateOperationWorkersAndEvents();
 
             await CreateVolunteers();
+
+            await CreateGroups();
+        }
+
+        public async Task CreateGroups()
+        {
+            for (int i = 0; i < _events.Count; i++)
+            {
+                var createEntity = new CreateGroupDTO
+                {
+                    Name = $"GroupN{i}",
+                    LeaderGID = _volunteers[_random.Next(0, _volunteers.Count - 1)].GID,
+                    EventGID = _events[i].GID
+                };
+                var group = await _operationsGateway.CreateGroup(createEntity, _token);
+                _groups.Add(group);
+            }
+
+            for (int i = 0; i < _groups.Count; i++)
+            {
+                var groupInDistrict1 = new CreateVolunteersGroupsDTO
+                {
+                    GroupGID = _groups[i].GID,
+                    VolunteerGID = _groups[i].LeaderGID
+                };
+                await _volunteersGateway.AddVolunteerToGroup(groupInDistrict1, _token);
+
+                var volunttersWithoutLeader = _volunteers.Where(x => x.GID != _groups[i].LeaderGID).ToList();
+
+                var groupInDistrict2 = new CreateVolunteersGroupsDTO
+                {
+                    GroupGID = _groups[i].GID,
+                    VolunteerGID = volunttersWithoutLeader[_random.Next(0, volunttersWithoutLeader.Count - 1)].GID,
+                };
+
+                await _volunteersGateway.AddVolunteerToGroup(groupInDistrict2, _token);
+            }
+
+            for (int i = 0; i < _groups.Count; i++)
+            {
+                var operationTask = new CreateOperationTaskDTO
+                {
+                    Name = $"TaskN{i}",
+                    TaskDescription = $"TaskD{i}",
+                    GroupGID = _groups[i].GID,
+                    TaskStatusGID = SharedConstants.TaskStatusDoing
+                };
+
+                var task = await _operationsGateway.CreateOperationTask(operationTask, _token);
+
+                _operationTaskDTOs.Add(task);
+            }
         }
 
         public async Task CreateVolunteers()
@@ -184,6 +237,19 @@ namespace Gateway.Integration.Api.Config.Utils
                 var createdEvent2 = await _operationsGateway.CreateEvent(createdEvent, _token);
                 _events.Add(createdEvent1);
                 _events.Add(createdEvent2);
+            }
+
+            for (int i = 0; i < _events.Count; i++)
+            {
+                var resourceEvent = new CreateResourcesEventDTO
+                {
+                    EventGID = _events[i].GID,
+                    ResourceGID = SharedConstants.Resources[_random.Next(0, SharedConstants.Resources.Count - 1)].GID,
+                    RequiredQuantity = i + 1,
+                    AvailableQuantity = 1,
+                };
+
+                await _operationsGateway.CreateResourcesEvent(resourceEvent, _token);
             }
         }
         public async Task CreateUsersAsync()

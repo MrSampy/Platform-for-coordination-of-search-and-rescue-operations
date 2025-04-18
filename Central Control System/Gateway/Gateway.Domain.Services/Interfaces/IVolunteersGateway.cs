@@ -30,7 +30,7 @@ namespace Gateway.Domain.Services.Interfaces
         Task<IEnumerable<VolunteersGroupsDTO>> GetGroupsByVolunteerGID(Guid volunteerGid, CancellationToken cancellationToken, string token);
         Task<IEnumerable<VolunteersGroupsDTO>> GetVolunteersByGroupGID(Guid groupGid, CancellationToken cancellationToken, string token);
         Task<VolunteersGroupsDTO> GetVolunteersGroupsByGID(Guid gid, CancellationToken cancellationToken, string token);
-        Task<VolunteersGroupsDTO> AddVolunteerToGroup(CreateVolunteersDistrictsDTO volunteersGroups, string token);
+        Task<VolunteersGroupsDTO> AddVolunteerToGroup(CreateVolunteersGroupsDTO volunteersGroups, string token);
         Task RemoveVolunteerFromGroup(Guid gid, string token);
         Task<IsExistModel> IsVolunteerinGroup(CreateVolunteersGroupsDTO volunteersGroups, string token);
         #endregion
