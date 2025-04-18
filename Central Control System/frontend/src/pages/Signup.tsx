@@ -5,12 +5,12 @@ import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import { Toast } from "primereact/toast";
 import { Link, useNavigate } from "react-router-dom";
-import { register } from "../services/authService";
+import { register, getUserByName } from "../services/authService";
 import { RegisterRequest } from "../types/authTypes";
 import { ErrorModel } from "../types/commonTypes";
 import { Calendar } from "primereact/calendar";
 import '../styles/auth.css'
-const SignupPage = () => {
+const SignupPage = () => {   
     const [model, setModel] = useState<RegisterRequest>({
         username: "",
         email: "",
@@ -28,6 +28,8 @@ const SignupPage = () => {
         try {
             const tokenInfo = await register(model);
             localStorage.setItem("token", tokenInfo.token);
+            const user = await getUserByName(model.username);
+            localStorage.setItem("user", JSON.stringify(user));
             navigate("/dashboard");
         } catch (err: any) {
             const apiError = err.response?.data as ErrorModel;

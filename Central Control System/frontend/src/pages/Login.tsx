@@ -3,7 +3,7 @@ import { Password } from 'primereact/password';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 import { Link } from "react-router-dom";
-import { login } from "../services/authService";
+import { login, getUserByName } from "../services/authService";
 import { LoginModel } from "../types/authTypes";
 import { useNavigate } from "react-router-dom";
 import { ErrorModel } from "../types/commonTypes";
@@ -15,11 +15,12 @@ const LoginPage = () => {
   const [model, setModel] = useState<LoginModel>({ username: "", password: "" });
   const navigate = useNavigate();
   const toast = useRef<Toast>(null);
-  
   const handleSubmit = async () => {
     try {
       const tokenInfo = await login(model);
-      localStorage.setItem("token", tokenInfo.token);
+      localStorage.setItem("token", JSON.stringify(tokenInfo));
+      const user = await getUserByName(model.username);
+      localStorage.setItem("user", JSON.stringify(user));
       navigate("/dashboard");
     } catch (err: any) {
       const apiError = err.response?.data as ErrorModel;

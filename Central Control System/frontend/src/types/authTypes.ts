@@ -24,6 +24,7 @@ export type LoginModel = {
   export interface UserDTO {
     id: string;
     name: string;
+    email: string;
     roles: RoleDTO[];
   }
   export interface RegisterRequest {
