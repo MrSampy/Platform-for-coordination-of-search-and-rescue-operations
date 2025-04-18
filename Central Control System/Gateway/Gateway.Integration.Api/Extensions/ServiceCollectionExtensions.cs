@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Gateway.Application.Builders;
+using Gateway.Application.Filters;
 using Gateway.Application.Validators;
 using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.Constants;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 namespace Gateway.Integration.Api.Extensions
@@ -58,10 +60,12 @@ namespace Gateway.Integration.Api.Extensions
         }
         public static IServiceCollection AddSwaggerDocWithAuth(this IServiceCollection services, string[] controllers, IConfiguration configuration)
         {
+            services.AddSwaggerExamplesFromAssemblyOf<LoginModelExample>();
+
             services.AddSwaggerGen(swagger =>
             {
+                swagger.ExampleFilters();
                 swagger.OperationFilter<AuthenticationHeadersFilter>();
-
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
