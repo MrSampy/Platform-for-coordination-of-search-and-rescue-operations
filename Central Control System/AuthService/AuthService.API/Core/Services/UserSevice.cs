@@ -29,6 +29,7 @@ namespace AuthService.API.Core.Services
                     {
                         Id = new Guid(user.Id),
                         Name = user.UserName ?? string.Empty,
+                        Email = user.Email ?? string.Empty,
                         Roles = (from userRole in _dbContext.UserRoles
                                  join role in _dbContext.Roles on userRole.RoleId equals role.Id
                                  where userRole.UserId == user.Id
@@ -48,6 +49,7 @@ namespace AuthService.API.Core.Services
                     {
                         Id = new Guid(user.Id),
                         Name = user.UserName ?? string.Empty,
+                        Email = user.Email ?? string.Empty,
                         Roles = (from userRole in _dbContext.UserRoles
                                  join role in _dbContext.Roles on userRole.RoleId equals role.Id
                                  where userRole.UserId == user.Id
@@ -68,6 +70,7 @@ namespace AuthService.API.Core.Services
                     {
                         Id = new Guid(user.Id),
                         Name = user.UserName ?? string.Empty,
+                        Email = user.Email ?? string.Empty,
                         Roles = (from userRole in _dbContext.UserRoles
                                  join role in _dbContext.Roles on userRole.RoleId equals role.Id
                                  where userRole.UserId == user.Id
@@ -87,6 +90,7 @@ namespace AuthService.API.Core.Services
                     {
                         Id = new Guid(user.Id),
                         Name = user.UserName ?? string.Empty,
+                        Email = user.Email ?? string.Empty,
                         Roles = (from userRole in _dbContext.UserRoles
                                  join role in _dbContext.Roles on userRole.RoleId equals role.Id
                                  where userRole.UserId == user.Id

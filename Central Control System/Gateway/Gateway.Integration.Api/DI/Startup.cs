@@ -31,6 +31,9 @@ namespace Gateway.Integration.Api.DI
             services.AddAuthorizationJWT(Configuration);
 
             services.AddSwaggerDocWithAuth(controllers, Configuration);
+
+            var result = services.SeedServices().Result;
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

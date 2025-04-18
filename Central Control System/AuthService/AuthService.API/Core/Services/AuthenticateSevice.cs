@@ -119,16 +119,16 @@ namespace AuthService.API.Core.Services
         }
         public async Task<UserDTO> RegisterCoordinator(RegisterModel model)
         {
-            return await RegisterWithRoles(model, new List<string> { UserRoles.Coordinator, UserRoles.Volunteer });
+            return await RegisterWithRoles(model, new List<string> { UserRoles.Coordinator });
         }
 
         public async Task<UserDTO> RegisterDispatcher(RegisterModel model)
         {
-            return await RegisterWithRoles(model, new List<string> { UserRoles.Dispatcher, UserRoles.Volunteer });
+            return await RegisterWithRoles(model, new List<string> { UserRoles.Dispatcher });
         }
         public async Task<UserDTO> RegisterAdmin(RegisterModel model)
         {
-            return await RegisterWithRoles(model, new List<string> { UserRoles.Admin, UserRoles.Volunteer });
+            return await RegisterWithRoles(model, new List<string> { UserRoles.Admin, UserRoles.Dispatcher });
         }
 
         private async Task<UserDTO> RegisterWithRoles(RegisterModel model, List<string> roles)
@@ -223,7 +223,7 @@ namespace AuthService.API.Core.Services
                 }
             }
 
-            return new UserDTO { Id = new Guid(user.Id), Name = user.UserName!, Roles = roles };
+            return new UserDTO { Id = new Guid(user.Id), Name = user.UserName!, Roles = roles, Email = user.Email! };
         }
     }
 }

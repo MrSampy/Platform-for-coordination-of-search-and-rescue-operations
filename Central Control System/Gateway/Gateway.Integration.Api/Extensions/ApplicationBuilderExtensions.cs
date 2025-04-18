@@ -49,6 +49,7 @@ namespace Gateway.Integration.Api.Extensions
             {
                 endpoints.MapControllers();
             });
+
             return app;
         }
     }

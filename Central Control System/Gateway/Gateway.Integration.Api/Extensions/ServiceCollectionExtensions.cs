@@ -6,6 +6,7 @@ using Gateway.DTO.Constants;
 using Gateway.Infrastructure.Services.Gateways;
 using Gateway.Infrastructure.Services.Services;
 using Gateway.Integration.Api.Config;
+using Gateway.Integration.Api.Config.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -16,6 +17,18 @@ namespace Gateway.Integration.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        public static async Task<IServiceCollection> SeedServices(this IServiceCollection services)
+        {
+            var serviceProvider = services.BuildServiceProvider();
+            var authGateway = serviceProvider.GetRequiredService<IAuthGateway>();
+            var volunteersGateway = serviceProvider.GetRequiredService<IVolunteersGateway>();
+            var operationsGateway = serviceProvider.GetRequiredService<IOperationsGateway>();
+            var seeder = new DbSeeder(authGateway, operationsGateway, volunteersGateway);
+
+            await seeder.SeedAsync();
+
+            return services;
+        }
         public static IServiceCollection AddAuthorizationJWT(this IServiceCollection services, IConfiguration configuration)
         {
             services

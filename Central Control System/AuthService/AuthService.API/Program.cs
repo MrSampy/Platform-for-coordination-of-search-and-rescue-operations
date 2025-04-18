@@ -112,7 +112,13 @@ if (!useInMemory)
         var services = scope.ServiceProvider;
 
         var context = services.GetRequiredService<AuthDbContext>();
-        if (context.Database.GetPendingMigrations().Any()) context.Database.Migrate();
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            // await DbSeeder.Seed(userManager, roleManager);
+        }
     }
 }
 
