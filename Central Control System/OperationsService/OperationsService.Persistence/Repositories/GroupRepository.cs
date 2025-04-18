@@ -23,7 +23,10 @@ namespace OperationsService.Persistence.Repositories
             _dbContext.Groups.Remove(entity);
             return Task.CompletedTask;
         }
-
+        public Task<int> GetTotalCount()
+        {
+            return _dbContext.Groups.CountAsync();
+        }
         public async Task<IEnumerable<Group>> GetAllAsync(CancellationToken cancellationToken, PaginationQuery query = null)
         {
             var queryable = _dbContext.Groups.AsNoTracking();

@@ -23,6 +23,10 @@ namespace Gateway.Infrastructure.Services.Gateways
             string url = $"operations/api/Event?PageNumber={paginationQuery.PageNumber}&PageSize={paginationQuery.PageSize}";
             return await _apiBuilder.GetRequest<IEnumerable<EventDTO>>(url, SharedConstants.OperationsService, cancellationToken, token);
         }
+        public async Task<GetAllEntitesReponse<EventDTO>> GetSortedEvents(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        {
+            return await _apiBuilder.PostRequest<GetAllEntitesReponse<EventDTO>>("operations/api/Event/sort", paginationQuery, SharedConstants.OperationsService, cancellationToken, token);
+        }
         public async Task<IEnumerable<EventDTO>> GetByStatusGID(Guid eventStatusGID, CancellationToken cancellationToken, string token)
         {
             return await _apiBuilder.GetRequest<IEnumerable<EventDTO>>($"operations/api/Event/by-eventstatus/{eventStatusGID}", SharedConstants.OperationsService, cancellationToken, token);

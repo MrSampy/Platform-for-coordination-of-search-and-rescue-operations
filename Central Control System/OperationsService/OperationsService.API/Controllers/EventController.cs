@@ -6,9 +6,11 @@ using OperationsService.API.Model;
 using OperationsService.Application.Commands.EventCommands.Delete;
 using OperationsService.Application.Commands.EventCommands.Update;
 using OperationsService.Application.DTOs.Create;
+using OperationsService.Application.DTOs.Requests;
 using OperationsService.Application.DTOs.Update;
 using OperationsService.Application.Queries.EventQueries.Create;
 using OperationsService.Application.Queries.EventQueries.GetAll;
+using OperationsService.Application.Queries.EventQueries.GetAllSort;
 using OperationsService.Application.Queries.EventQueries.GetByGID;
 using OperationsService.Application.Queries.EventQueries.GetByStatusGID;
 using OperationsService.Domain.Entities;
@@ -30,6 +32,11 @@ namespace OperationsService.API.Controllers
         public async Task<IActionResult> GetEvents([FromQuery] PaginationQuery paginationQuery, CancellationToken cancellationToken = default)
         {
             return Ok(await _mediator.Send(new GetAllEventsQuery() { PaginationQuery = paginationQuery }, cancellationToken));
+        }
+        [HttpPost("sort")]
+        public async Task<IActionResult> GetEvents([FromBody] EventPaginationQuery paginationQuery, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _mediator.Send(new GetAllSortQuery() { PaginationQuery = paginationQuery }, cancellationToken));
         }
 
         [HttpGet("{gid}")]

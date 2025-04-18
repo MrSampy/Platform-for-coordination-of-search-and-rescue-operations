@@ -23,7 +23,10 @@ namespace OperationsService.Persistence.Repositories
             _dbContext.OperationWorkers.Remove((OperationWorker)entity);
             return Task.CompletedTask;
         }
-
+        public async Task<int> GetTotalCount()
+        {
+            return await _dbContext.OperationWorkers.CountAsync();
+        }
         public async Task<IEnumerable<OperationWorker>> GetAllAsync(CancellationToken cancellationToken, PaginationQuery query = null)
         {
             if (query == null)

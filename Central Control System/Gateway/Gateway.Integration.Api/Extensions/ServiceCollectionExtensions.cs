@@ -184,6 +184,8 @@ namespace Gateway.Integration.Api.Extensions
         {
             services.AddTransient<IAuthService, AuthService>();
 
+            services.AddTransient<IOperationsService, OperationsService>();
+
             return services;
         }
         public static IServiceCollection AddGateways(this IServiceCollection services)

@@ -23,7 +23,10 @@ namespace OperationsService.Persistence.Repositories
             _dbContext.EventStatuses.Remove(entity);
             return Task.CompletedTask;
         }
-
+        public async Task<int> GetTotalCount()
+        {
+            return await _dbContext.EventStatuses.CountAsync();
+        }
         public async Task<IEnumerable<EventStatus>> GetAllAsync(CancellationToken cancellationToken, PaginationQuery query = null)
         {
             var queryable = _dbContext.EventStatuses.AsNoTracking();

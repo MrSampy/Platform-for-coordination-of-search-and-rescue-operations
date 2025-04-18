@@ -1,5 +1,6 @@
 ﻿using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.DTOs.Common;
+using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Operations.Create;
 using Gateway.DTO.DTOs.Operations.Update;
 using Gateway.Integration.Api.Config;
@@ -18,10 +19,12 @@ namespace Gateway.Integration.Api.Controllers
     public class EventController : ControllerBase
     {
         private readonly IOperationsGateway _operationsGateway;
+        private readonly IOperationsService _operationsService;
 
-        public EventController(IOperationsGateway operationsGateway)
+        public EventController(IOperationsGateway operationsGateway, IOperationsService operationsService)
         {
             _operationsGateway = operationsGateway;
+            _operationsService = operationsService;
         }
 
         [HttpGet]
@@ -29,6 +32,12 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _operationsGateway.GetEvents(paginationQuery, cancellationToken, token));
+        }
+        [HttpPost("sort")]
+        public async Task<IActionResult> GetEvents([FromBody] EventPaginationQuery paginationQuery, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsService.GetClearEvents(paginationQuery, cancellationToken, token));
         }
 
         [HttpGet("{gid}")]
