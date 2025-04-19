@@ -31,9 +31,9 @@ namespace Gateway.Infrastructure.Services.Services
             }
         }
 
-        public async Task<GetAllEntitesReponse<ClearEvent>> GetClearEvents(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        public async Task<GetAllEntitesReponse<DetailEvent>> GetClearEvents(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
         {
-            var result = new GetAllEntitesReponse<ClearEvent>();
+            var result = new GetAllEntitesReponse<DetailEvent>();
 
             var response = await _operationsGateway.GetSortedEvents(paginationQuery, cancellationToken, token);
 
@@ -44,7 +44,7 @@ namespace Gateway.Infrastructure.Services.Services
                 var dispatcher = await _operationsGateway.GetOperationWorkerByGID(item.DispatcherGID, cancellationToken, token);
                 var coordinator = await _operationsGateway.GetOperationWorkerByGID(item.CoordinatorGID, cancellationToken, token);
 
-                var clearEvent = new ClearEvent
+                var clearEvent = new DetailEvent
                 {
                     GID = item.GID,
                     Name = item.Name,

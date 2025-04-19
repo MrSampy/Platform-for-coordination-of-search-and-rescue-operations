@@ -2,7 +2,7 @@
 
 namespace Gateway.DTO.DTOs.Operations.Clear
 {
-    public class ClearEvent : BaseDTO
+    public class DetailEvent : BaseDTO
     {
         public required string Name { get; set; }
         public required decimal Longitude { get; set; }
