@@ -3,14 +3,14 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import axios from 'axios';
 import { TokenInfoDTO } from '../../types/authTypes';
-import { ClearEvent, EventPaginationQuery, EventStatusChangeRequest } from '../../types/eventTypes'; 
+import { DetailEvent, EventPaginationQuery, EventStatusChangeRequest } from '../../types/eventTypes'; 
 import { EventStatusCreated, EventStatusApproved } from '../../types/constants'
 import { Button } from 'primereact/button';
 import { Toast } from "primereact/toast";
 import { ErrorModel } from "../../types/commonTypes";
 
 export default function ApproveOperations() {
-    const [events, setEvents] = useState<ClearEvent[]>([]);
+    const [events, setEvents] = useState<DetailEvent[]>([]);
     const [totalRecords, setTotalRecords] = useState(0);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
@@ -32,7 +32,7 @@ export default function ApproveOperations() {
             pageSize: rows,
             eventStatusGID: EventStatusCreated.gid
           };
-          const response = await axios.post<{ items: ClearEvent[], totalCount: number }>(
+          const response = await axios.post<{ items: DetailEvent[], totalCount: number }>(
             `${process.env.REACT_APP_API_BASE_URL}/event/sort`,
             paginationQuery,
             {
@@ -62,7 +62,7 @@ export default function ApproveOperations() {
       setRows(event.rows);
     }
     
-    async function approve(event:ClearEvent) {
+    async function approve(event:DetailEvent) {
         try{
             const tokenInfo = localStorage.getItem('token');
             if(tokenInfo !== null){
@@ -123,7 +123,7 @@ export default function ApproveOperations() {
             <Column field="coordinator" header="Координатор" style={{ width: '20%' }} />
             <Column
                 header="Погодження"
-                body={(rowData: ClearEvent) => (
+                body={(rowData: DetailEvent) => (
                 <Button label="Погодити" raised severity="warning" style={{ fontSize: '12px', backgroundColor:'rgb(184, 226, 164)' }} onClick={() => approve(rowData)}/>
                 )}
                 style={{ width: '10%' }}

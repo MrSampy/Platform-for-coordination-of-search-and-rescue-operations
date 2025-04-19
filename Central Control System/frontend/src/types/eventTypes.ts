@@ -12,7 +12,17 @@ export interface EventDTO {
   eventStatusGID: string;
 }
 
-export interface ClearEvent {
+export interface CreateEventDTO {
+  name: string;
+  longitude: number;
+  latitude: number;
+  eventTypeGID: string;
+  districtGID: string;
+  coordinatorGID: string;
+  userGID: string;
+}
+
+export interface DetailEvent {
   gid: string;
   name: string;
   longitude: number;
@@ -33,8 +43,23 @@ export interface EventStatusDTO {
   gid: string;
   name: string;
 }
+export interface EventTypeDTO {
+  gid: string;
+  name: string;
+}
 
 export interface EventStatusChangeRequest{
   eventGID: string;
   eventStatusGID: string;
+}
+
+export interface OperationWorkerDTO {
+  gid: string;
+  name: string;
+  surname: string;
+  secondName: string;
+  email: string;
+  identificationCode: string;
+  userGID: string;
+  birthDate: Date;
 }

@@ -3,18 +3,18 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import axios from 'axios';
 import { TokenInfoDTO } from '../../types/authTypes';
-import { ClearEvent, EventPaginationQuery } from '../../types/eventTypes'; 
+import { DetailEvent, EventPaginationQuery } from '../../types/eventTypes'; 
 import { Toast } from "primereact/toast";
 import { ErrorModel } from "../../types/commonTypes";
 
 export default function OperationsPage() {
-  const [events, setEvents] = useState<ClearEvent[]>([]);
+  const [events, setEvents] = useState<DetailEvent[]>([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rows, setRows] = useState(5);
   const toast = useRef<Toast>(null);
-  
+
   useEffect(() => {
     fetchEvents(page, rows);
   }, [page, rows]);
@@ -30,7 +30,7 @@ export default function OperationsPage() {
           pageSize: rows,
           eventStatusGID: null
         };
-        const response = await axios.post<{ items: ClearEvent[], totalCount: number }>(
+        const response = await axios.post<{ items: DetailEvent[], totalCount: number }>(
           `${process.env.REACT_APP_API_BASE_URL}/event/sort`,
           paginationQuery,
           {

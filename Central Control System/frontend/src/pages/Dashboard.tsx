@@ -121,7 +121,7 @@ export default function Dashboard() {
 
     return (
         <div className="layout">
-            <div className="card">
+            <div className="card side-menu">
                 <Menu model={items} />
             </div>
             <div className="content">

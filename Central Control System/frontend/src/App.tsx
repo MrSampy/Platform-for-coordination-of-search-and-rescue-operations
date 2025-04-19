@@ -18,6 +18,7 @@ import CoordinatorsRequests from './pages/dashboard/CoordinatorsRequests';
 import ApproveOperations from './pages/dashboard/ApproveOperations';
 import Reports from './pages/dashboard/Reports';
 import RequireAuth from './components/RequireAuth';
+import 'leaflet/dist/leaflet.css';
 
 function App() {
   return (
