@@ -35,7 +35,7 @@ namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.GetAll
                 return _mapper.Map<IEnumerable<VolunteersGroupsDTO>>(cachedEntities);
             }
 
-            var result = await _volunteerGroupRepository.GetAllAsync(cancellationToken, request.PaginationQuery);
+            var result = await _volunteerGroupRepository.GetAllAsync(cancellationToken, request.PaginationQuery.GetAll() ? null : request.PaginationQuery);
             _cacheService.Set(cacheKey, result.ToList());
 
             return _mapper.Map<IEnumerable<VolunteersGroupsDTO>>(result);

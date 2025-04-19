@@ -31,7 +31,7 @@ namespace UtilsService.Application.Queries.ResourcesQueries.GetAllResources
                 return cachedEntites;
             }
 
-            var result = await _resourceRepository.GetAllAsync(cancellationToken, request.PaginationQuery);
+            var result = await _resourceRepository.GetAllAsync(cancellationToken, request.PaginationQuery.GetAll() ? null : request.PaginationQuery);
 
             _cacheService.Set(cacheKey, result.ToList());
 

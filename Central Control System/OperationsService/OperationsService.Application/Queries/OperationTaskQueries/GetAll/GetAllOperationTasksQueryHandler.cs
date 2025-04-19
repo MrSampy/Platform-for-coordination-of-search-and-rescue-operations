@@ -34,7 +34,7 @@ namespace OperationsService.Application.Queries.OperationTaskQueries.GetAll
                 return _mapper.Map<IEnumerable<OperationTaskDTO>>(cachedEntities);
             }
 
-            var result = await _operationTaskRepository.GetAllAsync(cancellationToken, request.PaginationQuery);
+            var result = await _operationTaskRepository.GetAllAsync(cancellationToken, request.PaginationQuery.GetAll() ? null : request.PaginationQuery);
             _cacheService.Set(cacheKey, result.ToList());
 
             return _mapper.Map<IEnumerable<OperationTaskDTO>>(result);

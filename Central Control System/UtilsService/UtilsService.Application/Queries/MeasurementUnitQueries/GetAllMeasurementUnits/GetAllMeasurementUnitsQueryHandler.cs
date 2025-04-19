@@ -31,7 +31,7 @@ namespace UtilsService.Application.Queries.MeasurementUnitQueries.GetAllMeasurem
                 return cachedEntites;
             }
 
-            var result = await _measurementUnitRepository.GetAllAsync(cancellationToken, request.PaginationQuery);
+            var result = await _measurementUnitRepository.GetAllAsync(cancellationToken, request.PaginationQuery.GetAll() ? null : request.PaginationQuery);
 
             _cacheService.Set(cacheKey, result.ToList());
 

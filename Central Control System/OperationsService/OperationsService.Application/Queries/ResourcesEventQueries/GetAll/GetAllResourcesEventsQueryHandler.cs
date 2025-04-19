@@ -38,7 +38,7 @@ namespace OperationsService.Application.Queries.ResourcesEventQueries.GetAll
                 return _mapper.Map<IEnumerable<ResourcesEventDTO>>(cachedEntities);
             }
 
-            var result = await _resourcesEventRepository.GetAllAsync(cancellationToken, request.PaginationQuery);
+            var result = await _resourcesEventRepository.GetAllAsync(cancellationToken, request.PaginationQuery.GetAll() ? null : request.PaginationQuery);
             _cacheService.Set(cacheKey, result.ToList());
 
             return _mapper.Map<IEnumerable<ResourcesEventDTO>>(result);
