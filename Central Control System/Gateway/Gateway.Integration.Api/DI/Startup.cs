@@ -26,14 +26,22 @@ namespace Gateway.Integration.Api.DI
 
             services.AddValidators();
 
+            services.AddMapperProfile();
+
             services.AddServices();
 
             services.AddAuthorizationJWT(Configuration);
 
             services.AddSwaggerDocWithAuth(controllers, Configuration);
 
-            var result = services.SeedServices().Result;
-
+            try
+            {
+                var result = services.SeedServices().Result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

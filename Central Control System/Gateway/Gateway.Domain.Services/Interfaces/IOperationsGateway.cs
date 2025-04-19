@@ -1,6 +1,7 @@
 ﻿using Gateway.DTO.DTOs.Common;
 using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Operations.Create;
+using Gateway.DTO.DTOs.Operations.Request;
 using Gateway.DTO.DTOs.Operations.Update;
 
 namespace Gateway.Domain.Services.Interfaces

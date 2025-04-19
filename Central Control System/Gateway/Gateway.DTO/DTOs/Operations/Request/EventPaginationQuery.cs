@@ -1,6 +1,6 @@
 ﻿using Gateway.DTO.DTOs.Common;
 
-namespace Gateway.DTO.DTOs.Operations
+namespace Gateway.DTO.DTOs.Operations.Request
 {
     public class EventPaginationQuery : PaginationQuery
     {

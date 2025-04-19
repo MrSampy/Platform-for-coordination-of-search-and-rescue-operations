@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Gateway.Application.Builders;
 using Gateway.Application.Filters;
+using Gateway.Application.Mapper;
 using Gateway.Application.Validators;
 using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.Constants;
@@ -206,6 +207,11 @@ namespace Gateway.Integration.Api.Extensions
 
             services.AddValidatorsFromAssemblyContaining<LoginModelValidator>();
 
+            return services;
+        }
+        public static IServiceCollection AddMapperProfile(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             return services;
         }
     }

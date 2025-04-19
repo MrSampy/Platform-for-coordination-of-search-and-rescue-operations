@@ -1,18 +1,34 @@
-﻿using Gateway.Domain.Services.Interfaces;
+﻿using AutoMapper;
+using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.Constants;
 using Gateway.DTO.DTOs.Common;
-using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Operations.Clear;
+using Gateway.DTO.DTOs.Operations.Request;
+using Gateway.DTO.DTOs.Operations.Update;
 
 namespace Gateway.Infrastructure.Services.Services
 {
     public class OperationsService : IOperationsService
     {
         private readonly IOperationsGateway _operationsGateway;
+        private readonly IMapper _mapper;
 
-        public OperationsService(IOperationsGateway operationsGateway)
+        public OperationsService(IOperationsGateway operationsGateway, IMapper mapper)
         {
             _operationsGateway = operationsGateway;
+            _mapper = mapper;
+        }
+        public async Task EventStatusChange(EventStatusChangeRequest request, string token)
+        {
+            var eventDTO = await _operationsGateway.GetEventByGID(request.EventGID, CancellationToken.None, token);
+
+            if (eventDTO != null && SharedConstants.EventStatuses.Any(e => e.GID == request.EventStatusGID))
+            {
+                eventDTO.EventStatusGID = request.EventStatusGID;
+                var updatedEvent = _mapper.Map<UpdateEventDTO>(eventDTO);
+
+                await _operationsGateway.UpdateEvent(updatedEvent, token);
+            }
         }
 
         public async Task<GetAllEntitesReponse<ClearEvent>> GetClearEvents(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
