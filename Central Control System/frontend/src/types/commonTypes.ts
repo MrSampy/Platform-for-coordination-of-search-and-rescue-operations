@@ -3,3 +3,4 @@ export type ErrorModel = {
     details: string;
     statuscode:number;
   };
+  export type Nullable<T> = T | null | undefined;

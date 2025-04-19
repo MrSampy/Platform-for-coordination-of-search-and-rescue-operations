@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import axios from 'axios';
 import { TokenInfoDTO } from '../../types/authTypes';
-import { ClearEvent } from '../../types/eventTypes'; 
-
-export interface EventPaginationQuery {
-  pageNumber:number;
-  pageSize:number;
-}
+import { ClearEvent, EventPaginationQuery } from '../../types/eventTypes'; 
+import { Toast } from "primereact/toast";
+import { ErrorModel } from "../../types/commonTypes";
 
 export default function OperationsPage() {
   const [events, setEvents] = useState<ClearEvent[]>([]);
@@ -16,7 +13,8 @@ export default function OperationsPage() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rows, setRows] = useState(5);
-
+  const toast = useRef<Toast>(null);
+  
   useEffect(() => {
     fetchEvents(page, rows);
   }, [page, rows]);
@@ -30,6 +28,7 @@ export default function OperationsPage() {
         const paginationQuery: EventPaginationQuery = {
           pageNumber: page + 1,
           pageSize: rows,
+          eventStatusGID: null
         };
         const response = await axios.post<{ items: ClearEvent[], totalCount: number }>(
           `${process.env.REACT_APP_API_BASE_URL}/event/sort`,
@@ -44,8 +43,14 @@ export default function OperationsPage() {
       setTotalRecords(response.data.totalCount);
       }
 
-    } catch (error) {
-      console.error('Failed to fetch events', error);
+    } catch (error: any) {
+      const apiError = error.response?.data as ErrorModel;
+      toast.current?.show({
+          severity: "error",
+          summary: "Failed to fetch events",
+          detail: apiError.message,
+          life: 3000
+        });
     } finally {
       setLoading(false);
     }
@@ -57,6 +62,7 @@ export default function OperationsPage() {
 
   return (
     <div className='operation-table'>
+      <Toast ref={toast} />
       <DataTable
         stripedRows 
         value={events}

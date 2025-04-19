@@ -1,4 +1,4 @@
-export type Nullable<T> = T | null | undefined;
+import { Nullable } from "./commonTypes";
 
 export type LoginModel = {
     username: string;
