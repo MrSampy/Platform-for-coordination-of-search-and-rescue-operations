@@ -47,6 +47,8 @@ namespace Gateway.DTO.Constants
         public static readonly string OperationsServiceInMemory = "OperationsServiceInMemory";
         #endregion
 
+        public static readonly string DispatcherRoleName = "Dispatcher";
+
         public static readonly Guid EventStatusCreated = new Guid("1B45017E-2781-4802-BB86-037C4A9811F9");
         public static readonly Guid EventStatusActive = new Guid("58446654-DFA1-4688-8C1C-75BF86EB2200");
         public static readonly Guid EventTypeSearch = new Guid("0B8BD99E-5499-4C45-8130-C17E42E556F3");

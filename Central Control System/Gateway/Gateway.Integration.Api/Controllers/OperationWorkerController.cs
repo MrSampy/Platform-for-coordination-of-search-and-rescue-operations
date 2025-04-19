@@ -18,10 +18,12 @@ namespace Gateway.Integration.Api.Controllers
     public class OperationWorkerController : ControllerBase
     {
         private readonly IOperationsGateway _operationsGateway;
+        private readonly IOperationsService _operationsService;
 
-        public OperationWorkerController(IOperationsGateway operationsGateway)
+        public OperationWorkerController(IOperationsGateway operationsGateway, IOperationsService operationsService)
         {
             _operationsGateway = operationsGateway;
+            _operationsService = operationsService;
         }
 
         [HttpGet]
@@ -36,6 +38,13 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _operationsGateway.GetOperationWorkerByGID(gid, cancellationToken, token));
+        }
+
+        [HttpGet("byRole/{roleName}")]
+        public async Task<IActionResult> GetOperationWorkerByGID(string roleName, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsService.GetWorkersByRole(new DTO.DTOs.Operations.Request.GetOperationWorkersByRoleName { RoleName = roleName }, cancellationToken, token));
         }
 
         [HttpPost]

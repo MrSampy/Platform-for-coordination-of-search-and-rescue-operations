@@ -61,6 +61,13 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _operationsGateway.CreateEvent(dto, token));
         }
 
+        [HttpPost("create-with-usergid")]
+        public async Task<IActionResult> CreateEventWithUserGID([FromBody] CreateEventRequest dto)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsService.CreateEvent(dto, token));
+        }
+
         [HttpPost("status-change")]
         public async Task<IActionResult> EventStatusChange([FromBody] EventStatusChangeRequest request)
         {

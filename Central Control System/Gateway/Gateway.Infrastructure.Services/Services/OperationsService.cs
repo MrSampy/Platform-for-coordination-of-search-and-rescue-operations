@@ -2,9 +2,12 @@
 using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.Constants;
 using Gateway.DTO.DTOs.Common;
+using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Operations.Clear;
+using Gateway.DTO.DTOs.Operations.Create;
 using Gateway.DTO.DTOs.Operations.Request;
 using Gateway.DTO.DTOs.Operations.Update;
+using Gateway.DTO.Exceptions;
 
 namespace Gateway.Infrastructure.Services.Services
 {
@@ -12,12 +15,63 @@ namespace Gateway.Infrastructure.Services.Services
     {
         private readonly IOperationsGateway _operationsGateway;
         private readonly IMapper _mapper;
+        private readonly IAuthGateway _authGateway;
 
-        public OperationsService(IOperationsGateway operationsGateway, IMapper mapper)
+        public OperationsService(IOperationsGateway operationsGateway, IAuthGateway authGateway, IMapper mapper)
         {
             _operationsGateway = operationsGateway;
             _mapper = mapper;
+            _authGateway = authGateway;
         }
+
+        public async Task<IEnumerable<OperationWorkerDTO>> GetWorkersByRole(GetOperationWorkersByRoleName request, CancellationToken cancellationToken, string token)
+        {
+            if (request == null || string.IsNullOrEmpty(request.RoleName))
+                throw new ArgumentNullException(nameof(request));
+
+            var users = _authGateway.GetAllUserIdsByRole(request.RoleName, cancellationToken, token);
+
+            var operationWorkers = await _operationsGateway.GetOperationWorkers(new PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+
+            return operationWorkers.Where(x => users.Any(u => u.ToLower() == x.UserGID.ToString().ToLower()));
+        }
+
+        public async Task<EventDTO> CreateEvent(CreateEventRequest request, string token)
+        {
+            var user = _authGateway.GetByGID(request.UserGID, CancellationToken.None, token);
+
+            if (user == null)
+                throw new ServiceException("User not found");
+
+            var isDispatcher = user.Roles.Any(x => x.Name == SharedConstants.DispatcherRoleName);
+
+            if (!isDispatcher)
+                throw new ServiceException("User is not a dispatcher");
+
+            var opeationWorkers = await _operationsGateway.GetOperationWorkers(new PaginationQuery { PageNumber = 0, PageSize = 0 }, CancellationToken.None, token);
+
+            var dispatcher = opeationWorkers.FirstOrDefault(x => x.UserGID == request.UserGID);
+
+            if (dispatcher == null)
+                throw new ServiceException("Dispatcher not found");
+
+            var createEventRequestDTO = new CreateEventDTO
+            {
+                Name = request.Name,
+                DispatcherGID = dispatcher.GID,
+                CoordinatorGID = request.CoordinatorGID,
+                EventStatusGID = SharedConstants.EventStatusCreated,
+                EventTypeGID = request.EventTypeGID,
+                DistrictGID = request.DistrictGID,
+                Latitude = request.Latitude,
+                Longitude = request.Longitude,
+            };
+
+            var eventDTO = await _operationsGateway.CreateEvent(createEventRequestDTO, token);
+
+            return eventDTO;
+        }
+
         public async Task EventStatusChange(EventStatusChangeRequest request, string token)
         {
             var eventDTO = await _operationsGateway.GetEventByGID(request.EventGID, CancellationToken.None, token);
