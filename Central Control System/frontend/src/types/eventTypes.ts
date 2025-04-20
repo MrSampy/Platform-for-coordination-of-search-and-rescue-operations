@@ -51,6 +51,7 @@ export interface EventTypeDTO {
 export interface EventStatusChangeRequest{
   eventGID: string;
   eventStatusGID: string;
+  note:Nullable<string>;
 }
 
 export interface OperationWorkerDTO {
