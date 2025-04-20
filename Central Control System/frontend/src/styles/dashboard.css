@@ -40,3 +40,40 @@
 .p-inputtextarea {
   background-color: #ffffff !important;
 }
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+.topbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 3rem;
+    width: calc(100% - 15vw);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 100;
+}
+.user-actions {
+    margin-top: 1.2rem;
+    padding: 0.7rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ccc;
+    border-radius: 10px;
+}
+.user-actions i {
+    font-size: 1.6rem;
+    color: #333;
+    cursor: pointer;
+}
+
+.user-actions i:hover {
+    color: #007ad9;
+}

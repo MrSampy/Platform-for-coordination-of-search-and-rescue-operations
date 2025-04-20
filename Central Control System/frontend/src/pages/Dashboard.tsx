@@ -14,6 +14,11 @@ export default function Dashboard() {
         return storedUser ? JSON.parse(storedUser) : null;
     }, []);
 
+    const logout = () => {
+        localStorage.clear();
+        navigate('/');
+    };
+
     const { items, hasAccess } = useMemo(() => {
         const hasRole = (roleName: string) => {
             return user?.roles?.some(role => role.name === roleName);
@@ -121,6 +126,11 @@ export default function Dashboard() {
 
     return (
         <div className="layout">
+            <div className="topbar">
+                <div className="user-actions">
+                    <i className="pi pi-sign-out" onClick={logout} title="Вийти" />
+                </div>
+            </div>
             <div className="card side-menu">
                 <Menu model={items} />
             </div>
