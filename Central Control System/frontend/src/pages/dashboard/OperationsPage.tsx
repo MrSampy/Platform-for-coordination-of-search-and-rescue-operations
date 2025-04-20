@@ -62,6 +62,7 @@ export default function OperationsPage() {
 
   return (
     <div className='operation-table'>
+      <h2>Список усіх операцій</h2>
       <Toast ref={toast} />
       <DataTable
         stripedRows 

@@ -96,9 +96,9 @@ export default function ApproveOperations() {
     }
 
     return (        
-    <div>
+    <div className="border-round-xl shadow-2 p-4" style={{ backgroundColor: 'white' }}>
         <Toast ref={toast} />
-        <h1 style={{ textAlign: 'center' }}> Оберіть операцію для погодження</h1>
+        <h2> Оберіть операцію для погодження</h2>
         <div className='operation-table'>          
         <DataTable
             stripedRows 
