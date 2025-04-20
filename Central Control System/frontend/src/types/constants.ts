@@ -18,3 +18,8 @@ export const EventStatusRejected: EventStatusDTO = {
     gid: '66F0C9E4-3571-4795-8E34-9A9849631DA2',
     name:'Відхилена'
 };
+
+export const EventStatusComplete: EventStatusDTO = {
+    gid: '4E8DC672-602C-4B0E-B1A8-782725558163',
+    name:'Завершена'
+};
