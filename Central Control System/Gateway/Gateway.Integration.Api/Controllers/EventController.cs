@@ -54,6 +54,14 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _operationsGateway.GetByStatusGID(eventStatusGid, cancellationToken, token));
         }
 
+        [HttpGet("report/{gid}")]
+        public async Task<IActionResult> GenerateEventReport(Guid gid, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var response = await _operationsService.GenerateEventReport(gid, cancellationToken, token);
+            return File(response.Bytes, "application/pdf", response.FileName);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventDTO dto)
         {

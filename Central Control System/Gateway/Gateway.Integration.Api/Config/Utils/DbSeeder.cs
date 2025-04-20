@@ -233,10 +233,24 @@ namespace Gateway.Integration.Api.Config.Utils
                     CoordinatorGID = _coordinators[i].GID
                 };
 
+                var createdcomplete = new CreateEventDTO
+                {
+                    Name = $"Event3{i}",
+                    Latitude = 50.443481M + i * 0.01M,
+                    Longitude = 30.502528M + i * 0.01M,
+                    EventTypeGID = SharedConstants.EventTypeLogistic,
+                    EventStatusGID = SharedConstants.EventStatusComplete,
+                    DistrictGID = SharedConstants.Districts[i].GID,
+                    DispatcherGID = _dispatchers[i].GID,
+                    CoordinatorGID = _coordinators[i].GID
+                };
+
                 var createdEvent1 = await _operationsGateway.CreateEvent(activeEvent, _token);
                 var createdEvent2 = await _operationsGateway.CreateEvent(createdEvent, _token);
+                var createdEvent3 = await _operationsGateway.CreateEvent(createdcomplete, _token);
                 _events.Add(createdEvent1);
                 _events.Add(createdEvent2);
+                _events.Add(createdEvent3);
             }
 
             for (int i = 0; i < _events.Count; i++)
