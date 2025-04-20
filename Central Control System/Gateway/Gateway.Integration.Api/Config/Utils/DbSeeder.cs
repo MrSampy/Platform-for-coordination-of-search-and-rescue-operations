@@ -211,8 +211,8 @@ namespace Gateway.Integration.Api.Config.Utils
                 var activeEvent = new CreateEventDTO
                 {
                     Name = $"Event2{i}",
-                    Longitude = i,
-                    Latitude = i,
+                    Latitude = 50.443481M - i * 0.01M,
+                    Longitude = 30.501528M - i * 0.01M,
                     EventTypeGID = SharedConstants.EventTypeEvacuation,
                     EventStatusGID = SharedConstants.EventStatusActive,
                     DistrictGID = SharedConstants.Districts[i].GID,
@@ -224,8 +224,8 @@ namespace Gateway.Integration.Api.Config.Utils
                 var createdEvent = new CreateEventDTO
                 {
                     Name = $"Event1{i}",
-                    Longitude = i,
-                    Latitude = i,
+                    Latitude = 50.443481M + i * 0.01M,
+                    Longitude = 30.501528M + i * 0.01M,
                     EventTypeGID = SharedConstants.EventTypeSearch,
                     EventStatusGID = SharedConstants.EventStatusCreated,
                     DistrictGID = SharedConstants.Districts[i].GID,

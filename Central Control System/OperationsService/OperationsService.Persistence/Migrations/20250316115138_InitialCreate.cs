@@ -16,8 +16,8 @@ namespace OperationsService.Persistence.Migrations
                 {
                     GID = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Longitude = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    Latitude = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Longitude = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
+                    Latitude = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
                     EventTypeGID = table.Column<Guid>(type: "uuid", nullable: false),
                     DistrictGID = table.Column<Guid>(type: "uuid", nullable: false),
                     CoordinatorGID = table.Column<Guid>(type: "uuid", nullable: false),
@@ -122,8 +122,8 @@ namespace OperationsService.Persistence.Migrations
                     GID = table.Column<Guid>(type: "uuid", nullable: false),
                     ResourceGID = table.Column<Guid>(type: "uuid", nullable: false),
                     EventGID = table.Column<Guid>(type: "uuid", nullable: false),
-                    RequiredQuantity = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    AvailableQuantity = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    RequiredQuantity = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
+                    AvailableQuantity = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },

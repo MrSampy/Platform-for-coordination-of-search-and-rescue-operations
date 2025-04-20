@@ -39,10 +39,10 @@ namespace OperationsService.Persistence.DbContexts
                       .HasMaxLength(200);
                 entity.Property(e => e.Longitude)
                       .IsRequired()
-                      .HasColumnType("decimal(18,2)");
+                      .HasColumnType("decimal(18,8)");
                 entity.Property(e => e.Latitude)
                       .IsRequired()
-                      .HasColumnType("decimal(18,2)");
+                      .HasColumnType("decimal(18,8)");
             });
 
             modelBuilder.Entity<EventStatus>(entity =>
@@ -124,10 +124,10 @@ namespace OperationsService.Persistence.DbContexts
                 entity.HasKey(re => re.GID);
                 entity.Property(re => re.RequiredQuantity)
                       .IsRequired()
-                      .HasColumnType("decimal(18,2)");
+                      .HasColumnType("decimal(18,8)");
                 entity.Property(re => re.AvailableQuantity)
                       .IsRequired()
-                      .HasColumnType("decimal(18,2)");
+                      .HasColumnType("decimal(18,8)");
                 entity.HasOne<Event>()
                       .WithMany()
                       .HasForeignKey(re => re.EventGID)

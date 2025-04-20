@@ -32,10 +32,10 @@ namespace OperationsService.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,8)");
 
                     b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,8)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -250,7 +250,7 @@ namespace OperationsService.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("AvailableQuantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,8)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -259,7 +259,7 @@ namespace OperationsService.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("RequiredQuantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,8)");
 
                     b.Property<Guid>("ResourceGID")
                         .HasColumnType("uuid");
