@@ -4,5 +4,6 @@
     {
         public required Guid EventGID { get; set; }
         public required Guid EventStatusGID { get; set; }
+        public string? Note { get; set; }
     }
 }

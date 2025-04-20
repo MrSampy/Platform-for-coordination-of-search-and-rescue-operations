@@ -238,6 +238,7 @@ namespace Gateway.Infrastructure.Services.Services
             if (eventDTO != null && SharedConstants.EventStatuses.Any(e => e.GID == request.EventStatusGID))
             {
                 eventDTO.EventStatusGID = request.EventStatusGID;
+                eventDTO.Note = request.Note;
                 var updatedEvent = _mapper.Map<UpdateEventDTO>(eventDTO);
 
                 await _operationsGateway.UpdateEvent(updatedEvent, token);

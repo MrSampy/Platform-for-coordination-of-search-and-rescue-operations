@@ -16,6 +16,7 @@ namespace OperationsService.Persistence.Migrations
                 {
                     GID = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Note = table.Column<string>(type: "character varying(500)", nullable: true),
                     Longitude = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
                     Latitude = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
                     EventTypeGID = table.Column<Guid>(type: "uuid", nullable: false),

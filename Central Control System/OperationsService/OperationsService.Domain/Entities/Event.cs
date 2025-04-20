@@ -5,6 +5,7 @@
         public string Name { get; set; }
         public decimal Longitude { get; set; }
         public decimal Latitude { get; set; }
+        public string? Note { get; set; }
         public Guid EventTypeGID { get; set; }
         public Guid DistrictGID { get; set; }
         public Guid CoordinatorGID { get; set; }

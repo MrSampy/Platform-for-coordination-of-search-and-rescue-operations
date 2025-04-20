@@ -43,6 +43,8 @@ namespace OperationsService.Persistence.DbContexts
                 entity.Property(e => e.Latitude)
                       .IsRequired()
                       .HasColumnType("decimal(18,8)");
+                entity.Property(e => e.Note)
+                      .HasMaxLength(500);
             });
 
             modelBuilder.Entity<EventStatus>(entity =>
