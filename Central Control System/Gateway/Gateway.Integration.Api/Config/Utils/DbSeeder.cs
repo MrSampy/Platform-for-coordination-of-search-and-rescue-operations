@@ -23,6 +23,7 @@ namespace Gateway.Integration.Api.Config.Utils
         private List<EventDTO> _events = new List<EventDTO>();
         private List<GroupDTO> _groups = new List<GroupDTO>();
         public List<OperationTaskDTO> _operationTaskDTOs = new List<OperationTaskDTO>();
+        public List<MessageDTO> _messagesDTO = new List<MessageDTO>();
         private readonly Random _random = new Random();
 
         public DbSeeder(IAuthGateway authGateway, IOperationsGateway operationsGateway, IVolunteersGateway volunteersGateway)
@@ -49,6 +50,35 @@ namespace Gateway.Integration.Api.Config.Utils
             await CreateVolunteers();
 
             await CreateGroups();
+
+            await CreateMessages();
+        }
+
+        public async Task CreateMessages()
+        {
+            for (int i = 0; i < _events.Count; i++)
+            {
+                var createMessage1 = new CreateMessageDTO
+                {
+                    EventGID = _events[i].GID,
+                    From = _events[i].CoordinatorGID,
+                    To = _events[i].DispatcherGID,
+                    IsRead = false,
+                    Text = $"From Coordinator to Dispatcher Number:{i}"
+                };
+
+                var createMessage2 = new CreateMessageDTO
+                {
+                    EventGID = _events[i].GID,
+                    From = _events[i].CoordinatorGID,
+                    To = _events[i].DispatcherGID,
+                    IsRead = false,
+                    Text = $"Another From Coordinator to Dispatcher Number:{i}"
+                };
+
+                _messagesDTO.Add(await _operationsGateway.CreateMessage(createMessage1, _token));
+                _messagesDTO.Add(await _operationsGateway.CreateMessage(createMessage2, _token));
+            }
         }
 
         public async Task CreateGroups()

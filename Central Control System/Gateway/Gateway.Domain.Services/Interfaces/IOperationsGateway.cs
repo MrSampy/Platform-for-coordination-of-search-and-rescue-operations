@@ -8,6 +8,14 @@ namespace Gateway.Domain.Services.Interfaces
 {
     public interface IOperationsGateway
     {
+        #region Message
+        Task<GetAllEntitesReponse<MessageDTO>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<MessageDTO> GetMessageByGID(Guid gid, CancellationToken cancellationToken, string token);
+        Task<MessageDTO> CreateMessage(CreateMessageDTO Message, string token);
+        Task ReadMessage(Guid gid, string token);
+        Task DeleteMessage(Guid gid, string token);
+        #endregion
+
         #region Event
         Task<IEnumerable<EventDTO>> GetEvents(PaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
         Task<GetAllEntitesReponse<EventDTO>> GetSortedEvents(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);

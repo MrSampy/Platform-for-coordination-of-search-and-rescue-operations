@@ -18,6 +18,13 @@ namespace OperationsService.Application.Mapper
             CreateMap<CreateEventDTO, Event>();
             CreateMap<UpdateEventDTO, Event>();
 
+            // Event Message
+            CreateMap<Message, MessageDTO>()
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt != null ? DateTime.SpecifyKind(src.CreatedAt.Value, DateTimeKind.Utc) : src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt != null ? DateTime.SpecifyKind(src.UpdatedAt.Value, DateTimeKind.Utc) : src.UpdatedAt))
+                .ReverseMap();
+            CreateMap<CreateMessageDTO, Message>();
+
             // EventStatus Mapping
             CreateMap<EventStatus, EventStatusDTO>()
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt != null ? DateTime.SpecifyKind(src.CreatedAt.Value, DateTimeKind.Utc) : src.CreatedAt))

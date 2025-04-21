@@ -205,6 +205,8 @@ namespace OperationsService.API.Extensions
 
             services.AddSingleton(typeof(ICacheService<ResourcesEvent>), typeof(CacheService<ResourcesEvent>));
 
+            services.AddSingleton(typeof(ICacheService<Message>), typeof(CacheService<Message>));
+
             return services;
         }
 
@@ -225,6 +227,8 @@ namespace OperationsService.API.Extensions
             services.AddScoped(typeof(IRepository<OperationWorker>), typeof(OperationWorkerRepository));
 
             services.AddScoped(typeof(IRepository<ResourcesEvent>), typeof(ResourcesEventRepository));
+
+            services.AddScoped(typeof(IRepository<Message>), typeof(MessageRepository));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

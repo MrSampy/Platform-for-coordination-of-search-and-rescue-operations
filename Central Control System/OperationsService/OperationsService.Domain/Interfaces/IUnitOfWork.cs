@@ -12,6 +12,7 @@ namespace OperationsService.Domain.Interfaces
         IRepository<OperationTaskStatus> OperationTaskStatusRepository { get; }
         IRepository<OperationWorker> OperationWorkerRepository { get; }
         IRepository<ResourcesEvent> ResourcesEventRepository { get; }
+        IRepository<Message> MessageRepository { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

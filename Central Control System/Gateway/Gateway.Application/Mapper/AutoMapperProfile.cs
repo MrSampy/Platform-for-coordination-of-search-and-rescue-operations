@@ -13,6 +13,9 @@ namespace Gateway.Application.Mapper
             CreateMap<CreateEventDTO, EventDTO>().ReverseMap();
             CreateMap<UpdateEventDTO, EventDTO>().ReverseMap();
 
+            // Event Message
+            CreateMap<CreateMessageDTO, MessageDTO>().ReverseMap();
+
             // EventStatus Mapping
             CreateMap<CreateEventStatusDTO, EventStatusDTO>().ReverseMap();
             CreateMap<UpdateEventStatusDTO, EventStatusDTO>().ReverseMap();

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -16,9 +17,9 @@ namespace OperationsService.Persistence.Migrations
                 {
                     GID = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Note = table.Column<string>(type: "character varying(500)", nullable: true),
                     Longitude = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
                     Latitude = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
+                    Note = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     EventTypeGID = table.Column<Guid>(type: "uuid", nullable: false),
                     DistrictGID = table.Column<Guid>(type: "uuid", nullable: false),
                     CoordinatorGID = table.Column<Guid>(type: "uuid", nullable: false),
@@ -140,6 +141,42 @@ namespace OperationsService.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    GID = table.Column<Guid>(type: "uuid", nullable: false),
+                    From = table.Column<Guid>(type: "uuid", nullable: false),
+                    To = table.Column<Guid>(type: "uuid", nullable: false),
+                    EventGID = table.Column<Guid>(type: "uuid", nullable: false),
+                    Text = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    IsRead = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.GID);
+                    table.ForeignKey(
+                        name: "FK_Messages_Events_EventGID",
+                        column: x => x.EventGID,
+                        principalTable: "Events",
+                        principalColumn: "GID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_OperationWorkers_From",
+                        column: x => x.From,
+                        principalTable: "OperationWorkers",
+                        principalColumn: "GID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_OperationWorkers_To",
+                        column: x => x.To,
+                        principalTable: "OperationWorkers",
+                        principalColumn: "GID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OperationTasks",
                 columns: table => new
                 {
@@ -174,6 +211,21 @@ namespace OperationsService.Persistence.Migrations
                 column: "EventGID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_EventGID",
+                table: "Messages",
+                column: "EventGID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_From",
+                table: "Messages",
+                column: "From");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_To",
+                table: "Messages",
+                column: "To");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OperationTasks_GroupGID",
                 table: "OperationTasks",
                 column: "GroupGID");
@@ -199,13 +251,16 @@ namespace OperationsService.Persistence.Migrations
                 name: "EventTypes");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "OperationTasks");
 
             migrationBuilder.DropTable(
-                name: "OperationWorkers");
+                name: "ResourcesEvents");
 
             migrationBuilder.DropTable(
-                name: "ResourcesEvents");
+                name: "OperationWorkers");
 
             migrationBuilder.DropTable(
                 name: "Groups");

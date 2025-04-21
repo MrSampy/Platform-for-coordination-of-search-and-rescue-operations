@@ -6,7 +6,7 @@ namespace OperationsService.API.DI
     {
         public IConfiguration Configuration { get; } = configuration;
 
-        private string[] controllers = new string[] { "Event", "EventStatus", "EventType", "Group", "OperationTask", "OperationTaskStatus", "OperationWorker", "ResourcesEvent" };
+        private string[] controllers = new string[] { "Event", "EventStatus", "EventType", "Group", "OperationTask", "OperationTaskStatus", "OperationWorker", "ResourcesEvent", "Message" };
 
         public void ConfigureServices(IServiceCollection services)
         {

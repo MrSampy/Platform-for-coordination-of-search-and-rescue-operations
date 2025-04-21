@@ -31,12 +31,6 @@ namespace OperationsService.Persistence.Migrations
                     b.Property<Guid>("CoordinatorGID")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(18,8)");
-
-                    b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(18,8)");
-
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -52,13 +46,19 @@ namespace OperationsService.Persistence.Migrations
                     b.Property<Guid>("EventTypeGID")
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(18,8)");
+
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(18,8)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
                     b.Property<string>("Note")
-                        .HasMaxLength(200)
+                        .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -125,6 +125,9 @@ namespace OperationsService.Persistence.Migrations
                     b.Property<Guid>("EventGID")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("LeaderGID")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -138,6 +141,48 @@ namespace OperationsService.Persistence.Migrations
                     b.HasIndex("EventGID");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("OperationsService.Domain.Entities.Message", b =>
+                {
+                    b.Property<Guid>("GID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("EventGID")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("From")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsRead")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid>("To")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("GID");
+
+                    b.HasIndex("EventGID");
+
+                    b.HasIndex("From");
+
+                    b.HasIndex("To");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("OperationsService.Domain.Entities.OperationTask", b =>
@@ -285,8 +330,27 @@ namespace OperationsService.Persistence.Migrations
                         .HasForeignKey("EventGID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                    b.Property<Guid>("LeaderGID")
-                        .HasColumnType("uuid");
+                });
+
+            modelBuilder.Entity("OperationsService.Domain.Entities.Message", b =>
+                {
+                    b.HasOne("OperationsService.Domain.Entities.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventGID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OperationsService.Domain.Entities.OperationWorker", null)
+                        .WithMany()
+                        .HasForeignKey("From")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OperationsService.Domain.Entities.OperationWorker", null)
+                        .WithMany()
+                        .HasForeignKey("To")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OperationsService.Domain.Entities.OperationTask", b =>

@@ -17,6 +17,32 @@ namespace Gateway.Infrastructure.Services.Gateways
             _apiBuilder = apiBuilder;
         }
 
+        #region Message
+
+        public async Task<GetAllEntitesReponse<MessageDTO>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        {
+            return await _apiBuilder.PostRequest<GetAllEntitesReponse<MessageDTO>>("operations/api/Message/get", paginationQuery, SharedConstants.OperationsService, cancellationToken, token);
+        }
+        public async Task<MessageDTO> GetMessageByGID(Guid gid, CancellationToken cancellationToken, string token)
+        {
+            return await _apiBuilder.GetRequest<MessageDTO>($"operations/api/Message/{gid}", SharedConstants.OperationsService, cancellationToken, token);
+        }
+        public async Task<MessageDTO> CreateMessage(CreateMessageDTO message, string token)
+        {
+            return await _apiBuilder.PostRequest<MessageDTO>("operations/api/Message", message, SharedConstants.OperationsService, CancellationToken.None, token);
+        }
+        public async Task ReadMessage(Guid gid, string token)
+        {
+            await _apiBuilder.PutRequestWithoutDeserializing($"operations/api/Message/read/{gid}", new object { }, SharedConstants.OperationsService, CancellationToken.None, token);
+
+        }
+        public async Task DeleteMessage(Guid gid, string token)
+        {
+            await _apiBuilder.DeleteRequest($"operations/api/Message/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
+        }
+
+        #endregion
+
         #region Event
 
         public async Task<IEnumerable<EventDTO>> GetEvents(PaginationQuery paginationQuery, CancellationToken cancellationToken, string token)

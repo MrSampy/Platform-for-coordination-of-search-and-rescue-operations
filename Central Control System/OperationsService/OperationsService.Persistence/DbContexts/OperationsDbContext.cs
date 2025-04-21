@@ -13,6 +13,7 @@ namespace OperationsService.Persistence.DbContexts
         public DbSet<OperationTaskStatus> OperationTaskStatuses { get; set; }
         public DbSet<OperationWorker> OperationWorkers { get; set; }
         public DbSet<ResourcesEvent> ResourcesEvents { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public OperationsDbContext(DbContextOptions options)
         : base(options)
         {
@@ -31,6 +32,28 @@ namespace OperationsService.Persistence.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Message>(entity =>
+            {
+                entity.HasKey(e => e.GID);
+                entity.HasOne<OperationWorker>()
+                      .WithMany()
+                      .HasForeignKey(re => re.From)
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<OperationWorker>()
+                      .WithMany()
+                      .HasForeignKey(re => re.To)
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(e => e.Text)
+                      .IsRequired()
+                      .HasMaxLength(500);
+                entity.Property(e => e.IsRead)
+                        .IsRequired()
+                        .HasDefaultValue(false);
+                entity.HasOne<Event>()
+                      .WithMany()
+                      .HasForeignKey(re => re.EventGID)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
             modelBuilder.Entity<Event>(entity =>
             {
                 entity.HasKey(e => e.GID);

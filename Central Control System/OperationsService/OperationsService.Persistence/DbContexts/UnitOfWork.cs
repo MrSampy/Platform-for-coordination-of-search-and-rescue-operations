@@ -16,6 +16,7 @@ namespace OperationsService.Persistence.DbContexts
         private OperationTaskStatusRepository _operationTaskStatusRepository;
         private OperationWorkerRepository _operationWorkerRepository;
         private ResourcesEventRepository _resourcesEventRepository;
+        private MessageRepository _messageRepository;
 
         public IRepository<Event> EventRepository => _eventRepository ??= new EventRepository(dbContext);
         public IRepository<EventStatus> EventStatusRepository => _eventStatusRepository ??= new EventStatusRepository(dbContext);
@@ -25,7 +26,7 @@ namespace OperationsService.Persistence.DbContexts
         public IRepository<OperationTaskStatus> OperationTaskStatusRepository => _operationTaskStatusRepository ??= new OperationTaskStatusRepository(dbContext);
         public IRepository<OperationWorker> OperationWorkerRepository => _operationWorkerRepository ??= new OperationWorkerRepository(dbContext);
         public IRepository<ResourcesEvent> ResourcesEventRepository => _resourcesEventRepository ??= new ResourcesEventRepository(dbContext);
-
+        public IRepository<Message> MessageRepository => _messageRepository ??= new MessageRepository(dbContext);
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await dbContext.SaveChangesAsync(cancellationToken);
