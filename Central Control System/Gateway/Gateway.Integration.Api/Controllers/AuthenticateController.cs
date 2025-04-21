@@ -2,6 +2,7 @@
 using Gateway.DTO.DTOs.Auth;
 using Gateway.Integration.Api.Config;
 using Gateway.Integration.Api.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.Integration.Api.Controllers
@@ -28,6 +29,17 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _authGateway.Register(model));
         }
 
+        [Authorize]
+        [HttpGet]
+        [RequiresAuthHeader]
+        [Route("me")]
+        public async Task<IActionResult> Me()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            return Ok(await _authGateway.Me(token));
+        }
+
         [HttpPost]
         [RequiresAuthHeader]
         [Route("register-admin")]
@@ -38,6 +50,7 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _authGateway.RegisterAdmin(model, token));
         }
 
+        [Authorize]
         [HttpPost]
         [RequiresAuthHeader]
         [Route("register-worker")]
@@ -54,6 +67,7 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _authGateway.RegisterDispatcher(model));
         }
 
+        [Authorize]
         [HttpPost]
         [RequiresAuthHeader]
         [Route("register-coordinator")]

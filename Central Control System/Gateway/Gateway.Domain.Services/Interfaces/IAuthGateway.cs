@@ -7,6 +7,7 @@ namespace Gateway.Domain.Services.Interfaces
         Task<UserDTO> Register(RegisterModel model);
         Task<UserDTO> RegisterAdmin(RegisterModel model, string token);
         Task<TokenInfoDTO> Login(LoginModel model);
+        Task<MeResponse> Me(string token);
         Task<UserDTO> RegisterCoordinator(RegisterModel model, string token);
         Task<UserDTO> RegisterDispatcher(RegisterModel model);
         IEnumerable<RoleDTO> GetAllRoles(CancellationToken cancellationToken, string token);

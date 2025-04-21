@@ -3,6 +3,7 @@ using AuthService.API.Core.Interfaces;
 using AuthService.API.Core.Models;
 using AuthService.API.Exceptions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -23,6 +24,40 @@ namespace AuthService.API.Core.Services
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+        }
+
+        public async Task<MeResponse> Me(HttpContext httpContext)
+        {
+            var result = new MeResponse() { IsValid = false, User = null };
+
+            if (httpContext == null || httpContext.User == null || httpContext.User.Claims == null)
+            {
+                return result;
+            }
+
+            var claims = httpContext.User.Claims.ToList();
+
+            var userIdClaim = claims.FirstOrDefault(c => c.Type == "UserIdentifier");
+
+            if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
+            {
+                return result;
+            }
+
+            var userId = userIdClaim.Value;
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return result;
+            }
+
+            result.IsValid = true;
+
+            result.User = await GetUserFromIdentity(user);
+
+            return result;
         }
 
         public async Task<TokenInfoDTO> Login(LoginModel model)

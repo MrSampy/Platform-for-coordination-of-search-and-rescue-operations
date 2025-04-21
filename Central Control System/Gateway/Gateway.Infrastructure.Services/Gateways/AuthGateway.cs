@@ -37,6 +37,16 @@ namespace Gateway.Infrastructure.Services.Gateways
             return response;
         }
 
+        public async Task<MeResponse> Me(string token)
+        {
+            return await _apiBuilder
+                .GetRequest<MeResponse>(
+                    "api/authenticate/me",
+                    SharedConstants.AuthService,
+                    CancellationToken.None,
+                    token);
+        }
+
         public async Task<TokenInfoDTO> Login(LoginModel model)
         {
             return await _apiBuilder.PostRequest<TokenInfoDTO>(

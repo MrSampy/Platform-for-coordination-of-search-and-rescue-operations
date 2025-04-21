@@ -1,6 +1,7 @@
 ﻿using AuthService.API.Config;
 using AuthService.API.Core.Interfaces;
 using AuthService.API.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.API.Controllers
@@ -28,6 +29,14 @@ namespace AuthService.API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             return Ok(await _authenticateSevice.Register(model));
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        [RequiresAuthHeader]
+        public async Task<IActionResult> Me()
+        {
+            return Ok(await _authenticateSevice.Me(HttpContext));
         }
 
         [HttpPost]

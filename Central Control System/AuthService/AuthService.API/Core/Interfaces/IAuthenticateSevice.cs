@@ -10,5 +10,6 @@ namespace AuthService.API.Core.Interfaces
         Task<UserDTO> RegisterAdmin(RegisterModel model);
         Task<UserDTO> RegisterCoordinator(RegisterModel model);
         Task<UserDTO> RegisterDispatcher(RegisterModel model);
+        Task<MeResponse> Me(HttpContext httpContext);
     }
 }
