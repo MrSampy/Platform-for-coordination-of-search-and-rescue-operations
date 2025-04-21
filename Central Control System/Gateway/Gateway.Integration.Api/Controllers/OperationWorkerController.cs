@@ -47,6 +47,14 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _operationsService.GetWorkersByRole(new DTO.DTOs.Operations.Request.GetOperationWorkersByRoleName { RoleName = roleName }, cancellationToken, token));
         }
 
+
+        [HttpGet("byUserGID/{userGID}")]
+        public async Task<IActionResult> GetOperationWorkerByUserGID(Guid userGID, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsService.GetWorkerByUserGID(userGID, cancellationToken, token));
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateOperationWorker([FromBody] CreateOperationWorkerDTO dto)
         {

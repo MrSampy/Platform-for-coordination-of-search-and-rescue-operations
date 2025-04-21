@@ -35,6 +35,13 @@ namespace Gateway.Infrastructure.Services.Services
             _volunteerGroupsGateway = volunteersGateway;
         }
 
+        public async Task<OperationWorkerDTO?> GetWorkerByUserGID(Guid userGID, CancellationToken cancellationToken, string token)
+        {
+            var operationWorkers = await _operationsGateway.GetOperationWorkers(new PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+
+            return operationWorkers.FirstOrDefault(x => x.UserGID == userGID);
+        }
+
         public async Task<GetReportResponse> GenerateEventReport(Guid eventGID, CancellationToken cancellationToken, string token)
         {
             var eventDto = await _operationsGateway.GetEventByGID(eventGID, CancellationToken.None, token);

@@ -18,10 +18,12 @@ namespace Gateway.Integration.Api.Controllers
     public class VolunteerController : ControllerBase
     {
         private readonly IVolunteersGateway _volunteersGateway;
+        private readonly IVolunteersService _volunteersService;
 
-        public VolunteerController(IVolunteersGateway volunteersGateway)
+        public VolunteerController(IVolunteersGateway volunteersGateway, IVolunteersService volunteersService)
         {
             _volunteersGateway = volunteersGateway;
+            _volunteersService = volunteersService;
         }
 
         [HttpGet]
@@ -36,6 +38,13 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _volunteersGateway.GetVolunteerByGID(gid, cancellationToken, token));
+        }
+
+        [HttpGet("byUserGID/{userGID}")]
+        public async Task<IActionResult> GeVolunteerByUserGID(Guid userGID, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GeVolunteerByUserGID(userGID, cancellationToken, token));
         }
 
         [HttpPost]

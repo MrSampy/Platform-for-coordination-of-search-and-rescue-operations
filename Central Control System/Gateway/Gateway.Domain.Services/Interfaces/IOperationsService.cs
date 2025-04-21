@@ -13,5 +13,6 @@ namespace Gateway.Domain.Services.Interfaces
         Task EventStatusChange(EventStatusChangeRequest request, string token);
         Task<EventDTO> CreateEvent(CreateEventRequest request, string token);
         Task<GetReportResponse> GenerateEventReport(Guid eventGID, CancellationToken cancellationToken, string token);
+        Task<OperationWorkerDTO?> GetWorkerByUserGID(Guid userGID, CancellationToken cancellationToken, string token);
     }
 }
