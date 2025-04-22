@@ -32,6 +32,21 @@ namespace OperationsService.Application.Queries.EventQueries.GetAllSort
                 result = result.Where(e => e.EventStatusGID == request.PaginationQuery.EventStatusGID);
             }
 
+            if (request.PaginationQuery.DispatcherGID != null)
+            {
+                result = result.Where(e => e.DispatcherGID == request.PaginationQuery.DispatcherGID);
+            }
+
+            if (request.PaginationQuery.CoordinatorGID != null)
+            {
+                result = result.Where(e => e.CoordinatorGID == request.PaginationQuery.CoordinatorGID);
+            }
+
+            if (request.PaginationQuery.EventTypeGID != null)
+            {
+                result = result.Where(e => e.EventTypeGID == request.PaginationQuery.EventTypeGID);
+            }
+
             var totalCount = result.Count();
 
             result = result.Skip((request.PaginationQuery.PageNumber - 1) * request.PaginationQuery.PageSize).Take(request.PaginationQuery.PageSize);
