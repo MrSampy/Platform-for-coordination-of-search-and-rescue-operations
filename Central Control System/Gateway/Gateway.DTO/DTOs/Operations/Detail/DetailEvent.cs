@@ -1,6 +1,6 @@
 ﻿using Gateway.DTO.DTOs.Common;
 
-namespace Gateway.DTO.DTOs.Operations.Clear
+namespace Gateway.DTO.DTOs.Operations.Detail
 {
     public class DetailEvent : BaseDTO
     {

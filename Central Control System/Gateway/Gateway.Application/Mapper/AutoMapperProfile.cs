@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Operations.Create;
+using Gateway.DTO.DTOs.Operations.Detail;
 using Gateway.DTO.DTOs.Operations.Update;
 
 namespace Gateway.Application.Mapper
@@ -15,6 +16,7 @@ namespace Gateway.Application.Mapper
 
             // Event Message
             CreateMap<CreateMessageDTO, MessageDTO>().ReverseMap();
+            CreateMap<MessageDetail, MessageDTO>().ReverseMap();
 
             // EventStatus Mapping
             CreateMap<CreateEventStatusDTO, EventStatusDTO>().ReverseMap();

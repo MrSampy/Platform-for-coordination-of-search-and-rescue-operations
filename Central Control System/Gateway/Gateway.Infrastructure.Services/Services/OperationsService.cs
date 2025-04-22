@@ -3,8 +3,8 @@ using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.Constants;
 using Gateway.DTO.DTOs.Common;
 using Gateway.DTO.DTOs.Operations;
-using Gateway.DTO.DTOs.Operations.Clear;
 using Gateway.DTO.DTOs.Operations.Create;
+using Gateway.DTO.DTOs.Operations.Detail;
 using Gateway.DTO.DTOs.Operations.Request;
 using Gateway.DTO.DTOs.Operations.Response;
 using Gateway.DTO.DTOs.Operations.Update;
@@ -33,6 +33,31 @@ namespace Gateway.Infrastructure.Services.Services
             _mapper = mapper;
             _authGateway = authGateway;
             _volunteerGroupsGateway = volunteersGateway;
+        }
+        public async Task<GetAllEntitesReponse<MessageDetail>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        {
+            var messges = await _operationsGateway.GetMessages(paginationQuery, cancellationToken, token);
+
+            var resultMessages = new List<MessageDetail>();
+
+            foreach (var message in messges.Items)
+            {
+                var messageDetail = _mapper.Map<MessageDetail>(message);
+
+                var sender = await _operationsGateway.GetOperationWorkerByGID(message.From, cancellationToken, token);
+                var receiver = await _operationsGateway.GetOperationWorkerByGID(message.To, cancellationToken, token);
+
+                messageDetail.Sender = $"{sender.Name} {sender.Surname} {sender.SecondName}";
+                messageDetail.Receiver = $"{receiver.Name} {receiver.Surname} {receiver.SecondName}";
+
+                resultMessages.Add(messageDetail);
+            }
+
+            return new GetAllEntitesReponse<MessageDetail>
+            {
+                Items = resultMessages,
+                TotalCount = messges.TotalCount
+            };
         }
 
         public async Task<OperationWorkerDTO?> GetWorkerByUserGID(Guid userGID, CancellationToken cancellationToken, string token)

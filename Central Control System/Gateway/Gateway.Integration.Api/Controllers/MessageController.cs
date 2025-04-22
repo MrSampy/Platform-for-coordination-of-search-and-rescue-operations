@@ -17,9 +17,11 @@ namespace Gateway.Integration.Api.Controllers
     public class MessageController : ControllerBase
     {
         private readonly IOperationsGateway _operationsGateway;
-        public MessageController(IOperationsGateway operationsGateway)
+        private readonly IOperationsService _operationsService;
+        public MessageController(IOperationsGateway operationsGateway, IOperationsService operationsService)
         {
             _operationsGateway = operationsGateway;
+            _operationsService = operationsService;
         }
 
         [HttpGet("{gid}")]
@@ -35,7 +37,7 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            return Ok(await _operationsGateway.GetMessages(paginationQuery, cancellationToken, token));
+            return Ok(await _operationsService.GetMessages(paginationQuery, cancellationToken, token));
         }
 
         [HttpPost]
