@@ -54,9 +54,11 @@ namespace Gateway.Infrastructure.Services.Services
 
                 var sender = await _operationsGateway.GetOperationWorkerByGID(message.From, cancellationToken, token);
                 var receiver = await _operationsGateway.GetOperationWorkerByGID(message.To, cancellationToken, token);
+                var eventDTO = await _operationsGateway.GetEventByGID(message.EventGID, cancellationToken, token);
 
                 messageDetail.Sender = $"{sender.Name} {sender.Surname} {sender.SecondName}";
                 messageDetail.Receiver = $"{receiver.Name} {receiver.Surname} {receiver.SecondName}";
+                messageDetail.EventName = eventDTO.Name;
 
                 resultMessages.Add(messageDetail);
             }

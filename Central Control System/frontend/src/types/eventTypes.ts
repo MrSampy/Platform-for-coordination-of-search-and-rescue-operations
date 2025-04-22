@@ -64,3 +64,24 @@ export interface OperationWorkerDTO {
   userGID: string;
   birthDate: Date;
 }
+
+export interface MessageDTO {
+  gid: string;
+  from: string;
+  to: string;
+  eventGID: string;
+  eventName: string;
+  text: string;
+  sender: string;
+  receiver: string;
+  isRead: boolean;
+}
+
+export interface MessagePaginationQuery {
+  pageNumber:number;
+  pageSize:number;
+  from: Nullable<string>;
+  to: Nullable<string>;
+  eventGID: Nullable<string>;
+  isRead: Nullable<boolean>;
+}

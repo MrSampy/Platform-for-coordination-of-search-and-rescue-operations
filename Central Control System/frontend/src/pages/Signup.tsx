@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import { Toast } from "primereact/toast";
 import { Link, useNavigate } from "react-router-dom";
-import { register, getUserByName } from "../services/authService";
+import { register, getUserByName, getOperationWorkerByUserGID } from "../services/authService";
 import { RegisterRequest } from "../types/authTypes";
 import { ErrorModel } from "../types/commonTypes";
 import { Calendar } from "primereact/calendar";
@@ -30,6 +30,8 @@ const SignupPage = () => {
             localStorage.setItem("token", tokenInfo.token);
             const user = await getUserByName(model.username);
             localStorage.setItem("user", JSON.stringify(user));
+            const operationworker = await getOperationWorkerByUserGID(user.id, tokenInfo.token);
+            localStorage.setItem("operationWorker", JSON.stringify(operationworker));
             navigate("/dashboard");
         } catch (err: any) {
             const apiError = err.response?.data as ErrorModel;

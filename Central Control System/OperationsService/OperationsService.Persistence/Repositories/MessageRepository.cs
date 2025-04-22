@@ -29,7 +29,7 @@ namespace OperationsService.Persistence.Repositories
         }
         public async Task<IEnumerable<Message>> GetAllAsync(CancellationToken cancellationToken, PaginationQuery query = null)
         {
-            var queryable = _dbContext.Messages.AsNoTracking();
+            var queryable = _dbContext.Messages.OrderByDescending(m => m.IsRead).AsNoTracking();
             if (query != null)
             {
                 queryable = queryable.Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);

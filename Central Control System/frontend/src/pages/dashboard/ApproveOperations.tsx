@@ -176,9 +176,9 @@ export default function ApproveOperations() {
         modal
         onHide={() => setDialogVisible(false)}
         footer={
-          <div className="flex justify-content-end gap-2">
-            <Button label="Скасувати" onClick={() => setDialogVisible(false)} />
-            <Button label="Підтвердити" onClick={confirmStatusChange} autoFocus />
+          <div className="flex justify-content-end gap-2">            
+            <Button label="Підтвердити" icon="pi pi-check" onClick={confirmStatusChange} autoFocus />
+            <Button label="Скасувати" icon="pi pi-times" onClick={() => setDialogVisible(false)} />
           </div>
         }
       >
