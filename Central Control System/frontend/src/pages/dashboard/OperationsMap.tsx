@@ -25,8 +25,8 @@ export default function OperationsMap() {
 
       const token = JSON.parse(tokenStr) as TokenInfoDTO;
       const paginationQuery: EventPaginationQuery = {
-        pageNumber: 1,
-        pageSize: 1000,
+        pageNumber: 0,
+        pageSize: 0,
         eventStatusGID: EventStatusActive.gid
       };
 

@@ -21,6 +21,7 @@ export default function CreateOperation() {
     userGID: '',
   });
 
+  const [formErrors, setFormErrors] = useState<{ [key in keyof CreateEventDTO]?: boolean }>({});
   const [districts, setDistricts] = useState<DistrictDTO[]>([]);
   const [eventTypes, setEventTypes] = useState<EventTypeDTO[]>([]);
   const [workers, setWorkers] = useState<OperationWorkerDTO[]>([]);
@@ -60,9 +61,33 @@ export default function CreateOperation() {
 
   const handleChange = (field: keyof CreateEventDTO, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    setFormErrors(prev => ({ ...prev, [field]: false }));
   };
 
   const handleSubmit = async () => {
+    const errors: { [key in keyof CreateEventDTO]?: boolean } = {};
+
+    (['name', 'eventTypeGID', 'districtGID', 'coordinatorGID', 'latitude', 'longitude'] as (keyof CreateEventDTO)[]).forEach(key => {
+      const value = formData[key];
+      if (
+        (typeof value === 'string' && value.trim() === '') ||
+        (typeof value === 'number' && value === 0)
+      ) {
+        errors[key] = true;
+      }
+    });
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Помилка',
+        detail: 'Будь ласка, заповніть всі обовʼязкові поля.',
+        life: 3000
+      });
+      return;
+    }
+
     const tokenStr = localStorage.getItem('token');
     if (!tokenStr) return;
 
@@ -85,8 +110,7 @@ export default function CreateOperation() {
         life: 3000
       });
 
-      setTimeout(() => navigate('/dashboard/operations'), 1000); // slight delay for toast display
-
+      setTimeout(() => navigate('/dashboard/operations'), 1000);
     } catch (err: any) {
       const errorResponse = err.response?.data;
       toast.current?.show({
@@ -110,13 +134,14 @@ export default function CreateOperation() {
           <div className="p-fluid formgrid grid">
             <div className="field col-12 md:col-6">
               <label htmlFor="name">Назва</label>
-              <InputText id="name" value={formData.name} onChange={(e) => handleChange('name', e.target.value)} />
+              <InputText id="name" className={formErrors.name ? 'p-invalid' : ''} value={formData.name} onChange={(e) => handleChange('name', e.target.value)} />
             </div>
 
             <div className="field col-12 md:col-6">
               <label htmlFor="district">Район</label>
               <Dropdown
                 id="district"
+                className={formErrors.districtGID ? 'p-invalid' : ''}
                 value={formData.districtGID}
                 onChange={(e) => handleChange('districtGID', e.value)}
                 options={districts}
@@ -130,6 +155,7 @@ export default function CreateOperation() {
               <label htmlFor="eventType">Тип події</label>
               <Dropdown
                 id="eventType"
+                className={formErrors.eventTypeGID ? 'p-invalid' : ''}
                 value={formData.eventTypeGID}
                 onChange={(e) => handleChange('eventTypeGID', e.value)}
                 options={eventTypes}
@@ -143,6 +169,7 @@ export default function CreateOperation() {
               <label htmlFor="worker">Координатор</label>
               <Dropdown
                 id="worker"
+                className={formErrors.coordinatorGID ? 'p-invalid' : ''}
                 placeholder="Оберіть координатора"
                 value={formData.coordinatorGID}
                 onChange={(e) => handleChange('coordinatorGID', e.value)}
@@ -167,12 +194,12 @@ export default function CreateOperation() {
 
             <div className="field col-6">
               <label htmlFor="latitude">Широта</label>
-              <InputText id="latitude" value={formData.latitude.toFixed(6)} disabled />
+              <InputText id="latitude" className={formErrors.latitude ? 'p-invalid' : ''} value={formData.latitude.toFixed(6)} disabled />
             </div>
 
             <div className="field col-6">
               <label htmlFor="longitude">Довгота</label>
-              <InputText id="longitude" value={formData.longitude.toFixed(6)} disabled />
+              <InputText id="longitude" className={formErrors.longitude ? 'p-invalid' : ''} value={formData.longitude.toFixed(6)} disabled />
             </div>
 
             <div className="field col-12 flex justify-content-end">
