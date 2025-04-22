@@ -1,12 +1,7 @@
-﻿using Gateway.DTO.DTOs.Common;
-
-namespace Gateway.DTO.DTOs.Operations.Detail
+﻿namespace Gateway.DTO.DTOs.Operations.Detail
 {
-    public class DetailEvent : BaseDTO
+    public class DetailEvent : EventDTO
     {
-        public required string Name { get; set; }
-        public required decimal Longitude { get; set; }
-        public required decimal Latitude { get; set; }
         public required string EventType { get; set; }
         public required string District { get; set; }
         public required string Coordinator { get; set; }

@@ -49,7 +49,10 @@ namespace OperationsService.Application.Queries.EventQueries.GetAllSort
 
             var totalCount = result.Count();
 
-            result = result.Skip((request.PaginationQuery.PageNumber - 1) * request.PaginationQuery.PageSize).Take(request.PaginationQuery.PageSize);
+            if (!request.PaginationQuery.GetAll())
+            {
+                result = result.Skip((request.PaginationQuery.PageNumber - 1) * request.PaginationQuery.PageSize).Take(request.PaginationQuery.PageSize);
+            }
 
             return new GetAllEntitesReponse<EventDTO> { Items = _mapper.Map<IEnumerable<EventDTO>>(result), TotalCount = totalCount };
         }

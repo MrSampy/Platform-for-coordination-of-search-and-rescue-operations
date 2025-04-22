@@ -308,20 +308,14 @@ namespace Gateway.Infrastructure.Services.Services
             var dispatcher = await _operationsGateway.GetOperationWorkerByGID(eventDTO.DispatcherGID, cancellationToken, token);
             var coordinator = await _operationsGateway.GetOperationWorkerByGID(eventDTO.CoordinatorGID, cancellationToken, token);
 
-            var clearEvent = new DetailEvent
-            {
-                GID = eventDTO.GID,
-                Name = eventDTO.Name,
-                Dispatcher = $"{dispatcher.Name} {dispatcher.Surname} {dispatcher.SecondName}",
-                Coordinator = $"{coordinator.Name} {coordinator.Surname} {coordinator.SecondName}",
-                EventStatus = SharedConstants.EventStatuses.FirstOrDefault(x => x.GID == eventDTO.EventStatusGID)?.Name!,
-                EventType = SharedConstants.EventTypes.FirstOrDefault(x => x.GID == eventDTO.EventTypeGID)?.Name!,
-                District = SharedConstants.Districts.FirstOrDefault(x => x.GID == eventDTO.DistrictGID)?.Name!,
-                Latitude = eventDTO.Latitude,
-                Longitude = eventDTO.Longitude,
-                CreatedAt = eventDTO.CreatedAt,
-                UpdatedAt = eventDTO.UpdatedAt,
-            };
+            var clearEvent = _mapper.Map<DetailEvent>(eventDTO);
+
+            clearEvent.Dispatcher = $"{dispatcher.Name} {dispatcher.Surname} {dispatcher.SecondName}";
+            clearEvent.Coordinator = $"{coordinator.Name} {coordinator.Surname} {coordinator.SecondName}";
+            clearEvent.EventStatus = SharedConstants.EventStatuses.FirstOrDefault(x => x.GID == eventDTO.EventStatusGID)?.Name!;
+            clearEvent.EventType = SharedConstants.EventTypes.FirstOrDefault(x => x.GID == eventDTO.EventTypeGID)?.Name!;
+            clearEvent.District = SharedConstants.Districts.FirstOrDefault(x => x.GID == eventDTO.DistrictGID)?.Name!;
+
             return clearEvent;
         }
     }
