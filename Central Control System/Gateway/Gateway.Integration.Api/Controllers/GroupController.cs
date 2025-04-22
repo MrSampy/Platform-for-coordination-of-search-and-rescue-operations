@@ -18,10 +18,12 @@ namespace Gateway.Integration.Api.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IOperationsGateway _operationsGateway;
+        private readonly IOperationsService _operationsService;
 
-        public GroupController(IOperationsGateway operationsGateway)
+        public GroupController(IOperationsGateway operationsGateway, IOperationsService operationsService)
         {
             _operationsGateway = operationsGateway;
+            _operationsService = operationsService;
         }
 
         [HttpGet]
@@ -29,6 +31,13 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _operationsGateway.GetGroups(paginationQuery, cancellationToken, token));
+        }
+
+        [HttpGet("byEventGID/{eventGID}")]
+        public async Task<IActionResult> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsService.GetGroupsByEventGID(eventGID, cancellationToken, token));
         }
 
         [HttpGet("{gid}")]

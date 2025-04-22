@@ -34,6 +34,14 @@ namespace Gateway.Infrastructure.Services.Services
             _authGateway = authGateway;
             _volunteerGroupsGateway = volunteersGateway;
         }
+        public async Task<IEnumerable<GroupDTO>> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken, string token)
+        {
+            var groups = await _operationsGateway.GetGroups(new PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+
+            return groups.Where(g => g.EventGID == eventGID);
+        }
+
+
         public async Task<GetAllEntitesReponse<MessageDetail>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
         {
             var messges = await _operationsGateway.GetMessages(paginationQuery, cancellationToken, token);

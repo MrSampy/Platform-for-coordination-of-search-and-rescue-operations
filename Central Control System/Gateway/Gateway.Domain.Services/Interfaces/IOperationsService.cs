@@ -15,6 +15,7 @@ namespace Gateway.Domain.Services.Interfaces
         Task<GetReportResponse> GenerateEventReport(Guid eventGID, CancellationToken cancellationToken, string token);
         Task<OperationWorkerDTO?> GetWorkerByUserGID(Guid userGID, CancellationToken cancellationToken, string token);
         Task<GetAllEntitesReponse<MessageDetail>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<GroupDTO>> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken, string token);
 
     }
 }
