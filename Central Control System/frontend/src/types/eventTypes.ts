@@ -32,6 +32,11 @@ export interface DetailEvent {
   coordinator: string;
   dispatcher: string;
   eventStatus: string;
+  eventTypeGID: string;
+  districtGID: string;
+  coordinatorGID: string;
+  dispatcherGID: string;
+  eventStatusGID: string;
 }
 export interface EventPaginationQuery {
   pageNumber:number;
@@ -84,4 +89,12 @@ export interface MessagePaginationQuery {
   to: Nullable<string>;
   eventGID: Nullable<string>;
   isRead: Nullable<boolean>;
+}
+
+export interface CreateMessageDTO {
+  from: string;
+  to: string;
+  eventGID: string;
+  text: string;
+  isRead: boolean;
 }
