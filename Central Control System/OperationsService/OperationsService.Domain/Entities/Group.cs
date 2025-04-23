@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
         public Guid EventGID { get; set; }
-        public Guid LeaderGID { get; set; }
+        public Guid? LeaderGID { get; set; }
     }
 }

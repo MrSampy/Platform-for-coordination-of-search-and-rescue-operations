@@ -12,7 +12,7 @@ using OperationsService.Persistence.DbContexts;
 namespace OperationsService.Persistence.Migrations
 {
     [DbContext(typeof(OperationsDbContext))]
-    [Migration("20250421212051_InitialCreate")]
+    [Migration("20250423213244_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -128,7 +128,7 @@ namespace OperationsService.Persistence.Migrations
                     b.Property<Guid>("EventGID")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("LeaderGID")
+                    b.Property<Guid?>("LeaderGID")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")

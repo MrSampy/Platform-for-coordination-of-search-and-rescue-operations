@@ -6,6 +6,6 @@ namespace Gateway.DTO.DTOs.Operations
     {
         public required string Name { get; set; }
         public required Guid EventGID { get; set; }
-        public Guid LeaderGID { get; set; }
+        public Guid? LeaderGID { get; set; }
     }
 }

@@ -34,10 +34,14 @@ namespace OperationsService.Application.Queries.GroupQueries.Create
             {
                 throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, nameof(Event), request.Group.EventGID.ToString()));
             }
-            var volunteer = await _apiBuilder.GetRequest<VolunteerDTO>($"volunteers/api/volunteer/{request.Group.LeaderGID}", Constants.VolunteerService, cancellationToken, request.Token);
-            if (volunteer == null)
+
+            if (request.Group.LeaderGID != null)
             {
-                throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, "Volunteer", request.Group.LeaderGID.ToString()));
+                var volunteer = await _apiBuilder.GetRequest<VolunteerDTO>($"volunteers/api/volunteer/{request.Group.LeaderGID}", Constants.VolunteerService, cancellationToken, request.Token);
+                if (volunteer == null)
+                {
+                    throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, "Volunteer", request.Group.LeaderGID.ToString()));
+                }
             }
             var group = _mapper.Map<Group>(request.Group);
             group.GID = Guid.NewGuid();

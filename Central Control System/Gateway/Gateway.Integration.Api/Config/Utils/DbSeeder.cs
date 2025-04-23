@@ -102,7 +102,7 @@ namespace Gateway.Integration.Api.Config.Utils
                 var volunteerInEvent1 = new CreateVolunteersEventsDTO
                 {
                     EventGID = _groups[i].EventGID,
-                    VolunteerGID = _groups[i].LeaderGID
+                    VolunteerGID = _groups[i].LeaderGID!.Value
                 };
 
                 await _volunteersGateway.AddVolunteerToEvent(volunteerInEvent1, _token);
@@ -112,7 +112,7 @@ namespace Gateway.Integration.Api.Config.Utils
                     var groupInDistrict1 = new CreateVolunteersGroupsDTO
                     {
                         GroupGID = _groups[i].GID,
-                        VolunteerGID = _groups[i].LeaderGID
+                        VolunteerGID = _groups[i].LeaderGID!.Value
                     };
 
                     await _volunteersGateway.AddVolunteerToGroup(groupInDistrict1, _token);

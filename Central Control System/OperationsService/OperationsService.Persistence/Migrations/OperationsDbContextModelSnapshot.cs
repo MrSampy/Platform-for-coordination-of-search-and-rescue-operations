@@ -125,7 +125,7 @@ namespace OperationsService.Persistence.Migrations
                     b.Property<Guid>("EventGID")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("LeaderGID")
+                    b.Property<Guid?>("LeaderGID")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")

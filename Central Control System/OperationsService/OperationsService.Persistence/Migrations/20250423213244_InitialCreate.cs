@@ -102,7 +102,7 @@ namespace OperationsService.Persistence.Migrations
                     GID = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     EventGID = table.Column<Guid>(type: "uuid", nullable: false),
-                    LeaderGID = table.Column<Guid>(type: "uuid", nullable: false),
+                    LeaderGID = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
