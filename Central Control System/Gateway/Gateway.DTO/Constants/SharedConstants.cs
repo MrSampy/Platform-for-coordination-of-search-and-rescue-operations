@@ -65,6 +65,7 @@ namespace Gateway.DTO.Constants
             new EventStatusDTO { GID = new Guid("66F0C9E4-3571-4795-8E34-9A9849631DA2"), Name = "Відхилена" },
             new EventStatusDTO { GID = new Guid("58446654-DFA1-4688-8C1C-75BF86EB2200"), Name = "Активна" },
             new EventStatusDTO { GID = new Guid("4E8DC672-602C-4B0E-B1A8-782725558163"), Name = "Завершена" },
+            new EventStatusDTO { GID = new Guid("9095DB76-5C22-431D-BFBD-51849423F57B"), Name = "Видалена" },
         };
 
         public static readonly List<EventTypeDTO> EventTypes = new List<EventTypeDTO>() {

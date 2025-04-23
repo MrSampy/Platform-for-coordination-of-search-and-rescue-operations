@@ -27,7 +27,10 @@ namespace OperationsService.Application.Commands.EventCommands.Delete
                 throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, nameof(Event), request.GID.ToString()));
             }
 
-            await _eventRepository.DeleteAsync(entity);
+            entity.EventStatusGID = Constants.EventStatusDeleted;
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            await _eventRepository.UpdateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
 
             _cacheService.Reset();
