@@ -6,7 +6,7 @@ namespace VolunteerService.API.DI
     {
         public IConfiguration Configuration { get; } = configuration;
 
-        private string[] _controllers = ["Volunteer", "VolunteersDistricts", "VolunteersGroups"];
+        private string[] _controllers = ["Volunteer", "VolunteersDistricts", "VolunteersGroups", "VolunteersEvents"];
 
         public void ConfigureServices(IServiceCollection services)
         {

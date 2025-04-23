@@ -8,6 +8,7 @@ namespace VolunteerService.Persistence.DbContexts
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<VolunteersDistricts> VolunteersDistricts { get; set; }
         public DbSet<VolunteersGroups> VolunteersGroups { get; set; }
+        public DbSet<VolunteersEvents> VolunteersEvents { get; set; }
         public VolunteersDbContext(DbContextOptions options, bool ensureDeleted = false)
         : base(options)
         {
@@ -40,6 +41,19 @@ namespace VolunteerService.Persistence.DbContexts
                 entity.Property(v => v.UserGID).IsRequired();
             });
 
+            // VolunteersEvents Entity (Many-to-Many)
+            modelBuilder.Entity<VolunteersEvents>(entity =>
+            {
+                entity.HasKey(vd => vd.GID);
+                entity.Property(vd => vd.GID).ValueGeneratedNever();
+                entity.HasIndex(vd => new { vd.VolunteerGID, vd.EventGID }).IsUnique();
+
+                entity.HasOne<Volunteer>()
+                      .WithMany()
+                      .HasForeignKey(vd => vd.VolunteerGID)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
             // VolunteersDistricts Entity (Many-to-Many)
             modelBuilder.Entity<VolunteersDistricts>(entity =>
             {
@@ -52,7 +66,6 @@ namespace VolunteerService.Persistence.DbContexts
                       .HasForeignKey(vd => vd.VolunteerGID)
                       .OnDelete(DeleteBehavior.Cascade);
             });
-
             // VolunteersGroups Entity (Many-to-Many)
             modelBuilder.Entity<VolunteersGroups>(entity =>
             {

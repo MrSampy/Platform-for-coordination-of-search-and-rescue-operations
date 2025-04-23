@@ -8,7 +8,7 @@ namespace Gateway.Integration.Api.DI
 
         private string[] controllers = new string[] { "Authenticate", "Role", "User", "District", "MeasurementUnit",
                                                         "Resource", "ResourceMeasurementUnit",
-                                                        "Volunteer", "VolunteersDistricts", "VolunteersGroups",
+                                                        "Volunteer", "VolunteersDistricts", "VolunteersGroups", "VolunteersEvents",
                                                         "Event", "EventStatus", "EventType", "Group",
                                                         "OperationTask", "OperationTaskStatus", "OperationWorker", "ResourcesEvent", "Message"};
 

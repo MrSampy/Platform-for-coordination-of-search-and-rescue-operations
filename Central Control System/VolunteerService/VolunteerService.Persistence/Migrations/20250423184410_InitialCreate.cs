@@ -53,6 +53,27 @@ namespace VolunteerService.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "VolunteersEvents",
+                columns: table => new
+                {
+                    GID = table.Column<Guid>(type: "uuid", nullable: false),
+                    VolunteerGID = table.Column<Guid>(type: "uuid", nullable: false),
+                    EventGID = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VolunteersEvents", x => x.GID);
+                    table.ForeignKey(
+                        name: "FK_VolunteersEvents_Volunteers_VolunteerGID",
+                        column: x => x.VolunteerGID,
+                        principalTable: "Volunteers",
+                        principalColumn: "GID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VolunteersGroups",
                 columns: table => new
                 {
@@ -80,6 +101,12 @@ namespace VolunteerService.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_VolunteersEvents_VolunteerGID_EventGID",
+                table: "VolunteersEvents",
+                columns: new[] { "VolunteerGID", "EventGID" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VolunteersGroups_VolunteerGID_GroupGID",
                 table: "VolunteersGroups",
                 columns: new[] { "VolunteerGID", "GroupGID" },
@@ -91,6 +118,9 @@ namespace VolunteerService.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "VolunteersDistricts");
+
+            migrationBuilder.DropTable(
+                name: "VolunteersEvents");
 
             migrationBuilder.DropTable(
                 name: "VolunteersGroups");

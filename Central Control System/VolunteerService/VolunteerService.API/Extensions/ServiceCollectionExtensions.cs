@@ -199,6 +199,8 @@ namespace VolunteerService.API.Extensions
 
             services.AddSingleton(typeof(ICacheService<VolunteersGroups>), typeof(CacheService<VolunteersGroups>));
 
+            services.AddSingleton(typeof(ICacheService<VolunteersEvents>), typeof(CacheService<VolunteersEvents>));
+
             return services;
         }
 
@@ -209,6 +211,8 @@ namespace VolunteerService.API.Extensions
             services.AddScoped(typeof(IRepository<VolunteersDistricts>), typeof(VolunteersDistrictsRepository));
 
             services.AddScoped(typeof(IRepository<VolunteersGroups>), typeof(VolunteersGroupsRepository));
+
+            services.AddScoped(typeof(IRepository<VolunteersEvents>), typeof(VolunteersEventsRepository));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

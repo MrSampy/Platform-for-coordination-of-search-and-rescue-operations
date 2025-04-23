@@ -135,6 +135,44 @@ namespace Gateway.Infrastructure.Services.Gateways
         }
 
         #endregion
+
+
+        #region VolunteersEvents
+        public async Task<IEnumerable<VolunteersEventsDTO>> GetVolunteersEvents(PaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        {
+            string query = $"volunteers/api/VolunteersEvents?PageNumber={paginationQuery.PageNumber}&PageSize={paginationQuery.PageSize}";
+            return await _apiBuilder.GetRequest<IEnumerable<VolunteersEventsDTO>>(query, SharedConstants.VolunteerService, cancellationToken, token);
+        }
+        public async Task<IEnumerable<VolunteersEventsDTO>> GetEventsByVolunteerGID(Guid volunteerGid, CancellationToken cancellationToken, string token)
+        {
+            return await _apiBuilder.GetRequest<IEnumerable<VolunteersEventsDTO>>(
+                    $"volunteers/api/VolunteersEvents/by-volunteer/{volunteerGid}", SharedConstants.VolunteerService, cancellationToken, token);
+        }
+        public async Task<IEnumerable<VolunteersEventsDTO>> GetVolunteersByEventGID(Guid eventGid, CancellationToken cancellationToken, string token)
+        {
+            return await _apiBuilder.GetRequest<IEnumerable<VolunteersEventsDTO>>(
+                $"volunteers/api/VolunteersEvents/by-event/{eventGid}", SharedConstants.VolunteerService, cancellationToken, token);
+        }
+        public async Task<VolunteersEventsDTO> GetVolunteersEventByGID(Guid gid, CancellationToken cancellationToken, string token)
+        {
+            return await _apiBuilder.GetRequest<VolunteersEventsDTO>(
+                $"volunteers/api/VolunteersEvents/{gid}", SharedConstants.VolunteerService, cancellationToken, token);
+        }
+        public async Task<VolunteersEventsDTO> AddVolunteerToEvent(CreateVolunteersEventsDTO volunteersEvents, string token)
+        {
+            return await _apiBuilder.PostRequest<VolunteersEventsDTO>(
+                "volunteers/api/VolunteersEvents", volunteersEvents, SharedConstants.VolunteerService, CancellationToken.None, token);
+        }
+        public async Task RemoveVolunteerFromEvent(Guid gid, string token)
+        {
+            await _apiBuilder.DeleteRequest($"volunteers/api/VolunteersEvents/{gid}", SharedConstants.VolunteerService, CancellationToken.None, token);
+        }
+        public async Task<IsExistModel> IsVolunteerInEvent(CreateVolunteersEventsDTO volunteersEvents, string token)
+        {
+            return await _apiBuilder.PostRequest<IsExistModel>(
+                "volunteers/api/VolunteersEvents/exists", volunteersEvents, SharedConstants.VolunteerService, CancellationToken.None, token);
+        }
+        #endregion
     }
 
 }

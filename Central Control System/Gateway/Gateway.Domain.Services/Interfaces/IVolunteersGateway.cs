@@ -34,5 +34,15 @@ namespace Gateway.Domain.Services.Interfaces
         Task RemoveVolunteerFromGroup(Guid gid, string token);
         Task<IsExistModel> IsVolunteerinGroup(CreateVolunteersGroupsDTO volunteersGroups, string token);
         #endregion
+
+        #region VolunteersEvents
+        Task<IEnumerable<VolunteersEventsDTO>> GetVolunteersEvents(PaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<VolunteersEventsDTO>> GetEventsByVolunteerGID(Guid volunteerGid, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<VolunteersEventsDTO>> GetVolunteersByEventGID(Guid eventGid, CancellationToken cancellationToken, string token);
+        Task<VolunteersEventsDTO> GetVolunteersEventByGID(Guid gid, CancellationToken cancellationToken, string token);
+        Task<VolunteersEventsDTO> AddVolunteerToEvent(CreateVolunteersEventsDTO volunteersEvents, string token);
+        Task RemoveVolunteerFromEvent(Guid gid, string token);
+        Task<IsExistModel> IsVolunteerInEvent(CreateVolunteersEventsDTO volunteersEvents, string token);
+        #endregion
     }
 }

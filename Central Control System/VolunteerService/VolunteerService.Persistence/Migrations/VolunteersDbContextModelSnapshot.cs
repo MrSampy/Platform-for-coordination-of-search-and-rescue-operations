@@ -95,6 +95,31 @@ namespace VolunteerService.Persistence.Migrations
                     b.ToTable("VolunteersDistricts");
                 });
 
+            modelBuilder.Entity("VolunteerService.Domain.Entities.VolunteersEvents", b =>
+                {
+                    b.Property<Guid>("GID")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("EventGID")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("VolunteerGID")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GID");
+
+                    b.HasIndex("VolunteerGID", "EventGID")
+                        .IsUnique();
+
+                    b.ToTable("VolunteersEvents");
+                });
+
             modelBuilder.Entity("VolunteerService.Domain.Entities.VolunteersGroups", b =>
                 {
                     b.Property<Guid>("GID")
@@ -121,6 +146,15 @@ namespace VolunteerService.Persistence.Migrations
                 });
 
             modelBuilder.Entity("VolunteerService.Domain.Entities.VolunteersDistricts", b =>
+                {
+                    b.HasOne("VolunteerService.Domain.Entities.Volunteer", null)
+                        .WithMany()
+                        .HasForeignKey("VolunteerGID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("VolunteerService.Domain.Entities.VolunteersEvents", b =>
                 {
                     b.HasOne("VolunteerService.Domain.Entities.Volunteer", null)
                         .WithMany()

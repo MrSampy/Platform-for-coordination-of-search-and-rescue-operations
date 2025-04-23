@@ -22,7 +22,7 @@ namespace VolunteerService.Application.Queries.VolunteersGroupsQueries.GetByGID
         {
             var result = await _repository.GetByGidAsync(request.GID, cancellationToken);
             return result == null
-                ? throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, nameof(VolunteersDistricts), request.GID.ToString()))
+                ? throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, nameof(VolunteersGroups), request.GID.ToString()))
                 : _mapper.Map<VolunteersGroupsDTO>(result);
         }
     }

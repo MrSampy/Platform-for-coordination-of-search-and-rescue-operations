@@ -97,22 +97,49 @@ namespace Gateway.Integration.Api.Config.Utils
 
             for (int i = 0; i < _groups.Count; i++)
             {
-                var groupInDistrict1 = new CreateVolunteersGroupsDTO
+                var isActive = _events.First(x => x.GID == _groups[i].EventGID).EventStatusGID == SharedConstants.EventStatusActive;
+
+                var volunteerInEvent1 = new CreateVolunteersEventsDTO
                 {
-                    GroupGID = _groups[i].GID,
+                    EventGID = _groups[i].EventGID,
                     VolunteerGID = _groups[i].LeaderGID
                 };
-                await _volunteersGateway.AddVolunteerToGroup(groupInDistrict1, _token);
+
+                await _volunteersGateway.AddVolunteerToEvent(volunteerInEvent1, _token);
+
+                if (!isActive)
+                {
+                    var groupInDistrict1 = new CreateVolunteersGroupsDTO
+                    {
+                        GroupGID = _groups[i].GID,
+                        VolunteerGID = _groups[i].LeaderGID
+                    };
+
+                    await _volunteersGateway.AddVolunteerToGroup(groupInDistrict1, _token);
+                }
 
                 var volunttersWithoutLeader = _volunteers.Where(x => x.GID != _groups[i].LeaderGID).ToList();
 
-                var groupInDistrict2 = new CreateVolunteersGroupsDTO
+                var volunteerGID = volunttersWithoutLeader[_random.Next(0, volunttersWithoutLeader.Count - 1)].GID;
+
+                var volunteerInEvent2 = new CreateVolunteersEventsDTO
                 {
-                    GroupGID = _groups[i].GID,
-                    VolunteerGID = volunttersWithoutLeader[_random.Next(0, volunttersWithoutLeader.Count - 1)].GID,
+                    EventGID = _groups[i].EventGID,
+                    VolunteerGID = volunteerGID
                 };
 
-                await _volunteersGateway.AddVolunteerToGroup(groupInDistrict2, _token);
+                await _volunteersGateway.AddVolunteerToEvent(volunteerInEvent2, _token);
+
+                if (!isActive)
+                {
+                    var groupInDistrict2 = new CreateVolunteersGroupsDTO
+                    {
+                        GroupGID = _groups[i].GID,
+                        VolunteerGID = volunteerGID,
+                    };
+
+                    await _volunteersGateway.AddVolunteerToGroup(groupInDistrict2, _token);
+                }
             }
 
             for (int i = 0; i < _groups.Count; i++)
