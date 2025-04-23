@@ -86,3 +86,15 @@
   .clickable-row:hover {
     background-color: #f0f0f0;
   }
+
+  .p-confirm-dialog .p-confirm-dialog-reject {
+  background-color: #e0e0e0;
+  color: #000;
+  border: none;
+}
+
+.p-confirm-dialog .p-confirm-dialog-accept {
+  background-color: #258de6;
+  color: #fff;
+  border: none;
+}

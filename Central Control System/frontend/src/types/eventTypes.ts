@@ -22,6 +22,18 @@ export interface CreateEventDTO {
   userGID: string;
 }
 
+export interface UpdateEventDTO {
+  gid: string;
+  name: string;
+  longitude: number;
+  latitude: number;
+  eventTypeGID: string;
+  districtGID: string;
+  coordinatorGID: string;
+  dispatcherGID: string;
+  eventStatusGID: string;
+}
+
 export interface DetailEvent {
   gid: string;
   name: string;
@@ -97,4 +109,18 @@ export interface CreateMessageDTO {
   eventGID: string;
   text: string;
   isRead: boolean;
+}
+
+export interface GroupDTO {
+  gid: string;
+  name: string;
+  eventGID: string;
+  leaderGID: Nullable<string>;
+}
+
+
+export interface CreateGroupDTO {
+  name: string;
+  eventGID: string;
+  leaderGID: Nullable<string>;
 }
