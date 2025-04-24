@@ -142,30 +142,27 @@ export default function ApproveOperations() {
           <Column field="coordinator" header="Координатор" style={{ width: '20%' }} />
           <Column
             body={(rowData: DetailEvent) => (
-              <Button
-                raised
-                className='p-button-rounded'
-                icon = 'pi pi-check'
-                severity="warning"
-                style={{ backgroundColor: 'rgb(184, 226, 164)' }}
-                onClick={() => openStatusDialog(rowData, EventStatusApproved.gid)}
-              />
+              <div className="flex gap-2">
+                  <Button
+                  raised
+                  className='p-button-rounded'
+                  icon = 'pi pi-check'
+                  severity="warning"
+                  style={{ backgroundColor: 'rgb(184, 226, 164)' }}
+                  onClick={() => openStatusDialog(rowData, EventStatusApproved.gid)}
+                />
+                <Button
+                  raised
+                  className='p-button-rounded'
+                  icon = 'pi pi-times'
+                  severity="warning"
+                  style={{ backgroundColor: 'rgb(226, 164, 164)' }}
+                  onClick={() => openStatusDialog(rowData, EventStatusRejected.gid)}
+                />
+              </div>
             )}
-            style={{ width: '2%' }}
-          />
-          <Column
-            body={(rowData: DetailEvent) => (
-              <Button
-                raised
-                className='p-button-rounded'
-                icon = 'pi pi-times'
-                severity="warning"
-                style={{ backgroundColor: 'rgb(226, 164, 164)' }}
-                onClick={() => openStatusDialog(rowData, EventStatusRejected.gid)}
-              />
-            )}
-            style={{ width: '2%' }}
-          />
+            style={{ width: '6%' }}
+          />          
         </DataTable>
       </div>
 
