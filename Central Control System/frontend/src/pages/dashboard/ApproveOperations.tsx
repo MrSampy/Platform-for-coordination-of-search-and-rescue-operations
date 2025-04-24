@@ -141,30 +141,30 @@ export default function ApproveOperations() {
           <Column field="dispatcher" header="Диспетчер" style={{ width: '20%' }} />
           <Column field="coordinator" header="Координатор" style={{ width: '20%' }} />
           <Column
-            header="Погодження"
             body={(rowData: DetailEvent) => (
               <Button
-                label="Погодити"
                 raised
+                className='p-button-rounded'
+                icon = 'pi pi-check'
                 severity="warning"
-                style={{ fontSize: '12px', backgroundColor: 'rgb(184, 226, 164)' }}
+                style={{ backgroundColor: 'rgb(184, 226, 164)' }}
                 onClick={() => openStatusDialog(rowData, EventStatusApproved.gid)}
               />
             )}
-            style={{ width: '10%' }}
+            style={{ width: '2%' }}
           />
           <Column
-            header="Відхилиння"
             body={(rowData: DetailEvent) => (
               <Button
-                label="Відхилити"
                 raised
+                className='p-button-rounded'
+                icon = 'pi pi-times'
                 severity="warning"
-                style={{ fontSize: '12px', backgroundColor: 'rgb(226, 164, 164)' }}
+                style={{ backgroundColor: 'rgb(226, 164, 164)' }}
                 onClick={() => openStatusDialog(rowData, EventStatusRejected.gid)}
               />
             )}
-            style={{ width: '10%' }}
+            style={{ width: '2%' }}
           />
         </DataTable>
       </div>

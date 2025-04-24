@@ -120,7 +120,10 @@ export interface GroupDTO {
 
 
 export interface CreateGroupDTO {
+  gid: Nullable<string>;
   name: string;
   eventGID: string;
   leaderGID: Nullable<string>;
+  deleted: Nullable<boolean>;
+  edited: Nullable<boolean>;
 }

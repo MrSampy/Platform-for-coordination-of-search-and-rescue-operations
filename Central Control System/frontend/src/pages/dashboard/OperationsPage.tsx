@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import axios from 'axios';
 import { TokenInfoDTO, UserDTO } from '../../types/authTypes';
-import { DetailEvent, EventPaginationQuery, OperationWorkerDTO, UpdateEventDTO } from '../../types/eventTypes'; 
+import { DetailEvent, EventPaginationQuery, OperationWorkerDTO } from '../../types/eventTypes'; 
 import { Toast } from "primereact/toast";
 import { ErrorModel } from "../../types/commonTypes";
 import { EventStatusDeleted } from '../../types/constants';
@@ -117,35 +117,7 @@ export default function OperationsPage() {
     setSelectedEvent(event);
     setEditDialogVisible(true);
   };
-  const handleUpdate = async (updatedData: UpdateEventDTO) => {
-    try {
-      const tokenStr = localStorage.getItem('token');
-      if (!tokenStr) return;
-  
-      const token = JSON.parse(tokenStr) as TokenInfoDTO;
-      const headers = { Authorization: `Bearer ${token.token}` };
-  
-      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/event`, updatedData, { headers });
-  
-      toast.current?.show({
-        severity: 'success',
-        summary: 'Успішно',
-        detail: 'Операцію оновлено',
-        life: 3000
-      });
-  
-      setEditDialogVisible(false);
-      fetchEvents(page, rows);
-    } catch (err) {
-      toast.current?.show({
-        severity: 'error',
-        summary: 'Помилка',
-        detail: 'Не вдалося оновити операцію',
-        life: 3000
-      });
-    }
-  };
-  
+
   function onPage(event: any) {
     setPage(event.page);
     setRows(event.rows);
@@ -208,7 +180,6 @@ export default function OperationsPage() {
         selectedEvent={selectedEvent}
         visible={editDialogVisible}
         onHide={() => setEditDialogVisible(false)}
-        onUpdate={handleUpdate}
       />
     </div>
   );
