@@ -12,7 +12,6 @@ import 'primereact/resources/primereact.min.css';
 import OperationsPage from './pages/dashboard/OperationsPage';
 import OperationsMap from './pages/dashboard/OperationsMap';
 import CreateOperation from './pages/dashboard/CreateOperation';
-import SelectOperation from './pages/dashboard/SelectOperation';
 import Groups from './pages/dashboard/Groups';
 import CoordinatorsRequests from './pages/dashboard/CoordinatorsRequests';
 import ApproveOperations from './pages/dashboard/ApproveOperations';
@@ -30,10 +29,9 @@ function App() {
         {/* Protected dashboard */}
         <Route element={<RequireAuth />}>
           <Route path="/dashboard" element={<Dashboard />}>
-              <Route path="operations" element={<OperationsPage />} />
               <Route path="map" element={<OperationsMap />} />
               <Route path="create" element={<CreateOperation />} />
-              <Route path="select" element={<SelectOperation />} />
+              <Route path="operations" element={<OperationsPage />} />
               <Route path="groups" element={<Groups />} />
               <Route path="requests" element={<CoordinatorsRequests />} />
               <Route path="approve" element={<ApproveOperations />} />

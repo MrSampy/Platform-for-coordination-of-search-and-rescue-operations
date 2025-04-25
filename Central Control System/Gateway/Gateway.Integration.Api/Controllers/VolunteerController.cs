@@ -1,6 +1,7 @@
 ﻿using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.DTOs.Common;
 using Gateway.DTO.DTOs.Volunteers.Create;
+using Gateway.DTO.DTOs.Volunteers.Request;
 using Gateway.DTO.DTOs.Volunteers.Update;
 using Gateway.Integration.Api.Config;
 using Gateway.Integration.Api.Model;
@@ -31,6 +32,13 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _volunteersGateway.GetVolunteers(paginationQuery, cancellationToken, token));
+        }
+
+        [HttpPost("by-event")]
+        public async Task<IActionResult> GetVolunteersForEvent([FromBody] VolunteersForEventRequest request, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GetVolunteersForEvent(request, cancellationToken, token));
         }
 
         [HttpGet("{gid}")]
