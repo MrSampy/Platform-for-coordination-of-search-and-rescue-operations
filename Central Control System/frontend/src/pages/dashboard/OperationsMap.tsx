@@ -27,7 +27,9 @@ export default function OperationsMap() {
       const paginationQuery: EventPaginationQuery = {
         pageNumber: 0,
         pageSize: 0,
-        eventStatusGID: EventStatusActive.gid
+        eventStatusGID: EventStatusActive.gid,
+        coordinatorGID:null,
+        dispatcherGID:null
       };
 
       try {

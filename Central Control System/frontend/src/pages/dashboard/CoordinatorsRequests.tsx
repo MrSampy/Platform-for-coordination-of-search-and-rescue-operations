@@ -82,7 +82,9 @@ export default function CoordinatorsRequests() {
             const paginationQuery: EventPaginationQuery = {
                 pageNumber: 0,
                 pageSize: 0,
-                eventStatusGID: EventStatusActive.gid
+                eventStatusGID: EventStatusActive.gid,
+                coordinatorGID:null,
+                dispatcherGID:null
               };
               const response = await axios.post<{ items: DetailEvent[]; totalCount: number }>(
                 `${process.env.REACT_APP_API_BASE_URL}/event/sort`,

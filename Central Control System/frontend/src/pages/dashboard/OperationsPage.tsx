@@ -47,7 +47,9 @@ export default function OperationsPage() {
         const paginationQuery: EventPaginationQuery = {
           pageNumber: page + 1,
           pageSize: rows,
-          eventStatusGID: null
+          eventStatusGID: null,
+          coordinatorGID:null,
+          dispatcherGID:null
         };
         const response = await axios.post<{ items: DetailEvent[], totalCount: number }>(
           `${process.env.REACT_APP_API_BASE_URL}/event/sort`,

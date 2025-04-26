@@ -54,6 +54,8 @@ export interface EventPaginationQuery {
   pageNumber:number;
   pageSize:number;
   eventStatusGID: Nullable<string>;
+  coordinatorGID: Nullable<string>;
+  dispatcherGID: Nullable<string>;
 }
 
 export interface EventStatusDTO {
