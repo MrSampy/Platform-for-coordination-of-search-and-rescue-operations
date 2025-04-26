@@ -5,7 +5,11 @@ using Gateway.Application.Mapper;
 using Gateway.Application.Validators;
 using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.Constants;
+using Gateway.DTO.DTOs.Operations;
+using Gateway.DTO.DTOs.Utils;
+using Gateway.DTO.DTOs.Volunteers;
 using Gateway.Infrastructure.Services.Gateways;
+using Gateway.Infrastructure.Services.Gateways.Gateway.Infrastructure.Services.Gateways;
 using Gateway.Infrastructure.Services.Services;
 using Gateway.Integration.Api.Config;
 using Gateway.Integration.Api.Config.Utils;
@@ -188,6 +192,30 @@ namespace Gateway.Integration.Api.Extensions
             services.AddTransient<IOperationsService, OperationsService>();
 
             services.AddTransient<IVolunteersService, VolunteersService>();
+
+            return services;
+        }
+        public static IServiceCollection AddCache(this IServiceCollection services)
+        {
+            services.AddSingleton<ICacheService<DistrictDTO>, CacheService<DistrictDTO>>();
+            services.AddSingleton<ICacheService<ResourceDTO>, CacheService<ResourceDTO>>();
+            services.AddSingleton<ICacheService<MeasurementUnitDTO>, CacheService<MeasurementUnitDTO>>();
+            services.AddSingleton<ICacheService<VolunteerDTO>, CacheService<VolunteerDTO>>();
+            services.AddSingleton<ICacheService<VolunteersDistrictsDTO>, CacheService<VolunteersDistrictsDTO>>();
+            services.AddSingleton<ICacheService<VolunteersGroupsDTO>, CacheService<VolunteersGroupsDTO>>();
+            services.AddSingleton<ICacheService<VolunteersEventsDTO>, CacheService<VolunteersEventsDTO>>();
+
+            services.AddSingleton<ICacheService<MessageDTO>, CacheService<MessageDTO>>();
+            services.AddSingleton<ICacheService<EventDTO>, CacheService<EventDTO>>();
+            services.AddSingleton<ICacheService<EventStatusDTO>, CacheService<EventStatusDTO>>();
+            services.AddSingleton<ICacheService<EventTypeDTO>, CacheService<EventTypeDTO>>();
+            services.AddSingleton<ICacheService<GroupDTO>, CacheService<GroupDTO>>();
+            services.AddSingleton<ICacheService<OperationTaskDTO>, CacheService<OperationTaskDTO>>();
+            services.AddSingleton<ICacheService<OperationTaskStatusDTO>, CacheService<OperationTaskStatusDTO>>();
+            services.AddSingleton<ICacheService<OperationWorkerDTO>, CacheService<OperationWorkerDTO>>();
+            services.AddSingleton<ICacheService<ResourcesEventDTO>, CacheService<ResourcesEventDTO>>();
+
+
 
             return services;
         }

@@ -6,5 +6,9 @@ namespace Gateway.DTO.DTOs.Operations.Request
     {
         public Guid? EventGID { get; set; }
         public Guid? LeaderGID { get; set; }
+        public override string GetKey()
+        {
+            return $"{base.GetKey()}LeaderGID:{LeaderGID};EventGID:{EventGID}";
+        }
     }
 }

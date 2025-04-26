@@ -7,5 +7,6 @@
 
         public bool IsValid() { return PageNumber >= 0 && PageSize >= 0; }
         public bool GetAll() { return PageNumber == 0 && PageSize == 0; }
+        public virtual string GetKey() { return $"PageNumber:{PageNumber};PageSize:{PageSize};"; }
     }
 }

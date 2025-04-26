@@ -22,6 +22,8 @@ namespace Gateway.Integration.Api.DI
 
             services.AddHttpClients(Configuration);
 
+            services.AddCache();
+
             services.AddGateways();
 
             services.AddValidators();
