@@ -193,6 +193,8 @@ namespace Gateway.Integration.Api.Extensions
 
             services.AddTransient<IVolunteersService, VolunteersService>();
 
+            services.AddTransient<IQRCodeService, QRCodeService>();
+
             return services;
         }
         public static IServiceCollection AddCache(this IServiceCollection services)

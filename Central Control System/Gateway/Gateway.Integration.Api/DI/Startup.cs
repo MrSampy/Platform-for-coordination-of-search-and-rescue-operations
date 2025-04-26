@@ -10,7 +10,7 @@ namespace Gateway.Integration.Api.DI
                                                         "Resource", "ResourceMeasurementUnit",
                                                         "Volunteer", "VolunteersDistricts", "VolunteersGroups", "VolunteersEvents",
                                                         "Event", "EventStatus", "EventType", "Group",
-                                                        "OperationTask", "OperationTaskStatus", "OperationWorker", "ResourcesEvent", "Message"};
+                                                        "OperationTask", "OperationTaskStatus", "OperationWorker", "ResourcesEvent", "Message", "QrCode"};
 
         public void ConfigureServices(IServiceCollection services)
         {
