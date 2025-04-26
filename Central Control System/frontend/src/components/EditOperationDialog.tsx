@@ -9,8 +9,8 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import LocationPickerMap from '../components/LocationPickerMap';
 import { TokenInfoDTO } from '../types/authTypes';
-import { DistrictDTO } from '../types/utilsTypes';
-import { DetailEvent, EventTypeDTO, OperationWorkerDTO, UpdateEventDTO, CreateGroupDTO } from '../types/eventTypes';
+import { DistrictDTO, ResourceDTO } from '../types/utilsTypes';
+import { DetailEvent, EventTypeDTO, OperationWorkerDTO, UpdateEventDTO, CreateGroupDTO, ResourcesEventDTO} from '../types/eventTypes';
 import {
   EventStatusCreated,
   EventStatusApproved,
@@ -34,6 +34,8 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
   const [groupDialogVisible, setGroupDialogVisible] = useState(false);
   const [newGroupName, setNewGroupName] = useState<string>('');
   const [editingGroup, setEditingGroup] = useState<CreateGroupDTO | null>(null);
+  const [resourcesEvent, setResourcesEvent] = useState<ResourcesEventDTO[]>([]);
+  const [resources, setResources] = useState<ResourceDTO[]>([]);
 
   const getAvailableStatuses = (currentStatus: string) => {
     switch (currentStatus.toLowerCase()) {
@@ -62,16 +64,20 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
       const headers = { Authorization: `Bearer ${token.token}` };
 
       try {
-        const [eventTypeRes, districtRes, workersRes, groupRes] = await Promise.all([
+        const [eventTypeRes, districtRes, workersRes, groupRes, resourceRes, resourcesEventRes] = await Promise.all([
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/eventType?pageNumber=0&pageSize=0`, { headers }),
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/district?pageNumber=0&pageSize=0`, { headers }),
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/operationworker/byRole/Coordinator`, { headers }),
-          axios.get(`${process.env.REACT_APP_API_BASE_URL}/group/byEventGID/${selectedEvent.gid}`, { headers })
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/group/byEventGID/${selectedEvent.gid}`, { headers }),
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/resource?pageNumber=0&pageSize=0`, { headers }),
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/resourcesEvent/by-event/${selectedEvent.gid}`, { headers }),
         ]);
 
         setEventTypes(eventTypeRes.data);
         setDistricts(districtRes.data);
         setWorkers(workersRes.data);
+        setResources(resourceRes.data);
+        setResourcesEvent(resourcesEventRes.data);
 
         const mappedGroups = groupRes.data.map((g: any) => ({
           gid: g.gid,
@@ -260,8 +266,16 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
                 placeholder="Оберіть статус"
               />
             </div>
+            <div className="col-12">
+              <h4>Ресурси</h4>
+              <ul>
+                {resourcesEvent.map((r, i) => (
+                  <li key={i}>{`Ресурс: ${resources.find((element) => element.gid === r.resourceGID)?.name}, К-сть: ${r.availableQuantity}/${r.requiredQuantity}`}</li>
+                ))}
+              </ul>
+            </div>
           </div>
-
+          
           <div className="mt-4">
             <div className="flex justify-content-between align-items-center mb-2">
               <h4>Групи</h4>

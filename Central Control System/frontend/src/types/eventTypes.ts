@@ -127,3 +127,17 @@ export interface CreateGroupDTO {
   deleted: Nullable<boolean>;
   edited: Nullable<boolean>;
 }
+
+export interface ResourcesEventDTO {
+  gid: string;
+  resourceGID: string;
+  eventGID: string;
+  requiredQuantity: number;
+  availableQuantity: number;
+}
+export interface CreateResourcesEventDTO {
+  resourceGID: string;
+  eventGID: string;
+  requiredQuantity: number;
+  availableQuantity: number;
+}
