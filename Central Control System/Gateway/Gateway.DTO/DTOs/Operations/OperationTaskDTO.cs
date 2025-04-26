@@ -9,5 +9,4 @@ namespace Gateway.DTO.DTOs.Operations
         public required Guid GroupGID { get; set; }
         public required Guid TaskStatusGID { get; set; }
     }
-
 }

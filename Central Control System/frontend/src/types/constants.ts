@@ -1,4 +1,5 @@
 import { EventStatusDTO } from "./eventTypes";
+import { OperationTaskStatusDTO } from "./groupTypes";
 
 export const EventStatusCreated : EventStatusDTO = {
     gid: '1B45017E-2781-4802-BB86-037C4A9811F9',
@@ -24,3 +25,21 @@ export const EventStatusDeleted: EventStatusDTO = {
     gid: '9095DB76-5C22-431D-BFBD-51849423F57B',
     name:'Видалена'
 };
+
+
+export const OperationTaskStatusWaiting: OperationTaskStatusDTO = {
+    gid: 'A1E5697D-5A9A-4D61-9E84-143802F25E45',
+    name:'Очікує виконавця'
+}
+export const OperationTaskStatusDoing: OperationTaskStatusDTO = {
+    gid: 'C8DBA917-3F3A-4BD0-9D1A-3A52C3F4ACD2',
+    name:'Виконується'
+}
+export const OperationTaskStatusDone: OperationTaskStatusDTO = {
+    gid: 'AFEC6D5D-4C6A-4A3F-9A9C-E3C3EFC2A9D4',
+    name:'Завершена'
+}
+export const OperationTaskStatusNotDone: OperationTaskStatusDTO = {
+    gid: 'B9A6C44D-AB56-4AA2-8F8E-74D52268E278',
+    name:'Не виконана'
+}

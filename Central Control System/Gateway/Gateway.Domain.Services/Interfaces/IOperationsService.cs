@@ -10,6 +10,8 @@ namespace Gateway.Domain.Services.Interfaces
     {
         Task<GetAllEntitesReponse<EventDetails>> GetEventsDetail(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
         Task<GetAllEntitesReponse<GroupDetails>> GetGroupsDetails(GroupPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<GetAllEntitesReponse<GroupDetails>> GetGroupsByDispatcherGID(GetGroupsByDispatcherGIDRequest request, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<OperationTaskDTO>> GetOperationTasksByGroupGID(Guid groupGID, CancellationToken cancellationToken, string token);
         Task<IEnumerable<OperationWorkerDTO>> GetWorkersByRole(GetOperationWorkersByRoleName request, CancellationToken cancellationToken, string token);
         Task EventStatusChange(EventStatusChangeRequest request, string token);
         Task<EventDTO> CreateEvent(CreateEventRequest request, string token);

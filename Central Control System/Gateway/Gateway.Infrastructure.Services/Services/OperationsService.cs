@@ -34,6 +34,37 @@ namespace Gateway.Infrastructure.Services.Services
             _authGateway = authGateway;
             _volunteerGroupsGateway = volunteersGateway;
         }
+        public async Task<IEnumerable<OperationTaskDTO>> GetOperationTasksByGroupGID(Guid groupGID, CancellationToken cancellationToken, string token)
+        {
+            var operationTasks = await _operationsGateway.GetOperationTasks(new PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+
+            return operationTasks.Where(op => op.GroupGID == groupGID);
+        }
+
+        public async Task<GetAllEntitesReponse<GroupDetails>> GetGroupsByDispatcherGID(GetGroupsByDispatcherGIDRequest request, CancellationToken cancellationToken, string token)
+        {
+            var allGroups = await _operationsGateway.GetGroups(new PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+
+            var events = await _operationsGateway.GetSortedEvents(new EventPaginationQuery { PageNumber = 0, PageSize = 0, DispatcherGID = request.DispatcherGID }, cancellationToken, token);
+
+            var result = new List<GroupDetails>();
+
+            foreach (var eventDTO in events.Items)
+            {
+                result.AddRange(await GetGroupsByEventGID(eventDTO.GID, cancellationToken, token));
+            }
+
+            var totalCount = result.Count();
+
+            if (!request.GetAll())
+            {
+                result = (result.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize)).ToList();
+            }
+
+            return new GetAllEntitesReponse<GroupDetails>() { Items = result, TotalCount = totalCount };
+        }
+
+
         public async Task<GetAllEntitesReponse<GroupDetails>> GetGroupsDetails(GroupPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
         {
             var sortedGroups = await _operationsGateway.GetSortedGroups(paginationQuery, cancellationToken, token);

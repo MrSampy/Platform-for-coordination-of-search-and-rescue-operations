@@ -18,10 +18,12 @@ namespace Gateway.Integration.Api.Controllers
     public class OperationTaskController : ControllerBase
     {
         private readonly IOperationsGateway _operationsGateway;
+        private readonly IOperationsService _operationsService;
 
-        public OperationTaskController(IOperationsGateway operationsGateway)
+        public OperationTaskController(IOperationsGateway operationsGateway, IOperationsService operationsService)
         {
             _operationsGateway = operationsGateway;
+            _operationsService = operationsService;
         }
 
         [HttpGet]
@@ -36,6 +38,13 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _operationsGateway.GetOperationTaskByGID(gid, cancellationToken, token));
+        }
+
+        [HttpGet("byGroupGID/{groupGID}")]
+        public async Task<IActionResult> GetOperationTasksByGroupGID(Guid groupGID, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsService.GetOperationTasksByGroupGID(groupGID, cancellationToken, token));
         }
 
         [HttpPost]

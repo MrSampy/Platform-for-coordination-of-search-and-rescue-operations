@@ -1,4 +1,3 @@
-
 import { Nullable } from "./commonTypes";
 
 export interface DetailGroup {
@@ -35,3 +34,28 @@ export interface GroupDTO {
     edited: Nullable<boolean>;
   }
   
+  export interface GetGroupsByDispatcherGIDRequest {
+    pageNumber:number;
+    pageSize:number;
+    dispatcherGID: Nullable<string>;
+  }
+  
+  export interface OperationTaskDTO{
+    gid: string;
+    name: string;
+    taskDescription: string;
+    groupGID: string;
+    taskStatusGID: string;
+  }
+  export interface CreateOperationTaskDTO{   
+    gid: Nullable<string>;
+    name: string;
+    taskDescription: string;
+    groupGID: string;
+    taskStatusGID: string;
+  }
+
+  export interface OperationTaskStatusDTO{
+    gid: string;
+    name: string;
+  }
