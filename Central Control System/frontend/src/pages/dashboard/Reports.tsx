@@ -130,9 +130,11 @@ export default function Reports() {
             <Column
                 header="Погодження"
                 body={(rowData: DetailEvent) => (
-                <Button label="Отримати звіт" raised severity="warning" style={{ fontSize: '12px', backgroundColor:'rgb(164, 219, 226)' }} onClick={() => getReport(rowData)}/>
+                  <div className="flex gap-2 justify-content-center">
+                    <Button className='p-button-rounded' icon="pi pi-file" raised severity="warning" style={{ fontSize: '12px', backgroundColor:'rgb(164, 219, 226)' }} onClick={() => getReport(rowData)}/>
+                  </div>
                 )}
-                style={{ width: '10%' }}
+                style={{ width: '2%' }}
             />
             </DataTable>
         </div>

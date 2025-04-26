@@ -10,7 +10,8 @@ import { DataTable } from 'primereact/datatable';
 import LocationPickerMap from '../components/LocationPickerMap';
 import { TokenInfoDTO } from '../types/authTypes';
 import { DistrictDTO, ResourceDTO } from '../types/utilsTypes';
-import { DetailEvent, EventTypeDTO, OperationWorkerDTO, UpdateEventDTO, CreateGroupDTO, ResourcesEventDTO} from '../types/eventTypes';
+import { DetailEvent, EventTypeDTO, OperationWorkerDTO, UpdateEventDTO, ResourcesEventDTO} from '../types/eventTypes';
+import { CreateGroupDTO} from '../types/groupTypes';
 import {
   EventStatusCreated,
   EventStatusApproved,

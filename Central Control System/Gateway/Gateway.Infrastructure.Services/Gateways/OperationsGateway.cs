@@ -148,7 +148,10 @@ namespace Gateway.Infrastructure.Services.Gateways
             string url = $"operations/api/Group?PageNumber={paginationQuery.PageNumber}&PageSize={paginationQuery.PageSize}";
             return await _apiBuilder.GetRequest<IEnumerable<GroupDTO>>(url, SharedConstants.OperationsService, cancellationToken, token);
         }
-
+        public async Task<GetAllEntitesReponse<GroupDTO>> GetSortedGroups(GroupPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        {
+            return await _apiBuilder.PostRequest<GetAllEntitesReponse<GroupDTO>>("operations/api/Group/sort", paginationQuery, SharedConstants.OperationsService, cancellationToken, token);
+        }
         public async Task<GroupDTO> GetGroupByGID(Guid gid, CancellationToken cancellationToken, string token)
         {
             return await _apiBuilder.GetRequest<GroupDTO>($"operations/api/Group/{gid}", SharedConstants.OperationsService, cancellationToken, token);

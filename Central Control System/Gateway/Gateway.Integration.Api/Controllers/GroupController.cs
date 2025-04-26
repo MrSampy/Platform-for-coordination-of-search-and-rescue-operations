@@ -1,6 +1,7 @@
 ﻿using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.DTOs.Common;
 using Gateway.DTO.DTOs.Operations.Create;
+using Gateway.DTO.DTOs.Operations.Request;
 using Gateway.DTO.DTOs.Operations.Update;
 using Gateway.Integration.Api.Config;
 using Gateway.Integration.Api.Model;
@@ -38,6 +39,13 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _operationsService.GetGroupsByEventGID(eventGID, cancellationToken, token));
+        }
+
+        [HttpPost("sort")]
+        public async Task<IActionResult> GetGroups([FromBody] GroupPaginationQuery paginationQuery, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsService.GetGroupsDetails(paginationQuery, cancellationToken, token));
         }
 
         [HttpGet("{gid}")]

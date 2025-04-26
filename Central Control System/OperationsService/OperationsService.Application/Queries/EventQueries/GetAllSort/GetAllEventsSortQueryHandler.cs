@@ -8,18 +8,18 @@ using OperationsService.Domain.Interfaces;
 
 namespace OperationsService.Application.Queries.EventQueries.GetAllSort
 {
-    public class GetAllSortQueryHandler : IRequestHandler<GetAllSortQuery, GetAllEntitesReponse<EventDTO>>
+    public class GetAllEventsSortQueryHandler : IRequestHandler<GetAllEventsSortQuery, GetAllEntitesReponse<EventDTO>>
     {
         private readonly IRepository<Event> _eventRepository;
         private readonly IMapper _mapper;
 
-        public GetAllSortQueryHandler(IRepository<Event> eventRepository, IMapper mapper)
+        public GetAllEventsSortQueryHandler(IRepository<Event> eventRepository, IMapper mapper)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
         }
 
-        public async Task<GetAllEntitesReponse<EventDTO>> Handle(GetAllSortQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllEntitesReponse<EventDTO>> Handle(GetAllEventsSortQuery request, CancellationToken cancellationToken)
         {
             if (!request.PaginationQuery.IsValid())
             {

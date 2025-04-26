@@ -111,23 +111,6 @@ export interface CreateMessageDTO {
   isRead: boolean;
 }
 
-export interface GroupDTO {
-  gid: string;
-  name: string;
-  eventGID: string;
-  leaderGID: Nullable<string>;
-}
-
-
-export interface CreateGroupDTO {
-  gid: Nullable<string>;
-  name: string;
-  eventGID: string;
-  leaderGID: Nullable<string>;
-  deleted: Nullable<boolean>;
-  edited: Nullable<boolean>;
-}
-
 export interface ResourcesEventDTO {
   gid: string;
   resourceGID: string;

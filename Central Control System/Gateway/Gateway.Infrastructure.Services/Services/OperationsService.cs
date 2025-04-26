@@ -34,7 +34,21 @@ namespace Gateway.Infrastructure.Services.Services
             _authGateway = authGateway;
             _volunteerGroupsGateway = volunteersGateway;
         }
+        public async Task<GetAllEntitesReponse<GroupDetails>> GetGroupsDetails(GroupPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        {
+            var sortedGroups = await _operationsGateway.GetSortedGroups(paginationQuery, cancellationToken, token);
 
+            var tasks = sortedGroups.Items
+               .Select(group => ConvertToDetailGroup(group, token));
+
+            var groups = await Task.WhenAll(tasks);
+
+            return new GetAllEntitesReponse<GroupDetails>
+            {
+                Items = groups == null ? new List<GroupDetails>() : groups.ToList(),
+                TotalCount = sortedGroups.TotalCount
+            };
+        }
         public async Task DeleteEvent(Guid gid, string token)
         {
             var volunteersEvents = await _volunteerGroupsGateway.GetVolunteersByEventGID(gid, CancellationToken.None, token);
@@ -83,23 +97,50 @@ namespace Gateway.Infrastructure.Services.Services
             await _operationsGateway.DeleteGroup(gid, token);
         }
 
-        public async Task<IEnumerable<GroupDTO>> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken, string token)
+        public async Task<IEnumerable<GroupDetails>> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken, string token)
         {
-            var groups = await _operationsGateway.GetGroups(new PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+            var eventDTO = await _operationsGateway.GetEventByGID(eventGID, cancellationToken, token);
 
-            return groups.Where(g => g.EventGID == eventGID);
+            var groups = await _operationsGateway.GetGroups(new PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+            var tasks = groups
+                .Where(g => g.EventGID == eventGID)
+                .Select(group => ConvertToDetailGroup(group, token, eventDTO));
+
+            return await Task.WhenAll(tasks);
+        }
+
+        public async Task<GroupDetails> ConvertToDetailGroup(GroupDTO group, string token, EventDTO? eventDTO = null)
+        {
+            eventDTO ??= await _operationsGateway.GetEventByGID(group.EventGID, CancellationToken.None, token);
+
+            var result = new GroupDetails
+            {
+                GID = group.GID,
+                Name = group.Name,
+                EventGID = group.EventGID,
+                LeaderGID = group.LeaderGID,
+                EventName = eventDTO.Name
+            };
+
+            if (group.LeaderGID != null)
+            {
+                var leader = await _volunteerGroupsGateway.GetVolunteerByGID(group.LeaderGID.Value, CancellationToken.None, token);
+                result.LeaderName = $"{leader.Name} {leader.Surname} {leader.SecondName}";
+            }
+
+            return result;
         }
 
 
-        public async Task<GetAllEntitesReponse<MessageDetail>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        public async Task<GetAllEntitesReponse<MessageDetails>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
         {
             var messges = await _operationsGateway.GetMessages(paginationQuery, cancellationToken, token);
 
-            var resultMessages = new List<MessageDetail>();
+            var resultMessages = new List<MessageDetails>();
 
             foreach (var message in messges.Items)
             {
-                var messageDetail = _mapper.Map<MessageDetail>(message);
+                var messageDetail = _mapper.Map<MessageDetails>(message);
 
                 var sender = await _operationsGateway.GetOperationWorkerByGID(message.From, cancellationToken, token);
                 var receiver = await _operationsGateway.GetOperationWorkerByGID(message.To, cancellationToken, token);
@@ -112,7 +153,7 @@ namespace Gateway.Infrastructure.Services.Services
                 resultMessages.Add(messageDetail);
             }
 
-            return new GetAllEntitesReponse<MessageDetail>
+            return new GetAllEntitesReponse<MessageDetails>
             {
                 Items = resultMessages,
                 TotalCount = messges.TotalCount
@@ -336,9 +377,9 @@ namespace Gateway.Infrastructure.Services.Services
             }
         }
 
-        public async Task<GetAllEntitesReponse<DetailEvent>> GetClearEvents(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        public async Task<GetAllEntitesReponse<EventDetails>> GetEventsDetail(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
         {
-            var result = new GetAllEntitesReponse<DetailEvent>();
+            var result = new GetAllEntitesReponse<EventDetails>();
 
             var response = await _operationsGateway.GetSortedEvents(paginationQuery, cancellationToken, token);
 
@@ -352,12 +393,12 @@ namespace Gateway.Infrastructure.Services.Services
             return result;
         }
 
-        private async Task<DetailEvent> ConvertToDetailEvent(EventDTO eventDTO, CancellationToken cancellationToken, string token)
+        private async Task<EventDetails> ConvertToDetailEvent(EventDTO eventDTO, CancellationToken cancellationToken, string token)
         {
             var dispatcher = await _operationsGateway.GetOperationWorkerByGID(eventDTO.DispatcherGID, cancellationToken, token);
             var coordinator = await _operationsGateway.GetOperationWorkerByGID(eventDTO.CoordinatorGID, cancellationToken, token);
 
-            var clearEvent = _mapper.Map<DetailEvent>(eventDTO);
+            var clearEvent = _mapper.Map<EventDetails>(eventDTO);
 
             clearEvent.Dispatcher = $"{dispatcher.Name} {dispatcher.Surname} {dispatcher.SecondName}";
             clearEvent.Coordinator = $"{coordinator.Name} {coordinator.Surname} {coordinator.SecondName}";

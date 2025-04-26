@@ -6,9 +6,11 @@ using OperationsService.API.Model;
 using OperationsService.Application.Commands.GroupCommands.Delete;
 using OperationsService.Application.Commands.GroupCommands.Update;
 using OperationsService.Application.DTOs.Create;
+using OperationsService.Application.DTOs.Requests;
 using OperationsService.Application.DTOs.Update;
 using OperationsService.Application.Queries.GroupQueries.Create;
 using OperationsService.Application.Queries.GroupQueries.GetAll;
+using OperationsService.Application.Queries.GroupQueries.GetAllSort;
 using OperationsService.Application.Queries.GroupQueries.GetByGID;
 using OperationsService.Domain.Entities;
 
@@ -35,6 +37,12 @@ namespace OperationsService.API.Controllers
         public async Task<IActionResult> GetGroupByGID(Guid gid, CancellationToken cancellationToken = default)
         {
             return Ok(await _mediator.Send(new GetGroupByGidQuery() { GID = gid }, cancellationToken));
+        }
+
+        [HttpPost("sort")]
+        public async Task<IActionResult> GetGroups([FromBody] GroupPaginationQuery paginationQuery, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _mediator.Send(new GetAllGroupsSortQuery() { PaginationQuery = paginationQuery }, cancellationToken));
         }
 
         [HttpPost]

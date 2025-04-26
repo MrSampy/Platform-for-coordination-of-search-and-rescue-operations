@@ -45,6 +45,7 @@ namespace Gateway.Domain.Services.Interfaces
         #region Group
         Task<IEnumerable<GroupDTO>> GetGroups(PaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
         Task<GroupDTO> GetGroupByGID(Guid gid, CancellationToken cancellationToken, string token);
+        Task<GetAllEntitesReponse<GroupDTO>> GetSortedGroups(GroupPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
         Task<GroupDTO> CreateGroup(CreateGroupDTO Group, string token);
         Task UpdateGroup(UpdateGroupDTO Group, string token);
         Task DeleteGroup(Guid gid, string token);

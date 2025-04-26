@@ -12,12 +12,12 @@ namespace Gateway.Application.Mapper
         {
             // Event Mapping
             CreateMap<CreateEventDTO, EventDTO>().ReverseMap();
-            CreateMap<DetailEvent, EventDTO>().ReverseMap();
+            CreateMap<EventDetails, EventDTO>().ReverseMap();
             CreateMap<UpdateEventDTO, EventDTO>().ReverseMap();
 
             // Event Message
             CreateMap<CreateMessageDTO, MessageDTO>().ReverseMap();
-            CreateMap<MessageDetail, MessageDTO>().ReverseMap();
+            CreateMap<MessageDetails, MessageDTO>().ReverseMap();
 
             // EventStatus Mapping
             CreateMap<CreateEventStatusDTO, EventStatusDTO>().ReverseMap();

@@ -8,14 +8,15 @@ namespace Gateway.Domain.Services.Interfaces
 {
     public interface IOperationsService
     {
-        Task<GetAllEntitesReponse<DetailEvent>> GetClearEvents(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<GetAllEntitesReponse<EventDetails>> GetEventsDetail(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<GetAllEntitesReponse<GroupDetails>> GetGroupsDetails(GroupPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
         Task<IEnumerable<OperationWorkerDTO>> GetWorkersByRole(GetOperationWorkersByRoleName request, CancellationToken cancellationToken, string token);
         Task EventStatusChange(EventStatusChangeRequest request, string token);
         Task<EventDTO> CreateEvent(CreateEventRequest request, string token);
         Task<GetReportResponse> GenerateEventReport(Guid eventGID, CancellationToken cancellationToken, string token);
         Task<OperationWorkerDTO?> GetWorkerByUserGID(Guid userGID, CancellationToken cancellationToken, string token);
-        Task<GetAllEntitesReponse<MessageDetail>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
-        Task<IEnumerable<GroupDTO>> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken, string token);
+        Task<GetAllEntitesReponse<MessageDetails>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<GroupDetails>> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken, string token);
         Task DeleteEvent(Guid gid, string token);
         Task DeleteGroup(Guid gid, string token);
 

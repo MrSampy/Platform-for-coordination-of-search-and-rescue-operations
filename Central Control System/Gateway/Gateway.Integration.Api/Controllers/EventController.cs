@@ -37,7 +37,7 @@ namespace Gateway.Integration.Api.Controllers
         public async Task<IActionResult> GetEvents([FromBody] EventPaginationQuery paginationQuery, CancellationToken cancellationToken = default)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            return Ok(await _operationsService.GetClearEvents(paginationQuery, cancellationToken, token));
+            return Ok(await _operationsService.GetEventsDetail(paginationQuery, cancellationToken, token));
         }
 
         [HttpGet("{gid}")]

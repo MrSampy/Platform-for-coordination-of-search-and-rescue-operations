@@ -36,7 +36,7 @@ namespace OperationsService.API.Controllers
         [HttpPost("sort")]
         public async Task<IActionResult> GetEvents([FromBody] EventPaginationQuery paginationQuery, CancellationToken cancellationToken = default)
         {
-            return Ok(await _mediator.Send(new GetAllSortQuery() { PaginationQuery = paginationQuery }, cancellationToken));
+            return Ok(await _mediator.Send(new GetAllEventsSortQuery() { PaginationQuery = paginationQuery }, cancellationToken));
         }
 
         [HttpGet("{gid}")]

@@ -1,6 +1,6 @@
 ﻿namespace Gateway.DTO.DTOs.Operations.Detail
 {
-    public class DetailEvent : EventDTO
+    public class EventDetails : EventDTO
     {
         public required string EventType { get; set; }
         public required string District { get; set; }
