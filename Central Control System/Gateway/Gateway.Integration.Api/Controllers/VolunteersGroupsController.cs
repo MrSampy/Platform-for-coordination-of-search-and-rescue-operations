@@ -17,10 +17,12 @@ namespace Gateway.Integration.Api.Controllers
     public class VolunteersGroupsController : ControllerBase
     {
         private readonly IVolunteersGateway _volunteersGateway;
+        private readonly IVolunteersService _volunteersService;
 
-        public VolunteersGroupsController(IVolunteersGateway volunteersGateway)
+        public VolunteersGroupsController(IVolunteersGateway volunteersGateway, IVolunteersService volunteersService)
         {
             _volunteersGateway = volunteersGateway;
+            _volunteersService = volunteersService;
         }
 
         [HttpGet]
@@ -56,6 +58,14 @@ namespace Gateway.Integration.Api.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             return Ok(await _volunteersGateway.AddVolunteerToGroup(dto, token));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoveVolunteerFromGroup([FromBody] CreateVolunteersGroupsDTO dto)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            await _volunteersService.RemoveVolunteerFromGroup(dto, token);
+            return NoContent();
         }
 
         [HttpDelete("{gid}")]

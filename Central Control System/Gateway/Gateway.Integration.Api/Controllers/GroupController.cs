@@ -48,6 +48,13 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _operationsService.GetGroupsDetails(paginationQuery, cancellationToken, token));
         }
 
+        [HttpPost("by-dispatcher")]
+        public async Task<IActionResult> GetGroupsByDispatcherGID([FromBody] GetGroupsByDispatcherGIDRequest request, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _operationsService.GetGroupsByDispatcherGID(request, cancellationToken, token));
+        }
+
         [HttpGet("{gid}")]
         public async Task<IActionResult> GetGroupByGID(Guid gid, CancellationToken cancellationToken = default)
         {

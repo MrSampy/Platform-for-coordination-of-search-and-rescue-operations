@@ -41,6 +41,13 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _volunteersService.GetVolunteersForEvent(request, cancellationToken, token));
         }
 
+        [HttpGet("by-group/{groupGID}")]
+        public async Task<IActionResult> GetVolunteersForGroup(Guid groupGID, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GetVolunteersForGroup(groupGID, cancellationToken, token));
+        }
+
         [HttpGet("{gid}")]
         public async Task<IActionResult> GetVolunteerByGID(Guid gid, CancellationToken cancellationToken = default)
         {

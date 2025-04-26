@@ -1,6 +1,7 @@
 ﻿using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Volunteers;
+using Gateway.DTO.DTOs.Volunteers.Create;
 using Gateway.DTO.DTOs.Volunteers.Request;
 
 namespace Gateway.Infrastructure.Services.Services
@@ -13,6 +14,14 @@ namespace Gateway.Infrastructure.Services.Services
         {
             _volunteersGateway = volunteersGateway;
             _operationsGateway = operationsGateway;
+        }
+        public async Task<IEnumerable<VolunteerDTO>> GetVolunteersForGroup(Guid groupGID, CancellationToken cancellationToken, string token)
+        {
+            var volunteersGroups = await _volunteersGateway.GetVolunteersByGroupGID(groupGID, cancellationToken, token);
+
+            var volunteers = await _volunteersGateway.GetVolunteers(new DTO.DTOs.Common.PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+
+            return volunteers.Where(v => volunteersGroups.Any(vg => vg.VolunteerGID == v.GID));
         }
 
         public async Task<IEnumerable<VolunteerDTO>> GetVolunteersForEvent(VolunteersForEventRequest request, CancellationToken cancellationToken, string token)
@@ -37,7 +46,17 @@ namespace Gateway.Infrastructure.Services.Services
 
             return volunteersForEvent;
         }
+        public async Task RemoveVolunteerFromGroup(CreateVolunteersGroupsDTO dto, string token)
+        {
+            if (!(await _volunteersGateway.IsVolunteerinGroup(dto, token)).IsExist)
+                throw new Exception("Volunteer is not in group");
 
+            var volunteersGroups = await _volunteersGateway.GetVolunteersGroups(new DTO.DTOs.Common.PaginationQuery { PageNumber = 0, PageSize = 0 }, CancellationToken.None, token);
+
+            var volunteersGroupsGID = volunteersGroups.First(x => x.GroupGID == dto.GroupGID && x.VolunteerGID == dto.VolunteerGID).GID;
+
+            await _volunteersGateway.RemoveVolunteerFromGroup(volunteersGroupsGID, token);
+        }
         public async Task<VolunteerDTO?> GeVolunteerByUserGID(Guid userGID, CancellationToken cancellationToken, string token)
         {
             var volunteers = await _volunteersGateway.GetVolunteers(new DTO.DTOs.Common.PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
