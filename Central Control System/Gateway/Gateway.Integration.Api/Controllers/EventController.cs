@@ -96,7 +96,7 @@ namespace Gateway.Integration.Api.Controllers
         public async Task<IActionResult> DeleteEvent(Guid gid)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            await _operationsGateway.DeleteEvent(gid, token);
+            await _operationsService.DeleteEvent(gid, token);
             return NoContent();
         }
     }

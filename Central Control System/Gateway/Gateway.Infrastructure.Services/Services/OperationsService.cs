@@ -34,6 +34,55 @@ namespace Gateway.Infrastructure.Services.Services
             _authGateway = authGateway;
             _volunteerGroupsGateway = volunteersGateway;
         }
+
+        public async Task DeleteEvent(Guid gid, string token)
+        {
+            var volunteersEvents = await _volunteerGroupsGateway.GetVolunteersByEventGID(gid, CancellationToken.None, token);
+            volunteersEvents ??= new List<VolunteersEventsDTO>();
+
+            var resorceEvents = await _operationsGateway.GetResourcesByEventGID(gid, CancellationToken.None, token);
+            resorceEvents ??= new List<ResourcesEventDTO>();
+
+            var groups = ((await _operationsGateway.GetGroups(new PaginationQuery { PageNumber = 0, PageSize = 0 }, CancellationToken.None, token)) ?? new List<GroupDTO>()).Where(g => g.EventGID == gid);
+
+            foreach (var volunteersEvent in volunteersEvents)
+            {
+                await _volunteerGroupsGateway.RemoveVolunteerFromEvent(volunteersEvent.GID, token);
+            }
+
+            foreach (var resorceEvent in resorceEvents)
+            {
+                await _operationsGateway.DeleteResourcesEvent(resorceEvent.GID, token);
+            }
+
+            foreach (var group in groups)
+            {
+                await DeleteGroup(group.GID, token);
+            }
+
+            await _operationsGateway.DeleteEvent(gid, token);
+        }
+        public async Task DeleteGroup(Guid gid, string token)
+        {
+            var volunteersGroups = await _volunteerGroupsGateway.GetVolunteersByGroupGID(gid, CancellationToken.None, token);
+            volunteersGroups ??= new List<VolunteersGroupsDTO>();
+
+            var operationTasks = await _operationsGateway.GetOperationTasks(new PaginationQuery { PageNumber = 0, PageSize = 0 }, CancellationToken.None, token);
+            operationTasks = operationTasks == null ? new List<OperationTaskDTO>() : operationTasks.Where(vg => vg.GroupGID == gid);
+
+            foreach (var volunteersGroup in volunteersGroups)
+            {
+                await _volunteerGroupsGateway.RemoveVolunteerFromGroup(volunteersGroup.GID, token);
+            }
+
+            foreach (var operationTask in operationTasks)
+            {
+                await _operationsGateway.DeleteOperationTask(operationTask.GID, token);
+            }
+
+            await _operationsGateway.DeleteGroup(gid, token);
+        }
+
         public async Task<IEnumerable<GroupDTO>> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken, string token)
         {
             var groups = await _operationsGateway.GetGroups(new PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);

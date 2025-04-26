@@ -66,7 +66,7 @@ namespace Gateway.Integration.Api.Controllers
         public async Task<IActionResult> DeleteGroup(Guid gid)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            await _operationsGateway.DeleteGroup(gid, token);
+            await _operationsService.DeleteGroup(gid, token);
             return NoContent();
         }
     }
