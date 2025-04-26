@@ -101,13 +101,8 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<GetAllEntitesReponse<EventDTO>> GetSortedEvents(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
         {
-            var cached = _eventCache.Get(paginationQuery.GetKey());
-            if (cached != null)
-                return new GetAllEntitesReponse<EventDTO> { Items = cached, TotalCount = cached.Count };
-
             var result = await _apiBuilder.PostRequest<GetAllEntitesReponse<EventDTO>>("operations/api/Event/sort", paginationQuery, SharedConstants.OperationsService, cancellationToken, token);
 
-            _eventCache.Set(paginationQuery.GetKey(), result.Items.ToList());
             return result;
         }
 
@@ -247,13 +242,8 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<GetAllEntitesReponse<GroupDTO>> GetSortedGroups(GroupPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
         {
-            var cached = _groupCache.Get(paginationQuery.GetKey());
-            if (cached != null)
-                return new GetAllEntitesReponse<GroupDTO> { Items = cached, TotalCount = cached.Count };
-
             var result = await _apiBuilder.PostRequest<GetAllEntitesReponse<GroupDTO>>("operations/api/Group/sort", paginationQuery, SharedConstants.OperationsService, cancellationToken, token);
 
-            _groupCache.Set(paginationQuery.GetKey(), result.Items.ToList());
             return result;
         }
 
