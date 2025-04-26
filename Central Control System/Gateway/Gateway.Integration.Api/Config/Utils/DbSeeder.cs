@@ -374,7 +374,7 @@ namespace Gateway.Integration.Api.Config.Utils
                 {
                     continue;
                 }
-                var user = await _authGateway.RegisterDispatcher(registerModel);
+                var user = await _authGateway.RegisterDispatcher(registerModel, _token);
                 _users.Add(user);
             }
         }

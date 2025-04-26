@@ -26,8 +26,10 @@ export default function Dashboard() {
   const hasRole = (roleName: string) => user?.roles?.some(role => role.name === roleName);
 
   const menuData = useMemo(() => {
+    const hasRole = (roleName: string) => user?.roles?.some(role => role.name === roleName);
+  
     const data = [];
-
+  
     if (hasRole('Dispatcher')) {
       data.push(
         {
@@ -57,20 +59,21 @@ export default function Dashboard() {
         }
       );
     }
-
+  
     if (hasRole('Admin')) {
       data.push({
         label: 'Адміністрування та доступ',
         items: [
+          { label: 'Зареєструвати працівника', path: 'registerWorker', icon: 'pi pi-user-plus' },
           { label: 'Відкрити операцію для погодження', path: 'approve', icon: 'pi pi-check-square' },
           { label: 'Звітність', path: 'reports', icon: 'pi pi-chart-line' }
         ]
       });
     }
-
+  
     return data;
   }, [user]);
-
+  
   const hasAccess = hasRole('Dispatcher') || hasRole('Admin');
 
   if (!hasAccess) {

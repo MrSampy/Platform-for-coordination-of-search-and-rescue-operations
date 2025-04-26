@@ -1,4 +1,5 @@
 ﻿using Gateway.Domain.Services.Interfaces;
+using Gateway.DTO.Constants;
 using Gateway.DTO.DTOs.Auth;
 using Gateway.DTO.DTOs.Common;
 using Gateway.DTO.DTOs.Operations.Create;
@@ -17,7 +18,7 @@ namespace Gateway.Infrastructure.Services.Services
             _operationsGateway = operationsGateway;
         }
 
-        public async Task<TokenInfoDTO> RegisterWorker(RegisterWorkerModel model)
+        public async Task RegisterWorker(RegisterWorkerModel model, string token)
         {
             var registerModel = new RegisterModel
             {
@@ -26,22 +27,16 @@ namespace Gateway.Infrastructure.Services.Services
                 Email = model.Email
             };
 
-            var user = await _authGateway.RegisterDispatcher(registerModel);
+            if (model.Role != SharedConstants.Dispatcher && model.Role != SharedConstants.Coordinator)
+            {
+                throw new ServiceException("Invalid role");
+            }
+
+            var user = model.Role == SharedConstants.Dispatcher ? await _authGateway.RegisterDispatcher(registerModel, token) : await _authGateway.RegisterCoordinator(registerModel, token);
 
             if (user == null)
             {
                 throw new ServiceException("User registration failed");
-            }
-
-            var token = await _authGateway.Login(new LoginModel
-            {
-                Username = model.Username,
-                Password = model.Password
-            });
-
-            if (token == null)
-            {
-                throw new ServiceException("User login failed");
             }
 
             var operationWorker = new CreateOperationWorkerDTO
@@ -55,14 +50,12 @@ namespace Gateway.Infrastructure.Services.Services
                 Email = model.Email
             };
 
-            var createdWorker = await _operationsGateway.CreateOperationWorker(operationWorker, token.Token);
+            var createdWorker = await _operationsGateway.CreateOperationWorker(operationWorker, token);
 
             if (createdWorker == null)
             {
                 throw new ServiceException("Operation worker creation failed");
             }
-
-            return token;
         }
 
         public IsExistModel IsUserWithSuchName(string name, CancellationToken cancellationToken)

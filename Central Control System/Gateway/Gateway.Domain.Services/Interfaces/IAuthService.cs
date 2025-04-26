@@ -5,7 +5,7 @@ namespace Gateway.Domain.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<TokenInfoDTO> RegisterWorker(RegisterWorkerModel model);
+        Task RegisterWorker(RegisterWorkerModel model, string token);
         IsExistModel IsUserWithSuchName(string name, CancellationToken cancellationToken);
         IsExistModel IsUserWithSuchEmail(string email, CancellationToken cancellationToken);
     }

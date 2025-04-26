@@ -24,5 +24,7 @@ namespace Gateway.DTO.DTOs.Auth
         public required string IdentificationCode { get; set; }
         [Required(ErrorMessage = "BirthDate is required")]
         public required DateTime BirthDate { get; set; }
+        [Required(ErrorMessage = "Role is required")]
+        public required string Role { get; set; }
     }
 }

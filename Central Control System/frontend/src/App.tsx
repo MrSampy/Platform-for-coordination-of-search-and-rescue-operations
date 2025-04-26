@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
-import Signup from './pages/Signup'; 
 import Dashboard from './pages/Dashboard'; 
 import NotFound from './components/NotFound';
 import './styles/common.css'
@@ -17,6 +16,7 @@ import CoordinatorsRequests from './pages/dashboard/CoordinatorsRequests';
 import ApproveOperations from './pages/dashboard/ApproveOperations';
 import Reports from './pages/dashboard/Reports';
 import RequireAuth from './components/RequireAuth';
+import RegisterWorker from './pages/dashboard/RegisterWorker';
 import 'leaflet/dist/leaflet.css';
 
 function App() {
@@ -24,8 +24,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
         {/* Protected dashboard */}
         <Route element={<RequireAuth />}>
           <Route path="/dashboard" element={<Dashboard />}>
@@ -34,11 +32,11 @@ function App() {
               <Route path="operations" element={<OperationsPage />} />
               <Route path="groups" element={<Groups />} />
               <Route path="requests" element={<CoordinatorsRequests />} />
+              <Route path="registerWorker" element={<RegisterWorker />} />
               <Route path="approve" element={<ApproveOperations />} />
               <Route path="reports" element={<Reports />} />
           </Route>
         </Route>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

@@ -1,5 +1,6 @@
 import { EventStatusDTO } from "./eventTypes";
 import { OperationTaskStatusDTO } from "./groupTypes";
+import { RoleDetails } from "./authTypes";
 
 export const EventStatusCreated : EventStatusDTO = {
     gid: '1B45017E-2781-4802-BB86-037C4A9811F9',
@@ -43,3 +44,15 @@ export const OperationTaskStatusNotDone: OperationTaskStatusDTO = {
     gid: 'B9A6C44D-AB56-4AA2-8F8E-74D52268E278',
     name:'Не виконана'
 }
+
+export const RoleDetailsDispatcher: RoleDetails = {
+    name: 'Dispatcher',
+    caption: 'Диспетчер'
+}
+
+export const RoleDetailsCoordinator: RoleDetails = {
+    name: 'Coordinator',
+    caption: 'Координатор'
+}
+
+export const Roles: RoleDetails[] = [ RoleDetailsDispatcher, RoleDetailsCoordinator ]

@@ -21,6 +21,11 @@ export type LoginModel = {
     name: string;
   }
   
+  export interface RoleDetails{
+    name: string;
+    caption: string;
+  }
+
   export interface UserDTO {
     id: string;
     name: string;
@@ -36,5 +41,6 @@ export type LoginModel = {
     secondName: string;
     identificationCode: string;
     birthDate: Nullable<Date>;
+    role: string;
   }
   

@@ -56,15 +56,20 @@ namespace Gateway.Integration.Api.Controllers
         [Route("register-worker")]
         public async Task<IActionResult> RegisterWorker([FromBody] RegisterWorkerModel model)
         {
-            return Ok(await _authService.RegisterWorker(model));
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            await _authService.RegisterWorker(model, token);
+            return NoContent();
         }
 
+        [Authorize]
         [HttpPost]
+        [RequiresAuthHeader]
         [Route("register-dispatcher")]
         public async Task<IActionResult> RegisterDispatcher([FromBody] RegisterModel model)
         {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            return Ok(await _authGateway.RegisterDispatcher(model));
+            return Ok(await _authGateway.RegisterDispatcher(model, token));
         }
 
         [Authorize]

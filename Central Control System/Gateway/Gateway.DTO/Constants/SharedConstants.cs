@@ -59,6 +59,11 @@ namespace Gateway.DTO.Constants
 
         public static readonly Guid TaskStatusDoing = new Guid("C8DBA917-3F3A-4BD0-9D1A-3A52C3F4ACD2");
 
+        public const string Admin = "Admin";
+        public const string Coordinator = "Coordinator";
+        public const string Dispatcher = "Dispatcher";
+        public const string Volunteer = "Volunteer";
+
         public static readonly List<EventStatusDTO> EventStatuses = new List<EventStatusDTO>() {
             new EventStatusDTO { GID = new Guid("1B45017E-2781-4802-BB86-037C4A9811F9"), Name = "Створена" },
             new EventStatusDTO { GID = new Guid("7A41DB19-06F8-4334-BB0C-B886D92EC4B4"), Name = "Погоджена" },

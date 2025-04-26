@@ -39,6 +39,7 @@ namespace AuthService.API.Controllers
             return Ok(await _authenticateSevice.Me(HttpContext));
         }
 
+        [Authorize]
         [HttpPost]
         [RequiresAuthHeader]
         [Route("register-admin")]
@@ -47,13 +48,16 @@ namespace AuthService.API.Controllers
             return Ok(await _authenticateSevice.RegisterAdmin(model));
         }
 
+        [Authorize]
         [HttpPost]
+        [RequiresAuthHeader]
         [Route("register-dispatcher")]
         public async Task<IActionResult> RegisterDispatcher([FromBody] RegisterModel model)
         {
             return Ok(await _authenticateSevice.RegisterDispatcher(model));
         }
 
+        [Authorize]
         [HttpPost]
         [RequiresAuthHeader]
         [Route("register-coordinator")]
