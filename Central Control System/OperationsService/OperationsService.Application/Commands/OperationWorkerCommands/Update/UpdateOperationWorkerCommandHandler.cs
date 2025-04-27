@@ -44,11 +44,14 @@ namespace OperationsService.Application.Commands.OperationWorkerCommands.Update
                 throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, "User", request.OperationWorker.UserGID.ToString()));
             }
 
-            var entityWithSameEmail = (await _operationWorkerRepository.GetAllAsync(cancellationToken)).FirstOrDefault(v => v.Email == request.OperationWorker.Email);
-
-            if (entityWithSameEmail != null)
+            if (entity.Email != request.OperationWorker.Email)
             {
-                throw new OperationsServiceException(Constants.OperationWorkerWithSuchEmailException);
+                var entityWithSameEmail = (await _operationWorkerRepository.GetAllAsync(cancellationToken)).FirstOrDefault(v => v.Email == request.OperationWorker.Email);
+
+                if (entityWithSameEmail != null)
+                {
+                    throw new OperationsServiceException(Constants.OperationWorkerWithSuchEmailException);
+                }
             }
 
             var mappedEntity = _mapper.Map<OperationWorker>(request.OperationWorker);

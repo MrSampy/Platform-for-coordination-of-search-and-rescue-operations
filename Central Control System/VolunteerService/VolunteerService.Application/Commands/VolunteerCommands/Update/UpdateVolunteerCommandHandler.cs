@@ -39,11 +39,14 @@ namespace VolunteerService.Application.Commands.VolunteerCommands.Update
                 throw new VolunteerServiceException(string.Format(Constants.NotFoundEntityException, "User", request.VolunteerDTO.UserGID.ToString()));
             }
 
-            var entityWithSameEmail = (await _volunteerRepository.GetAllAsync(cancellationToken)).FirstOrDefault(v => v.Email == request.VolunteerDTO.Email);
-
-            if (entityWithSameEmail != null)
+            if (entity.Email != request.VolunteerDTO.Email)
             {
-                throw new VolunteerServiceException(Constants.VolunteerWithSuchEmailException);
+                var entityWithSameEmail = (await _volunteerRepository.GetAllAsync(cancellationToken)).FirstOrDefault(v => v.Email == request.VolunteerDTO.Email);
+
+                if (entityWithSameEmail != null)
+                {
+                    throw new VolunteerServiceException(Constants.VolunteerWithSuchEmailException);
+                }
             }
 
             var mappedEntity = _mapper.Map<Volunteer>(request.VolunteerDTO);

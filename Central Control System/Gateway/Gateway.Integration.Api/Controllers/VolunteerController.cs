@@ -77,6 +77,14 @@ namespace Gateway.Integration.Api.Controllers
             return NoContent();
         }
 
+        [HttpPut("update-rating")]
+        public async Task<IActionResult> UpdateVolunteerRating([FromBody] UpdateVolunteerRatingRequest request)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            await _volunteersService.UpdateVolunteerRating(request, token);
+            return NoContent();
+        }
+
         [HttpDelete("{gid}")]
         public async Task<IActionResult> DeleteVolunteer(Guid gid)
         {

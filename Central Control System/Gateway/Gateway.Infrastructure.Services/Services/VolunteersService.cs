@@ -1,8 +1,11 @@
-﻿using Gateway.Domain.Services.Interfaces;
+﻿using AutoMapper;
+using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Volunteers;
 using Gateway.DTO.DTOs.Volunteers.Create;
 using Gateway.DTO.DTOs.Volunteers.Request;
+using Gateway.DTO.DTOs.Volunteers.Update;
+using Gateway.DTO.Exceptions;
 
 namespace Gateway.Infrastructure.Services.Services
 {
@@ -10,11 +13,30 @@ namespace Gateway.Infrastructure.Services.Services
     {
         private IVolunteersGateway _volunteersGateway;
         private IOperationsGateway _operationsGateway;
-        public VolunteersService(IVolunteersGateway volunteersGateway, IOperationsGateway operationsGateway)
+        private readonly IMapper _mapper;
+        public VolunteersService(IVolunteersGateway volunteersGateway, IOperationsGateway operationsGateway, IMapper mapper)
         {
             _volunteersGateway = volunteersGateway;
             _operationsGateway = operationsGateway;
+            _mapper = mapper;
         }
+
+        public async Task UpdateVolunteerRating(UpdateVolunteerRatingRequest request, string token)
+        {
+            var volunteer = await _volunteersGateway.GetVolunteerByGID(request.VolunteerGID, CancellationToken.None, token);
+            if (volunteer == null)
+                throw new ServiceException("Volunteer not found");
+
+            var newRating = volunteer.RatingNumber + request.RatingNumber;
+
+            if (newRating < 0 || newRating > 100)
+                throw new ServiceException("Rating cannot be less than 0 or greater than 100!");
+
+            volunteer.RatingNumber = newRating;
+
+            await _volunteersGateway.UpdateVolunteer(_mapper.Map<UpdateVolunteerDTO>(volunteer), token);
+        }
+
         public async Task<IEnumerable<VolunteerDTO>> GetVolunteersForGroup(Guid groupGID, CancellationToken cancellationToken, string token)
         {
             var volunteersGroups = await _volunteersGateway.GetVolunteersByGroupGID(groupGID, cancellationToken, token);

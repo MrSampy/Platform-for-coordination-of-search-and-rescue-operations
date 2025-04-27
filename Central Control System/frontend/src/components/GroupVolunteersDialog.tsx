@@ -8,6 +8,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { DetailGroup } from '../types/groupTypes';
 import { VolunteerDTO } from '../types/volunteerTypes';
 import { TokenInfoDTO } from '../types/authTypes';
+import { Rating } from 'primereact/rating';
 import axios from 'axios';
 
 interface GroupVolunteersDialogProps {
@@ -56,6 +57,9 @@ export default function GroupVolunteersDialog({ visible, group, onHide }: GroupV
     }
   }, [visible, group]);
 
+  const formatRatingNumber = (volunteer: VolunteerDTO) => {
+    return (volunteer.ratingNumber / 100) * 5;
+  };
   const addVolunteer = (volunteer: VolunteerDTO) => {
     setFreeVolunteers(prev => prev.filter(v => v.gid !== volunteer.gid));
     setGroupVolunteers(prev => [...prev, volunteer]);
@@ -171,6 +175,13 @@ export default function GroupVolunteersDialog({ visible, group, onHide }: GroupV
                 style={{ width: '4rem', textAlign: 'center' }}
               />
               <Column
+                header="Рейтинг"
+                body={(rowData: VolunteerDTO) => (
+                  <Rating value={formatRatingNumber(rowData)} readOnly cancel={false} />
+                )}
+                style={{ width: '4rem' }}
+              />
+              <Column
                 header="Видалити"
                 body={(rowData: VolunteerDTO) => (
                   <Button icon="pi pi-minus" className="p-button-rounded p-button-danger" onClick={() => removeVolunteer(rowData)} />
@@ -186,6 +197,13 @@ export default function GroupVolunteersDialog({ visible, group, onHide }: GroupV
               <Column field="surname" header="Прізвище" />
               <Column field="name" header="Ім'я" />
               <Column field="secondName" header="По батькові" />
+              <Column
+                header="Рейтинг"
+                body={(rowData: VolunteerDTO) => (
+                  <Rating value={formatRatingNumber(rowData)} readOnly cancel={false} />
+                )}
+                style={{ width: '4rem' }}
+              />
               <Column
                 header="Додати"
                 body={(rowData: VolunteerDTO) => (

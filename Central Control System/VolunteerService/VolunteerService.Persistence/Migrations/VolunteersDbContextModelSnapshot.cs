@@ -49,6 +49,9 @@ namespace VolunteerService.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int>("RatingNumber")
+                        .HasColumnType("integer");
+
                     b.Property<string>("SecondName")
                         .IsRequired()
                         .HasMaxLength(100)

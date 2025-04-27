@@ -10,5 +10,6 @@ namespace Gateway.Domain.Services.Interfaces
         Task RemoveVolunteerFromGroup(CreateVolunteersGroupsDTO dto, string token);
         Task<IEnumerable<VolunteerDTO>> GetVolunteersForEvent(VolunteersForEventRequest request, CancellationToken cancellationToken, string token);
         Task<IEnumerable<VolunteerDTO>> GetVolunteersForGroup(Guid groupGID, CancellationToken cancellationToken, string token);
+        Task UpdateVolunteerRating(UpdateVolunteerRatingRequest request, string token);
     }
 }

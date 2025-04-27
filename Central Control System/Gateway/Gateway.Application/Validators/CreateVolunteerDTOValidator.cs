@@ -32,6 +32,12 @@ namespace Gateway.Application.Validators
                 .Matches(SharedConstants.MobilePhomeRegexp)
                 .WithMessage(string.Format(SharedConstants.InvalidFieldFormatException, nameof(VolunteerDTO.MobilePhone)));
 
+            RuleFor(x => x.RatingNumber)
+                .NotEmpty()
+                .WithMessage(string.Format(SharedConstants.FieldIsRequierdException, nameof(VolunteerDTO.RatingNumber)))
+                .InclusiveBetween(0, 100)
+                .WithMessage(string.Format(SharedConstants.InvalidFieldFormatException, nameof(VolunteerDTO.RatingNumber)));
+
             RuleFor(x => x.BirthDate)
                 .LessThan(DateTime.Today)
                 .WithMessage(SharedConstants.InvalidBirthDateException);

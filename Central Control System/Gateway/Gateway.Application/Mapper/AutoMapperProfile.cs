@@ -3,6 +3,9 @@ using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Operations.Create;
 using Gateway.DTO.DTOs.Operations.Detail;
 using Gateway.DTO.DTOs.Operations.Update;
+using Gateway.DTO.DTOs.Volunteers;
+using Gateway.DTO.DTOs.Volunteers.Create;
+using Gateway.DTO.DTOs.Volunteers.Update;
 
 namespace Gateway.Application.Mapper
 {
@@ -10,6 +13,10 @@ namespace Gateway.Application.Mapper
     {
         public AutoMapperProfile()
         {
+            // Volunteer Mapping
+            CreateMap<CreateVolunteerDTO, VolunteerDTO>().ReverseMap();
+            CreateMap<UpdateVolunteerDTO, VolunteerDTO>().ReverseMap();
+
             // Event Mapping
             CreateMap<CreateEventDTO, EventDTO>().ReverseMap();
             CreateMap<EventDetails, EventDTO>().ReverseMap();

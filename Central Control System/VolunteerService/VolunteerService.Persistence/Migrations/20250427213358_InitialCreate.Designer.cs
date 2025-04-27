@@ -12,7 +12,7 @@ using VolunteerService.Persistence.DbContexts;
 namespace VolunteerService.Persistence.Migrations
 {
     [DbContext(typeof(VolunteersDbContext))]
-    [Migration("20250423184410_InitialCreate")]
+    [Migration("20250427213358_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -51,6 +51,9 @@ namespace VolunteerService.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<int>("RatingNumber")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SecondName")
                         .IsRequired()

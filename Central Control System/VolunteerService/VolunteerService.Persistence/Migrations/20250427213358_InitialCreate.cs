@@ -21,6 +21,7 @@ namespace VolunteerService.Persistence.Migrations
                     SecondName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     MobilePhone = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    RatingNumber = table.Column<int>(type: "integer", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserGID = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),

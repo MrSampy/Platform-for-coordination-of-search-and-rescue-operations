@@ -23,6 +23,7 @@ export interface VolunteersEventsDTO {
     surname: string;
     secondName: string;
     email: string;
+    ratingNumber:number;
     mobilePhone: string;
     userGID: string;
     birthDate: Date;

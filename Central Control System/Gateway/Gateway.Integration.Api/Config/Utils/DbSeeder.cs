@@ -170,6 +170,7 @@ namespace Gateway.Integration.Api.Config.Utils
                     Surname = $"VolunteerS{i}",
                     SecondName = $"VolunteerS{i}",
                     MobilePhone = $"+38098984211{i}",
+                    RatingNumber = _random.Next(0, 100),
                     BirthDate = DateTime.UtcNow.AddYears(-20 - i),
                     UserGID = volunteers[i].Id,
                     Email = volunteers[i].Email
