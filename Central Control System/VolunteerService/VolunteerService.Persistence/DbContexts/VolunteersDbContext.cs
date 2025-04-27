@@ -12,9 +12,9 @@ namespace VolunteerService.Persistence.DbContexts
         public VolunteersDbContext(DbContextOptions options, bool ensureDeleted = false)
         : base(options)
         {
-            Database.EnsureCreated();
             if (ensureDeleted)
             {
+                Database.EnsureCreated();
                 Database.EnsureDeleted();
             }
         }

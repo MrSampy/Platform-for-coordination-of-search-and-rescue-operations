@@ -6,8 +6,12 @@ namespace Gateway.Domain.Services.Interfaces
     {
         Task<UserDTO> Register(RegisterModel model);
         Task<UserDTO> RegisterAdmin(RegisterModel model, string token);
-        Task<TokenInfoDTO> Login(LoginModel model);
+        Task<LoginResponse> Login(LoginModel model);
+        Task<LoginResponse> Login2FA(LoginModel model);
         Task<MeResponse> Me(string token);
+        Task<GetAuthenticatorKeyResponse> GetAuthenticatorKey(LoginModel model);
+        Task<TokenInfoDTO> GetToken(GetTokenRequest model);
+        Task<TokenInfoDTO> GetToken2FA(GetTokenRequest model);
         Task<UserDTO> RegisterCoordinator(RegisterModel model, string token);
         Task<UserDTO> RegisterDispatcher(RegisterModel model, string token);
         IEnumerable<RoleDTO> GetAllRoles(CancellationToken cancellationToken, string token);

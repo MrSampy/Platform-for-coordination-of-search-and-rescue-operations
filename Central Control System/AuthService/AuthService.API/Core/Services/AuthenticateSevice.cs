@@ -60,35 +60,31 @@ namespace AuthService.API.Core.Services
             return result;
         }
 
-        public async Task<TokenInfoDTO> Login(LoginModel model)
+        public async Task<LoginResponse> Login(LoginModel model, bool use2FA)
         {
             var user = await _userManager.FindByNameAsync(model.Username);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                throw new UnauthorizedAccessException("Wrong user credentials!");
+                return new LoginResponse { IsValid = false, Message = "Wrong user credentials!" };
             }
 
-            var userRoles = await _userManager.GetRolesAsync(user);
+            var key = string.Empty;
 
-            var authClaims = new List<Claim>
-        {
-            new("UserIdentifier", user.Id),
-            new("UserName", model.Username),
-            new("Jti", Guid.NewGuid().ToString())
-        };
-
-            if (userRoles.Any())
-                authClaims.Add(new Claim("Roles", JsonSerializer.Serialize(userRoles.ToList()),
-                    JsonClaimValueTypes.JsonArray));
-
-            var token = GetToken(authClaims);
-
-            return new TokenInfoDTO
+            if (use2FA)
             {
-                Token = new JwtSecurityTokenHandler().WriteToken(token),
-                Expiration = token.ValidTo
-            };
+                try
+                {
+                    var response = await GetAuthenticatorKey(model);
+                    key = response.AuthenticatorKey;
+                }
+                catch (AuthServiceException ex)
+                {
+                    return new LoginResponse { IsValid = false, Message = ex.Message };
+                }
+            }
+
+            return new LoginResponse { IsValid = true, AuthenticatorKey = key };
         }
 
         public async Task<UserDTO> Register(RegisterModel model)
@@ -128,6 +124,70 @@ namespace AuthService.API.Core.Services
             }
 
             return await GetUserFromIdentity(savedUser);
+        }
+        public async Task<TokenInfoDTO> GetToken(GetTokenRequest model, bool use2FA)
+        {
+            var user = await _userManager.FindByNameAsync(model.Username);
+
+            if (user == null)
+            {
+                throw new AuthServiceException("User does not exist!");
+            }
+
+            if (use2FA)
+            {
+                bool isValidCode = await _userManager.VerifyTwoFactorTokenAsync(user,
+                        _userManager.Options.Tokens.AuthenticatorTokenProvider,
+                        model.Code);
+
+                if (!isValidCode)
+                {
+                    throw new AuthServiceException("Invalid code!");
+                }
+                await _userManager.SetTwoFactorEnabledAsync(user, true);
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var authClaims = new List<Claim>
+            {
+                new("UserIdentifier", user.Id),
+                new("UserName", model.Username),
+                new("Jti", Guid.NewGuid().ToString())
+            };
+
+            if (userRoles.Any())
+                authClaims.Add(new Claim("Roles", JsonSerializer.Serialize(userRoles.ToList()),
+                    JsonClaimValueTypes.JsonArray));
+
+            var token = GetToken(authClaims);
+
+            return new TokenInfoDTO
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = token.ValidTo
+            };
+
+        }
+        public async Task<GetAuthenticatorKeyResponse> GetAuthenticatorKey(LoginModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.Username);
+
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                throw new AuthServiceException("Wrong user credentials!");
+            }
+
+            var authenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            if (string.IsNullOrEmpty(authenticatorKey))
+            {
+                await _userManager.ResetAuthenticatorKeyAsync(user);
+                authenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            }
+            return new GetAuthenticatorKeyResponse
+            {
+                AuthenticatorKey = authenticatorKey ?? string.Empty
+            };
         }
 
         private async Task CreateRoles()
@@ -227,7 +287,7 @@ namespace AuthService.API.Core.Services
             var token = new JwtSecurityToken(
                 _configuration["ValidIssuer"],
                 _configuration["ValidAudience"],
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.Now.AddHours(1),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );

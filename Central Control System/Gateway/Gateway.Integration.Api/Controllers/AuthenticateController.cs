@@ -29,6 +29,39 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _authGateway.Register(model));
         }
 
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        {
+            return Ok(await _authGateway.Login(model));
+        }
+
+        [HttpPost]
+        [Route("2fa/login")]
+        public async Task<IActionResult> Login2FA([FromBody] LoginModel model)
+        {
+            return Ok(await _authGateway.Login2FA(model));
+        }
+
+
+        [HttpPost("key")]
+        public async Task<IActionResult> GetAuthenticatorKey([FromBody] LoginModel model)
+        {
+            return Ok(await _authGateway.GetAuthenticatorKey(model));
+        }
+
+        [HttpPost("gettoken")]
+        public async Task<IActionResult> GetToken([FromBody] GetTokenRequest request)
+        {
+            return Ok(await _authGateway.GetToken(request));
+        }
+
+        [HttpPost("2fa/gettoken")]
+        public async Task<IActionResult> GetToken2FA([FromBody] GetTokenRequest request)
+        {
+            return Ok(await _authGateway.GetToken2FA(request));
+        }
+
         [Authorize]
         [HttpGet]
         [RequiresAuthHeader]

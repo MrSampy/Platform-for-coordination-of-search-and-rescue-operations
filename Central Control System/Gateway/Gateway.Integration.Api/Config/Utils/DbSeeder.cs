@@ -339,7 +339,9 @@ namespace Gateway.Integration.Api.Config.Utils
                 _users.Add(user);
             }
 
-            _token = _authGateway.Login(new LoginModel { Username = "volunteer1", Password = defaultPassword }).Result.Token;
+            var tokenInfo = await _authGateway.GetToken(new GetTokenRequest { Username = "volunteer1" });
+            Console.WriteLine(tokenInfo);
+            _token = tokenInfo.Token;
 
             for (int i = 1; i <= _userCount; i++)
             {

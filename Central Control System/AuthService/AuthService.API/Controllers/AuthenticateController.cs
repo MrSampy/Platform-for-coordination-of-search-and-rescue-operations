@@ -21,7 +21,15 @@ namespace AuthService.API.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            return Ok(await _authenticateSevice.Login(model));
+            return Ok(await _authenticateSevice.Login(model, false));
+        }
+
+
+        [HttpPost]
+        [Route("2fa/login")]
+        public async Task<IActionResult> Login2FA([FromBody] LoginModel model)
+        {
+            return Ok(await _authenticateSevice.Login(model, true));
         }
 
         [HttpPost]
@@ -29,6 +37,25 @@ namespace AuthService.API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             return Ok(await _authenticateSevice.Register(model));
+        }
+
+
+        [HttpPost("key")]
+        public async Task<IActionResult> GetAuthenticatorKey([FromBody] LoginModel model)
+        {
+            return Ok(await _authenticateSevice.GetAuthenticatorKey(model));
+        }
+
+        [HttpPost("gettoken")]
+        public async Task<IActionResult> GetToken([FromBody] GetTokenRequest request)
+        {
+            return Ok(await _authenticateSevice.GetToken(request, false));
+        }
+
+        [HttpPost("2fa/gettoken")]
+        public async Task<IActionResult> GetToken2FA([FromBody] GetTokenRequest request)
+        {
+            return Ok(await _authenticateSevice.GetToken(request, true));
         }
 
         [Authorize]

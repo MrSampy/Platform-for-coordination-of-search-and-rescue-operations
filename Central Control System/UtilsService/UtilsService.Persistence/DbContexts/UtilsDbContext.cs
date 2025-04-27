@@ -19,9 +19,9 @@ namespace UtilsService.Persistence.DbContexts
         public UtilsDbContext(DbContextOptions options, bool ensureDeleted = false)
         : base(options)
         {
-            Database.EnsureCreated();
             if (ensureDeleted)
             {
+            Database.EnsureCreated();
                 Database.EnsureDeleted();
             }
         }

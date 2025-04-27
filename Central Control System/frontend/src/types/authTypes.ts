@@ -44,3 +44,16 @@ export type LoginModel = {
     role: string;
   }
   
+  export interface GetTokenRequest {
+    username: string;
+    code: string;
+  }
+  export interface LoginResponse {
+    isValid: boolean;
+    message: string;
+    authenticatorKey: string;
+  }
+
+  export interface GetAuthenticatorKeyResponse{    
+    authenticatorKey: string;
+  }

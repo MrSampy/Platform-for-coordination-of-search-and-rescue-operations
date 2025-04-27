@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using VolunteerService.Application.DTOs;
+using VolunteerService.Application.DTOs.Request;
+using VolunteerService.Application.DTOs.Response;
 using VolunteerService.Domain.Entities;
+using VolunteerService.Domain.Exceptions;
 using VolunteerService.Domain.Interfaces;
 
 namespace VolunteerService.Application.Queries.AuthQueries.GetToken
@@ -16,7 +19,18 @@ namespace VolunteerService.Application.Queries.AuthQueries.GetToken
 
         public async Task<TokenInfoDTO> Handle(GetTokenQuery request, CancellationToken cancellationToken)
         {
-            return await _apiBuilder.PostRequest<TokenInfoDTO>("api/authenticate/login", request.LoginDTO, Constants.AuthService, cancellationToken);
+            var loginResponse = await _apiBuilder.PostRequest<LoginResponse>("api/authenticate/login", request.LoginDTO, Constants.AuthService, cancellationToken);
+
+            if (loginResponse.IsValid)
+            {
+                var tokenInfo = await _apiBuilder.PostRequest<TokenInfoDTO>("api/authenticate/gettoken", new GetTokenRequest { Username = request.LoginDTO.Username }, Constants.AuthService, cancellationToken);
+
+                return tokenInfo;
+            }
+            else
+            {
+                throw new VolunteerServiceException("Invalid credentials");
+            }
         }
     }
 }

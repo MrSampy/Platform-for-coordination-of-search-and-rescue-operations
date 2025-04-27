@@ -47,10 +47,45 @@ namespace Gateway.Infrastructure.Services.Gateways
                     token);
         }
 
-        public async Task<TokenInfoDTO> Login(LoginModel model)
+        public async Task<LoginResponse> Login(LoginModel model)
+        {
+            return await _apiBuilder.PostRequest<LoginResponse>(
+                "api/authenticate/login",
+                model,
+                SharedConstants.AuthService,
+                CancellationToken.None);
+        }
+
+        public async Task<LoginResponse> Login2FA(LoginModel model)
+        {
+            return await _apiBuilder.PostRequest<LoginResponse>(
+                "api/authenticate/2fa/login",
+                model,
+                SharedConstants.AuthService,
+                CancellationToken.None);
+        }
+
+        public async Task<GetAuthenticatorKeyResponse> GetAuthenticatorKey(LoginModel model)
+        {
+            return await _apiBuilder.PostRequest<GetAuthenticatorKeyResponse>(
+                "api/authenticate/key",
+                model,
+                SharedConstants.AuthService,
+                CancellationToken.None);
+        }
+
+        public async Task<TokenInfoDTO> GetToken(GetTokenRequest model)
         {
             return await _apiBuilder.PostRequest<TokenInfoDTO>(
-                "api/authenticate/login",
+                "api/authenticate/gettoken",
+                model,
+                SharedConstants.AuthService,
+                CancellationToken.None);
+        }
+        public async Task<TokenInfoDTO> GetToken2FA(GetTokenRequest model)
+        {
+            return await _apiBuilder.PostRequest<TokenInfoDTO>(
+                "api/authenticate/2fa/gettoken",
                 model,
                 SharedConstants.AuthService,
                 CancellationToken.None);
