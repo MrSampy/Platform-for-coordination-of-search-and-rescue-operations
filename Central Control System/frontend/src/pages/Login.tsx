@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Password } from 'primereact/password';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login2fa, getToken2fa, getUserByName, getOperationWorkerByUserGID, getAuthenticatorKey } from "../services/authService";
 import { LoginModel } from "../types/authTypes";
 import { ErrorModel } from "../types/commonTypes";
@@ -79,7 +79,7 @@ const LoginPage = () => {
   const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': true });
 
   const buildOtpAuthUrl = (userName: string, secret: string) => {
-    const issuer = encodeURIComponent('YourAppName'); // 👈 change to your real app name
+    const issuer = encodeURIComponent('Platform-for-coordination-of-search-and-rescue-operations');
     const label = encodeURIComponent(userName);
     return `otpauth://totp/${issuer}:${label}?secret=${secret}&issuer=${issuer}`;
   };
@@ -126,9 +126,7 @@ const LoginPage = () => {
                     </div>
                   )}
                 </>
-              )}
-            
-
+              )}        
           </div>
         </div>
       </div>
