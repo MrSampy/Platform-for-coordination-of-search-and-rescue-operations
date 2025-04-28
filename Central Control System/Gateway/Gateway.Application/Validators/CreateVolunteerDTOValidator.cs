@@ -33,8 +33,6 @@ namespace Gateway.Application.Validators
                 .WithMessage(string.Format(SharedConstants.InvalidFieldFormatException, nameof(VolunteerDTO.MobilePhone)));
 
             RuleFor(x => x.RatingNumber)
-                .NotEmpty()
-                .WithMessage(string.Format(SharedConstants.FieldIsRequierdException, nameof(VolunteerDTO.RatingNumber)))
                 .InclusiveBetween(0, 100)
                 .WithMessage(string.Format(SharedConstants.InvalidFieldFormatException, nameof(VolunteerDTO.RatingNumber)));
 
