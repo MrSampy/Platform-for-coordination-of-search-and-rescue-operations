@@ -12,7 +12,7 @@ using OperationsService.Persistence.DbContexts;
 namespace OperationsService.Persistence.Migrations
 {
     [DbContext(typeof(OperationsDbContext))]
-    [Migration("20250423213244_InitialCreate")]
+    [Migration("20250430194321_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -308,6 +308,9 @@ namespace OperationsService.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("EventGID")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MeasurementUnitGID")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("RequiredQuantity")

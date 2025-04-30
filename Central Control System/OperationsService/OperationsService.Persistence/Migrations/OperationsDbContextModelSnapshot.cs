@@ -307,6 +307,9 @@ namespace OperationsService.Persistence.Migrations
                     b.Property<Guid>("EventGID")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("MeasurementUnitGID")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("RequiredQuantity")
                         .HasColumnType("decimal(18,8)");
 

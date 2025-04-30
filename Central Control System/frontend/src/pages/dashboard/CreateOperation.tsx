@@ -174,6 +174,7 @@ export default function CreateOperation() {
     setResourcesEvent(prev => [...prev, {
       resourceGID: selectedResource,
       eventGID: '',
+      measurementUnitGID: selectedUnit,
       requiredQuantity,
       availableQuantity: 0
     }]);
@@ -270,7 +271,7 @@ export default function CreateOperation() {
               <h4>Ресурси</h4>
               <ul>
                 {resourcesEvent.map((r, i) => (
-                  <li key={i}>{`Ресурс: ${resources.find((element) => element.gid === r.resourceGID)?.name}, К-сть: ${r.requiredQuantity}`}</li>
+                  <li key={i}>{`Ресурс: ${resources.find((element) => element.gid === r.resourceGID)?.name}, К-сть: ${r.requiredQuantity} (${measures.find((element) => element.gid === r.measurementUnitGID)?.name})`}</li>
                 ))}
               </ul>
             </div>

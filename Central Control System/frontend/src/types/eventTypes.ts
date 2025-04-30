@@ -117,12 +117,14 @@ export interface ResourcesEventDTO {
   gid: string;
   resourceGID: string;
   eventGID: string;
+  measurementUnitGID: string;
   requiredQuantity: number;
   availableQuantity: number;
 }
 export interface CreateResourcesEventDTO {
   resourceGID: string;
   eventGID: string;
+  measurementUnitGID: string;
   requiredQuantity: number;
   availableQuantity: number;
 }

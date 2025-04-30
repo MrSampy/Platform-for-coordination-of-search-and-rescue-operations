@@ -124,6 +124,7 @@ namespace OperationsService.Persistence.Migrations
                     GID = table.Column<Guid>(type: "uuid", nullable: false),
                     ResourceGID = table.Column<Guid>(type: "uuid", nullable: false),
                     EventGID = table.Column<Guid>(type: "uuid", nullable: false),
+                    MeasurementUnitGID = table.Column<Guid>(type: "uuid", nullable: false),
                     RequiredQuantity = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
                     AvailableQuantity = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),

@@ -51,6 +51,12 @@ namespace OperationsService.Application.Commands.ResourcesEventCommands.Update
                 throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, "Resource", request.ResourcesEvent.ResourceGID.ToString()));
             }
 
+            var measurementUnit = await _apiBuilder.GetRequest<MeasurementUnitDTO>($"utils/api/measurementUnit/{request.ResourcesEvent.MeasurementUnitGID}", Constants.UtilsService, cancellationToken, request.Token);
+            if (measurementUnit == null)
+            {
+                throw new OperationsServiceException(string.Format(Constants.NotFoundEntityException, "MeasurementUnit", request.ResourcesEvent.MeasurementUnitGID.ToString()));
+            }
+
             var mappedEntity = _mapper.Map<ResourcesEvent>(request.ResourcesEvent);
 
             mappedEntity.CreatedAt = entity.CreatedAt;

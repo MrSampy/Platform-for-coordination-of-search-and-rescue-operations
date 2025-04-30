@@ -37,6 +37,7 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
   const [editingGroup, setEditingGroup] = useState<CreateGroupDTO | null>(null);
   const [resourcesEvent, setResourcesEvent] = useState<ResourcesEventDTO[]>([]);
   const [resources, setResources] = useState<ResourceDTO[]>([]);
+  const [measurementUnits, setMeasurementUnits] = useState<ResourceDTO[]>([]);
 
   const getAvailableStatuses = (currentStatus: string) => {
     switch (currentStatus.toLowerCase()) {
@@ -65,12 +66,13 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
       const headers = { Authorization: `Bearer ${token.token}` };
 
       try {
-        const [eventTypeRes, districtRes, workersRes, groupRes, resourceRes, resourcesEventRes] = await Promise.all([
+        const [eventTypeRes, districtRes, workersRes, groupRes, resourceRes, measurementUnitRes, resourcesEventRes] = await Promise.all([
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/eventType?pageNumber=0&pageSize=0`, { headers }),
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/district?pageNumber=0&pageSize=0`, { headers }),
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/operationworker/byRole/Coordinator`, { headers }),
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/group/byEventGID/${selectedEvent.gid}`, { headers }),
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/resource?pageNumber=0&pageSize=0`, { headers }),
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/measurementUnit?pageNumber=0&pageSize=0`, { headers }),
           axios.get(`${process.env.REACT_APP_API_BASE_URL}/resourcesEvent/by-event/${selectedEvent.gid}`, { headers }),
         ]);
 
@@ -78,6 +80,7 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
         setDistricts(districtRes.data);
         setWorkers(workersRes.data);
         setResources(resourceRes.data);
+        setMeasurementUnits(measurementUnitRes.data);
         setResourcesEvent(resourcesEventRes.data);
 
         const mappedGroups = groupRes.data.map((g: any) => ({
@@ -271,7 +274,10 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
               <h4>Ресурси</h4>
               <ul>
                 {resourcesEvent.map((r, i) => (
-                  <li key={i}>{`Ресурс: ${resources.find((element) => element.gid === r.resourceGID)?.name}, К-сть: ${r.availableQuantity}/${r.requiredQuantity}`}</li>
+                  <li key={i}>{`Ресурс: ${resources.find((element) => element.gid === r.resourceGID)?.name},
+                   К-сть: ${r.availableQuantity}/${r.requiredQuantity}
+                  (${measurementUnits.find((element) => element.gid === r.measurementUnitGID)?.name})
+                  `}</li>
                 ))}
               </ul>
             </div>

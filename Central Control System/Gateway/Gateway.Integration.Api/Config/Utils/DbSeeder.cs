@@ -317,6 +317,7 @@ namespace Gateway.Integration.Api.Config.Utils
                 {
                     EventGID = _events[i].GID,
                     ResourceGID = SharedConstants.Resources[_random.Next(0, SharedConstants.Resources.Count - 1)].GID,
+                    MeasurementUnitGID = SharedConstants.MeasurementUnits[_random.Next(0, SharedConstants.MeasurementUnits.Count - 1)].GID,
                     RequiredQuantity = i + 1,
                     AvailableQuantity = 1,
                 };
