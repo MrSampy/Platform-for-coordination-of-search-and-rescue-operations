@@ -64,10 +64,16 @@ services:
       - "7038:8080" 
       - "5065:8080"
     depends_on:
-      - volunteerservice
-      - operationsservice
-      - authservice
-      - utilsservice
+      volunteerservice:
+        condition: service_started
+      operationsservice:
+        condition: service_started
+      authservice:
+        condition: service_started
+      utilsservice:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
@@ -79,6 +85,22 @@ services:
       dockerfile: sql.Dockerfile
     networks:
       - mynetwork
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"     # for apps
+      - "15672:15672"   # management UI
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 networks:
   mynetwork:
     driver: bridge

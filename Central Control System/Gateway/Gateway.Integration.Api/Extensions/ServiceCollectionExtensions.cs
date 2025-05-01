@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Gateway.Application.Builders;
+using Gateway.Application.Consumers;
 using Gateway.Application.Filters;
 using Gateway.Application.Mapper;
 using Gateway.Application.Validators;
@@ -10,12 +11,14 @@ using Gateway.DTO.DTOs.Utils;
 using Gateway.DTO.DTOs.Volunteers;
 using Gateway.Infrastructure.Services.Gateways;
 using Gateway.Infrastructure.Services.Gateways.Gateway.Infrastructure.Services.Gateways;
+using Gateway.Infrastructure.Services.Publishers;
 using Gateway.Infrastructure.Services.Services;
 using Gateway.Integration.Api.Config;
 using Gateway.Integration.Api.Config.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RabbitMQ.Client;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
@@ -195,6 +198,34 @@ namespace Gateway.Integration.Api.Extensions
 
             services.AddTransient<IQRCodeService, QRCodeService>();
 
+            services.AddSingleton<IConnectionFactory>(sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>().GetSection("RabbitMQ");
+                return new ConnectionFactory
+                {
+                    HostName = config["Host"],
+                    UserName = config["Username"],
+                    Password = config["Password"],
+                    DispatchConsumersAsync = true
+                };
+            });
+
+            services.AddSingleton<IConnection>(sp =>
+            {
+                var factory = sp.GetRequiredService<IConnectionFactory>();
+                return factory.CreateConnection();
+            });
+
+            services.AddSingleton<IModel>(sp =>
+            {
+                var connection = sp.GetRequiredService<IConnection>();
+                return connection.CreateModel();
+            });
+
+            services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
+
+            services.AddHostedService<SendMessageConsumer>();
+
             return services;
         }
         public static IServiceCollection AddCache(this IServiceCollection services)
@@ -216,8 +247,6 @@ namespace Gateway.Integration.Api.Extensions
             services.AddSingleton<ICacheService<OperationTaskStatusDTO>, CacheService<OperationTaskStatusDTO>>();
             services.AddSingleton<ICacheService<OperationWorkerDTO>, CacheService<OperationWorkerDTO>>();
             services.AddSingleton<ICacheService<ResourcesEventDTO>, CacheService<ResourcesEventDTO>>();
-
-
 
             return services;
         }

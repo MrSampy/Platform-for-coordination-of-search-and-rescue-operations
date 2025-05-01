@@ -38,7 +38,7 @@ namespace Gateway.Integration.Api.DI
 
             try
             {
-                var result = services.SeedServices().Result;
+                // var result = services.SeedServices().Result;
             }
             catch (Exception ex)
             {
