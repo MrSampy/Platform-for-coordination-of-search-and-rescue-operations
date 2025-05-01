@@ -1,4 +1,5 @@
-﻿using Gateway.Domain.Services.Interfaces;
+﻿using Gateway.Application.Events;
+using Gateway.Domain.Services.Interfaces;
 using Gateway.DTO.Constants;
 using Gateway.DTO.Exceptions;
 using Newtonsoft.Json;
@@ -9,12 +10,17 @@ namespace Gateway.Application.Builders
     public class ApiBuilder : IApiBuilder
     {
         private readonly IHttpClientFactory _httpClientFactory;
-
-        public ApiBuilder(IHttpClientFactory httpClientFactory)
+        private readonly IRabbitMqPublisher _rabbitMqPublisher;
+        public ApiBuilder(IHttpClientFactory httpClientFactory, IRabbitMqPublisher rabbitMqPublisher)
         {
             _httpClientFactory = httpClientFactory;
+            _rabbitMqPublisher = rabbitMqPublisher;
         }
-
+        public void SendResetCacheEvent(string entityName)
+        {
+            var evt = new ResetCacheEvent { EntityName = entityName };
+            _rabbitMqPublisher.Publish("reset.cache", evt);
+        }
         public async Task<T> GetRequest<T>(string link, string clientName, CancellationToken cancellation, string token = "")
         {
             var response = await GetClient(clientName, token).GetAsync(link, cancellation);

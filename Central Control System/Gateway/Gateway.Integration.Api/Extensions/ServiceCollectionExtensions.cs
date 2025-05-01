@@ -188,16 +188,8 @@ namespace Gateway.Integration.Api.Extensions
 
             return services;
         }
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
         {
-            services.AddTransient<IAuthService, AuthService>();
-
-            services.AddTransient<IOperationsService, OperationsService>();
-
-            services.AddTransient<IVolunteersService, VolunteersService>();
-
-            services.AddTransient<IQRCodeService, QRCodeService>();
-
             services.AddSingleton<IConnectionFactory>(sp =>
             {
                 var config = sp.GetRequiredService<IConfiguration>().GetSection("RabbitMQ");
@@ -225,6 +217,21 @@ namespace Gateway.Integration.Api.Extensions
             services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
 
             services.AddHostedService<SendMessageConsumer>();
+
+            services.AddHostedService<ResetCacheConsumer>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddTransient<IAuthService, AuthService>();
+
+            services.AddTransient<IOperationsService, OperationsService>();
+
+            services.AddTransient<IVolunteersService, VolunteersService>();
+
+            services.AddTransient<IQRCodeService, QRCodeService>();
 
             return services;
         }

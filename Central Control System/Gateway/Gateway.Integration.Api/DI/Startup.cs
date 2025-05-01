@@ -32,13 +32,15 @@ namespace Gateway.Integration.Api.DI
 
             services.AddServices();
 
+            services.AddRabbitMQ();
+
             services.AddAuthorizationJWT(Configuration);
 
             services.AddSwaggerDocWithAuth(controllers, Configuration);
 
             try
             {
-                // var result = services.SeedServices().Result;
+                var result = services.SeedServices().Result;
             }
             catch (Exception ex)
             {

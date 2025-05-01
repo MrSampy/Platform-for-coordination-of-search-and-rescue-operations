@@ -20,7 +20,7 @@ namespace Gateway.Application.Consumers
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _channel.QueueDeclare("token.send", durable: true, exclusive: false, autoDelete: false);
+            _channel.QueueDeclare("send.message", durable: true, exclusive: false, autoDelete: false);
 
             var consumer = new AsyncEventingBasicConsumer(_channel);
             consumer.Received += async (model, ea) =>
@@ -36,7 +36,7 @@ namespace Gateway.Application.Consumers
                 await Task.CompletedTask;
             };
 
-            _channel.BasicConsume(queue: "token.send", autoAck: true, consumer: consumer);
+            _channel.BasicConsume(queue: "send.message", autoAck: true, consumer: consumer);
 
             return Task.CompletedTask;
         }

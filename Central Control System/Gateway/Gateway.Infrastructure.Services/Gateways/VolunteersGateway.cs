@@ -49,19 +49,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<VolunteerDTO> CreateVolunteer(CreateVolunteerDTO volunteer, string token)
         {
-            _volunteerCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteerDTO));
             return await _apiBuilder.PostRequest<VolunteerDTO>("volunteers/api/Volunteer", volunteer, SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 
         public async Task UpdateVolunteer(UpdateVolunteerDTO volunteer, string token)
         {
-            _volunteerCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteerDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("volunteers/api/Volunteer", volunteer, SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 
         public async Task DeleteVolunteer(Guid gid, string token)
         {
-            _volunteerCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteerDTO));
             await _apiBuilder.DeleteRequest($"volunteers/api/Volunteer/{gid}", SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 
@@ -110,21 +110,21 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<VolunteersDistrictsDTO> GetVolunteersDistrictByGID(Guid gid, CancellationToken cancellationToken, string token)
         {
-            _volunteersDistrictsCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteersDistrictsDTO));
             return await _apiBuilder.GetRequest<VolunteersDistrictsDTO>(
                 $"volunteers/api/VolunteersDistricts/{gid}", SharedConstants.VolunteerService, cancellationToken, token);
         }
 
         public async Task<VolunteersDistrictsDTO> CreateVolunteersDistrict(CreateVolunteersDistrictsDTO volunteersDistricts, string token)
         {
-            _volunteersDistrictsCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteersDistrictsDTO));
             return await _apiBuilder.PostRequest<VolunteersDistrictsDTO>(
                 "volunteers/api/VolunteersDistricts", volunteersDistricts, SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 
         public async Task DeleteVolunteersDistrict(Guid gid, string token)
         {
-            _volunteersDistrictsCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteersDistrictsDTO));
             await _apiBuilder.DeleteRequest($"volunteers/api/VolunteersDistricts/{gid}", SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 
@@ -184,13 +184,13 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<VolunteersGroupsDTO> AddVolunteerToGroup(CreateVolunteersGroupsDTO volunteersGroups, string token)
         {
-            _volunteersGroupsCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteersGroupsDTO));
             return await _apiBuilder.PostRequest<VolunteersGroupsDTO>("volunteers/api/VolunteersGroups", volunteersGroups, SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 
         public async Task RemoveVolunteerFromGroup(Guid gid, string token)
         {
-            _volunteersGroupsCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteersGroupsDTO));
             await _apiBuilder.DeleteRequest($"volunteers/api/VolunteersGroups/{gid}", SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 
@@ -250,13 +250,13 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<VolunteersEventsDTO> AddVolunteerToEvent(CreateVolunteersEventsDTO volunteersEvents, string token)
         {
-            _volunteersEventsCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteersEventsDTO));
             return await _apiBuilder.PostRequest<VolunteersEventsDTO>("volunteers/api/VolunteersEvents", volunteersEvents, SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 
         public async Task RemoveVolunteerFromEvent(Guid gid, string token)
         {
-            _volunteersEventsCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(VolunteersEventsDTO));
             await _apiBuilder.DeleteRequest($"volunteers/api/VolunteersEvents/{gid}", SharedConstants.VolunteerService, CancellationToken.None, token);
         }
 

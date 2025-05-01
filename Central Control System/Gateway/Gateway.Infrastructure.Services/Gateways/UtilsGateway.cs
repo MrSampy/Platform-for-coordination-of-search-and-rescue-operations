@@ -51,20 +51,20 @@ namespace Gateway.Infrastructure.Services.Gateways
             public async Task<DistrictDTO> CreateDistrict(CreateDistrictDTO district, string token)
             {
                 var result = await _apiBuilder.PostRequest<DistrictDTO>("utils/api/District", district, SharedConstants.UtilsService, CancellationToken.None, token);
-                _districtCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(DistrictDTO));
                 return result;
             }
 
             public async Task UpdateDistrict(DistrictDTO district, string token)
             {
                 await _apiBuilder.PutRequestWithoutDeserializing("utils/api/District", district, SharedConstants.UtilsService, CancellationToken.None, token);
-                _districtCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(DistrictDTO));
             }
 
             public async Task DeleteDistrict(Guid gid, string token)
             {
                 await _apiBuilder.DeleteRequest($"utils/api/District/{gid}", SharedConstants.UtilsService, CancellationToken.None, token);
-                _districtCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(DistrictDTO));
             }
 
             #endregion
@@ -92,20 +92,20 @@ namespace Gateway.Infrastructure.Services.Gateways
             public async Task<ResourceDTO> CreateResource(CreateResourceDTO resource, string token)
             {
                 var result = await _apiBuilder.PostRequest<ResourceDTO>("utils/api/Resource", resource, SharedConstants.UtilsService, CancellationToken.None, token);
-                _resourceCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(ResourceDTO));
                 return result;
             }
 
             public async Task UpdateResource(ResourceDTO resource, string token)
             {
                 await _apiBuilder.PutRequestWithoutDeserializing("utils/api/Resource", resource, SharedConstants.UtilsService, CancellationToken.None, token);
-                _resourceCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(ResourceDTO));
             }
 
             public async Task DeleteResource(Guid gid, string token)
             {
                 await _apiBuilder.DeleteRequest($"utils/api/Resource/{gid}", SharedConstants.UtilsService, CancellationToken.None, token);
-                _resourceCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(ResourceDTO));
             }
 
             #endregion
@@ -133,20 +133,20 @@ namespace Gateway.Infrastructure.Services.Gateways
             public async Task<MeasurementUnitDTO> CreateMeasurementUnit(CreateMeasurementUnitDTO measurementUnit, string token)
             {
                 var result = await _apiBuilder.PostRequest<MeasurementUnitDTO>("utils/api/MeasurementUnit", measurementUnit, SharedConstants.UtilsService, CancellationToken.None, token);
-                _measurementUnitCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(MeasurementUnitDTO));
                 return result;
             }
 
             public async Task UpdateMeasurementUnit(MeasurementUnitDTO measurementUnit, string token)
             {
                 await _apiBuilder.PutRequestWithoutDeserializing("utils/api/MeasurementUnit", measurementUnit, SharedConstants.UtilsService, CancellationToken.None, token);
-                _measurementUnitCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(MeasurementUnitDTO));
             }
 
             public async Task DeleteMeasurementUnit(Guid gid, string token)
             {
                 await _apiBuilder.DeleteRequest($"utils/api/MeasurementUnit/{gid}", SharedConstants.UtilsService, CancellationToken.None, token);
-                _measurementUnitCache.Reset();
+                _apiBuilder.SendResetCacheEvent(nameof(MeasurementUnitDTO));
             }
 
             #endregion

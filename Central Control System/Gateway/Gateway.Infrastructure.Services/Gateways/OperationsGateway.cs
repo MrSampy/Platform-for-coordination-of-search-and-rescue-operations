@@ -65,19 +65,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<MessageDTO> CreateMessage(CreateMessageDTO message, string token)
         {
-            _messageCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(MessageDTO));
             return await _apiBuilder.PostRequest<MessageDTO>("operations/api/Message", message, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task ReadMessage(Guid gid, string token)
         {
-            _messageCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(MessageDTO));
             await _apiBuilder.PutRequestWithoutDeserializing($"operations/api/Message/read/{gid}", new { }, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteMessage(Guid gid, string token)
         {
-            _messageCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(MessageDTO));
             await _apiBuilder.DeleteRequest($"operations/api/Message/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
@@ -125,19 +125,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<EventDTO> CreateEvent(CreateEventDTO dto, string token)
         {
-            _eventCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventDTO));
             return await _apiBuilder.PostRequest<EventDTO>("operations/api/Event", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task UpdateEvent(UpdateEventDTO dto, string token)
         {
-            _eventCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("operations/api/Event", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteEvent(Guid gid, string token)
         {
-            _eventCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventDTO));
             await _apiBuilder.DeleteRequest($"operations/api/Event/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
@@ -165,19 +165,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<EventStatusDTO> CreateEventStatus(CreateEventStatusDTO dto, string token)
         {
-            _eventStatusCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventStatusDTO));
             return await _apiBuilder.PostRequest<EventStatusDTO>("operations/api/EventStatus", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task UpdateEventStatus(UpdateEventStatusDTO dto, string token)
         {
-            _eventStatusCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventStatusDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("operations/api/EventStatus", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteEventStatus(Guid gid, string token)
         {
-            _eventStatusCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventStatusDTO));
             await _apiBuilder.DeleteRequest($"operations/api/EventStatus/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
@@ -206,19 +206,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<EventTypeDTO> CreateEventType(CreateEventTypeDTO dto, string token)
         {
-            _eventTypeCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventTypeDTO));
             return await _apiBuilder.PostRequest<EventTypeDTO>("operations/api/EventType", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task UpdateEventType(UpdateEventTypeDTO dto, string token)
         {
-            _eventTypeCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventTypeDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("operations/api/EventType", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteEventType(Guid gid, string token)
         {
-            _eventTypeCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(EventTypeDTO));
             await _apiBuilder.DeleteRequest($"operations/api/EventType/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
@@ -254,19 +254,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<GroupDTO> CreateGroup(CreateGroupDTO dto, string token)
         {
-            _groupCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(GroupDTO));
             return await _apiBuilder.PostRequest<GroupDTO>("operations/api/Group", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task UpdateGroup(UpdateGroupDTO dto, string token)
         {
-            _groupCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(GroupDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("operations/api/Group", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteGroup(Guid gid, string token)
         {
-            _groupCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(GroupDTO));
             await _apiBuilder.DeleteRequest($"operations/api/Group/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
@@ -295,19 +295,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<OperationTaskDTO> CreateOperationTask(CreateOperationTaskDTO dto, string token)
         {
-            _operationTaskCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationTaskDTO));
             return await _apiBuilder.PostRequest<OperationTaskDTO>("operations/api/OperationTask", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task UpdateOperationTask(UpdateOperationTaskDTO dto, string token)
         {
-            _operationTaskCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationTaskDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("operations/api/OperationTask", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteOperationTask(Guid gid, string token)
         {
-            _operationTaskCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationTaskDTO));
             await _apiBuilder.DeleteRequest($"operations/api/OperationTask/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
@@ -336,19 +336,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<OperationTaskStatusDTO> CreateOperationTaskStatus(CreateOperationTaskStatusDTO dto, string token)
         {
-            _operationTaskStatusCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationTaskStatusDTO));
             return await _apiBuilder.PostRequest<OperationTaskStatusDTO>("operations/api/OperationTaskStatus", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task UpdateOperationTaskStatus(UpdateOperationTaskStatusDTO dto, string token)
         {
-            _operationTaskStatusCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationTaskStatusDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("operations/api/OperationTaskStatus", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteOperationTaskStatus(Guid gid, string token)
         {
-            _operationTaskStatusCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationTaskStatusDTO));
             await _apiBuilder.DeleteRequest($"operations/api/OperationTaskStatus/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
@@ -377,19 +377,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<OperationWorkerDTO> CreateOperationWorker(CreateOperationWorkerDTO dto, string token)
         {
-            _operationWorkerCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationWorkerDTO));
             return await _apiBuilder.PostRequest<OperationWorkerDTO>("operations/api/OperationWorker", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task UpdateOperationWorker(UpdateOperationWorkerDTO dto, string token)
         {
-            _operationWorkerCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationWorkerDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("operations/api/OperationWorker", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteOperationWorker(Guid gid, string token)
         {
-            _operationWorkerCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(OperationWorkerDTO));
             await _apiBuilder.DeleteRequest($"operations/api/OperationWorker/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
@@ -442,19 +442,19 @@ namespace Gateway.Infrastructure.Services.Gateways
 
         public async Task<ResourcesEventDTO> CreateResourcesEvent(CreateResourcesEventDTO dto, string token)
         {
-            _resourcesEventCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(ResourcesEventDTO));
             return await _apiBuilder.PostRequest<ResourcesEventDTO>("operations/api/ResourcesEvent", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task UpdateResourcesEvent(UpdateResourcesEventDTO dto, string token)
         {
-            _resourcesEventCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(ResourcesEventDTO));
             await _apiBuilder.PutRequestWithoutDeserializing("operations/api/ResourcesEvent", dto, SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
         public async Task DeleteResourcesEvent(Guid gid, string token)
         {
-            _resourcesEventCache.Reset();
+            _apiBuilder.SendResetCacheEvent(nameof(ResourcesEventDTO));
             await _apiBuilder.DeleteRequest($"operations/api/ResourcesEvent/{gid}", SharedConstants.OperationsService, CancellationToken.None, token);
         }
 
