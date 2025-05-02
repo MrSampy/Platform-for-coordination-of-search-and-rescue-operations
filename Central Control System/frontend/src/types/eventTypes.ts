@@ -27,6 +27,7 @@ export interface UpdateEventDTO {
   name: string;
   longitude: number;
   latitude: number;
+  note: Nullable<string>;
   eventTypeGID: string;
   districtGID: string;
   coordinatorGID: string;
@@ -49,6 +50,7 @@ export interface DetailEvent {
   coordinatorGID: string;
   dispatcherGID: string;
   eventStatusGID: string;
+  note: Nullable<string>;
 }
 export interface EventPaginationQuery {
   pageNumber:number;

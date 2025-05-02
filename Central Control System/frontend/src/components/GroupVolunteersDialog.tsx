@@ -10,6 +10,7 @@ import { VolunteerDTO } from '../types/volunteerTypes';
 import { TokenInfoDTO } from '../types/authTypes';
 import { Rating } from 'primereact/rating';
 import axios from 'axios';
+import { getValidToken } from '../services/commonService';
 
 interface GroupVolunteersDialogProps {
   visible: boolean;
@@ -27,7 +28,7 @@ export default function GroupVolunteersDialog({ visible, group, onHide }: GroupV
 
   useEffect(() => {
     const loadData = async () => {
-      const tokenStr = localStorage.getItem('token');
+      const tokenStr = getValidToken();
       if (!tokenStr || !group) return;
 
       const token = JSON.parse(tokenStr) as TokenInfoDTO;
@@ -95,7 +96,7 @@ export default function GroupVolunteersDialog({ visible, group, onHide }: GroupV
   };
 
   const handleSaveChanges = async () => {
-    const tokenStr = localStorage.getItem('token');
+    const tokenStr = getValidToken();
     if (!tokenStr) return;
     const token = JSON.parse(tokenStr) as TokenInfoDTO;
     const headers = { Authorization: `Bearer ${token.token}` };

@@ -8,6 +8,7 @@ import { EventStatusComplete } from '../../types/constants'
 import { Button } from 'primereact/button';
 import { Toast } from "primereact/toast";
 import { ErrorModel } from "../../types/commonTypes";
+import { getValidToken } from '../../services/commonService';
 
 export default function Reports() {
     const [events, setEvents] = useState<DetailEvent[]>([]);
@@ -24,8 +25,8 @@ export default function Reports() {
     async function fetchEvents(page: number, rows: number) {
       try {
         setLoading(true);
-        const tokenInfo = localStorage.getItem('token');
-        if(tokenInfo !== null){
+        const tokenInfo = getValidToken();
+        if(tokenInfo !== null && tokenInfo !== undefined){
           const token = JSON.parse(tokenInfo) as TokenInfoDTO;
           const paginationQuery: EventPaginationQuery = {
             pageNumber: page + 1,
@@ -66,8 +67,8 @@ export default function Reports() {
     
     async function getReport(event: DetailEvent) {
         try {
-            const tokenInfo = localStorage.getItem('token');
-            if (tokenInfo !== null) {
+            const tokenInfo = getValidToken();
+            if (tokenInfo !== null && tokenInfo !== undefined) {
                 const token = JSON.parse(tokenInfo) as TokenInfoDTO;
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_BASE_URL}/event/report/${event.gid}`,
@@ -130,7 +131,7 @@ export default function Reports() {
             <Column field="dispatcher" header="Диспетчер" style={{ width: '20%' }} />
             <Column field="coordinator" header="Координатор" style={{ width: '20%' }} />
             <Column
-                header="Погодження"
+                header="Звіт"
                 body={(rowData: DetailEvent) => (
                   <div className="flex gap-2 justify-content-center">
                     <Button className='p-button-rounded' icon="pi pi-file" raised severity="warning" style={{ fontSize: '12px', backgroundColor:'rgb(164, 219, 226)' }} onClick={() => getReport(rowData)}/>

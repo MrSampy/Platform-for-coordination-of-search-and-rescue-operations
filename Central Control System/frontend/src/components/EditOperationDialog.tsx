@@ -20,7 +20,8 @@ import {
   EventStatusComplete,
   EventStatusDeleted
 } from '../types/constants';
-
+import { getValidToken } from '../services/commonService';
+import { InputTextarea } from 'primereact/inputtextarea';
 export default function EditOperationDialog({ selectedEvent, visible, onHide }: {
   selectedEvent: DetailEvent | null,
   visible: boolean,
@@ -59,7 +60,7 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
 
   useEffect(() => {
     const loadFormData = async () => {
-      const tokenStr = localStorage.getItem('token');
+      const tokenStr = getValidToken();
       if (!tokenStr || !selectedEvent) return;
 
       const token = JSON.parse(tokenStr) as TokenInfoDTO;
@@ -102,6 +103,7 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
           coordinatorGID: selectedEvent.coordinatorGID,
           dispatcherGID: selectedEvent.dispatcherGID,
           eventStatusGID: selectedEvent.eventStatusGID,
+          note: selectedEvent.note
         });
       } catch (error) {
         console.error('Failed to load form data', error);
@@ -122,7 +124,7 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
   const handleSave = async () => {
     if (!formData) return;
 
-    const tokenStr = localStorage.getItem('token');
+    const tokenStr = getValidToken();
     if (!tokenStr) return;
 
     const token = JSON.parse(tokenStr) as TokenInfoDTO;
@@ -269,6 +271,11 @@ export default function EditOperationDialog({ selectedEvent, visible, onHide }: 
                 optionValue="gid"
                 placeholder="Оберіть статус"
               />
+            </div>
+            <div className="col-12">
+            <h4>Коментар</h4>
+              <InputTextarea id="note" value={formData.note === null ? '' : formData.note}
+               onChange={(e) => handleChange('eventStatusGID', e.target.value)} rows={4} className="w-full" disabled/>
             </div>
             <div className="col-12">
               <h4>Ресурси</h4>

@@ -9,6 +9,7 @@ import { ErrorModel } from "../../types/commonTypes";
 import axios from 'axios';
 import { Roles } from "../../types/constants";
 import { Dropdown } from 'primereact/dropdown';
+import { getValidToken } from '../../services/commonService';
 
 export default function SignupPage() {
   const [model, setModel] = useState<RegisterRequest>({
@@ -57,7 +58,7 @@ export default function SignupPage() {
 
     try {
       setLoading(true);
-      const tokenInfo = localStorage.getItem('token');
+      const tokenInfo = getValidToken();
       if (!tokenInfo) return;
       const token = JSON.parse(tokenInfo) as TokenInfoDTO;
       const headers = { Authorization: `Bearer ${token.token}` };

@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { getValidToken } from '../services/commonService';
 
 const RequireAuth = () => {
-    const token = localStorage.getItem('token');
+    const token = getValidToken();
 
     if (!token) {
         return <Navigate to="/" replace />; // Redirect to login

@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import '../styles/dashboard.css';
 import { UserDTO } from '../types/authTypes';
-
+import Cookies from 'js-cookie';
+import { logoutAndRedirect } from '../services/commonService';
 export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -10,17 +11,12 @@ export default function Dashboard() {
   const [openMenus, setOpenMenus] = useState<{ [key: string]: boolean }>({});
 
   const user: UserDTO | null = useMemo(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = Cookies.get('user');
     return storedUser ? JSON.parse(storedUser) : null;
   }, []);
 
   const toggleMenu = (label: string) => {
     setOpenMenus(prev => ({ ...prev, [label]: !prev[label] }));
-  };
-
-  const logout = () => {
-    localStorage.clear();
-    navigate('/');
   };
 
   const hasRole = (roleName: string) => user?.roles?.some(role => role.name === roleName);
@@ -90,7 +86,7 @@ export default function Dashboard() {
     <div className="layout">
       <div className="topbar">
         <div className="user-actions">
-          <i className="pi pi-sign-out" onClick={logout} title="Вийти" />
+          <i className="pi pi-sign-out" onClick={logoutAndRedirect} title="Вийти" />
         </div>
       </div>
       <div className="card side-menu custom-rounded">

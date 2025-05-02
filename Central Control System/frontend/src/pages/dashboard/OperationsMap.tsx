@@ -5,6 +5,7 @@ import axios from 'axios';
 import { TokenInfoDTO } from '../../types/authTypes';
 import { DetailEvent, EventPaginationQuery } from '../../types/eventTypes';
 import { EventStatusActive } from '../../types/constants';
+import { getValidToken } from '../../services/commonService';
 
 const markerIcon = L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
@@ -20,7 +21,7 @@ export default function OperationsMap() {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const tokenStr = localStorage.getItem('token');
+      const tokenStr = getValidToken();
       if (!tokenStr) return;
 
       const token = JSON.parse(tokenStr) as TokenInfoDTO;

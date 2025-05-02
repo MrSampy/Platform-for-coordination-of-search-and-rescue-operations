@@ -20,6 +20,8 @@ import {
   OperationWorkerDTO,
   CreateResourcesEventDTO
 } from '../../types/eventTypes';
+import Cookies from 'js-cookie';
+import { getValidToken } from '../../services/commonService';
 
 export default function CreateOperation() {
   const [formData, setFormData] = useState<CreateEventDTO>({
@@ -52,8 +54,8 @@ export default function CreateOperation() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      const tokenStr = localStorage.getItem('token');
-      const userStr = localStorage.getItem('user');
+      const tokenStr = getValidToken();
+      const userStr = Cookies.get('user');
       if (!tokenStr || !userStr) return;
 
       const tokenInfo = JSON.parse(tokenStr) as TokenInfoDTO;
@@ -105,7 +107,7 @@ export default function CreateOperation() {
       return;
     }
   
-    const tokenStr = localStorage.getItem('token');
+    const tokenStr = getValidToken();
     if (!tokenStr) return;
     const tokenInfo = JSON.parse(tokenStr) as TokenInfoDTO;
     const headers = { Authorization: `Bearer ${tokenInfo.token}` };
@@ -149,7 +151,7 @@ export default function CreateOperation() {
     }
   
     try {
-      const tokenStr = localStorage.getItem('token');
+      const tokenStr = getValidToken();
       if (!tokenStr) return;
       const tokenInfo = JSON.parse(tokenStr) as TokenInfoDTO;
       const headers = { Authorization: `Bearer ${tokenInfo.token}` };

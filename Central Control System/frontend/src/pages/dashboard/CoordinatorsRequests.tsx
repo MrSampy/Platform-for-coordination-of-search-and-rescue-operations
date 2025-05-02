@@ -10,6 +10,8 @@ import { Toast } from "primereact/toast";
 import { ErrorModel } from "../../types/commonTypes";
 import { Dropdown } from 'primereact/dropdown';
 import { EventStatusActive } from '../../types/constants'
+import Cookies from 'js-cookie';
+import { getValidToken } from '../../services/commonService';
 
 export default function CoordinatorsRequests() {
     const [messages, setMessages] = useState<MessageDTO[]>([]);
@@ -34,9 +36,9 @@ export default function CoordinatorsRequests() {
     async function fetchMessages(page: number, rows: number) {
         try {
             setLoading(true);
-            const tokenInfo = localStorage.getItem('token');
-            const operationWorkerInfo = localStorage.getItem('operationWorker');
-            if (tokenInfo !== null && operationWorkerInfo !== null) {
+            const tokenInfo = getValidToken();
+            const operationWorkerInfo = Cookies.get('operationWorker');
+            if (tokenInfo !== null && operationWorkerInfo !== null && tokenInfo !== undefined && operationWorkerInfo !== undefined) {
                 const token = JSON.parse(tokenInfo) as TokenInfoDTO;
                 const operationWorker = JSON.parse(operationWorkerInfo) as OperationWorkerDTO;
                 const paginationQuery: MessagePaginationQuery = {
@@ -73,7 +75,7 @@ export default function CoordinatorsRequests() {
     }
 
     const fetchEvents = async () => {
-        const tokenStr = localStorage.getItem('token');
+        const tokenStr = getValidToken();
         if (!tokenStr) return;
       
         const token = JSON.parse(tokenStr) as TokenInfoDTO;
@@ -114,7 +116,7 @@ export default function CoordinatorsRequests() {
     const markAsRead = async () => {
         if (!selectedMessage) return;
         try {
-            const tokenInfo = localStorage.getItem('token');
+            const tokenInfo = getValidToken();
             if (!tokenInfo) return;
             const token = JSON.parse(tokenInfo) as TokenInfoDTO;
 
@@ -147,8 +149,8 @@ export default function CoordinatorsRequests() {
         }
     };
     const submitMessage = async () => {
-        const tokenStr = localStorage.getItem('token');
-        const operationWorkerInfo = localStorage.getItem('operationWorker');
+        const tokenStr = getValidToken();
+        const operationWorkerInfo = Cookies.get('operationWorker');
       
         if (!tokenStr || !operationWorkerInfo || !selectedEvent || messageText.trim() === "") return;
       

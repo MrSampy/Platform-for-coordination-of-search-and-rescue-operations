@@ -12,6 +12,7 @@ import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { ErrorModel } from '../../types/commonTypes';
+import { getValidToken } from '../../services/commonService';
 
 export default function ApproveOperations() {
   const [events, setEvents] = useState<DetailEvent[]>([]);
@@ -33,8 +34,8 @@ export default function ApproveOperations() {
   async function fetchEvents(page: number, rows: number) {
     try {
       setLoading(true);
-      const tokenInfo = localStorage.getItem('token');
-      if (tokenInfo !== null) {
+      const tokenInfo = getValidToken();
+      if (tokenInfo !== null && tokenInfo !== undefined) {
         const token = JSON.parse(tokenInfo) as TokenInfoDTO;
         const paginationQuery: EventPaginationQuery = {
           pageNumber: page + 1,
@@ -83,8 +84,8 @@ export default function ApproveOperations() {
   async function confirmStatusChange() {
     if (!selectedEvent) return;
     try {
-      const tokenInfo = localStorage.getItem('token');
-      if (tokenInfo !== null) {
+      const tokenInfo = getValidToken();
+      if (tokenInfo !== null && tokenInfo !== undefined) {
         const token = JSON.parse(tokenInfo) as TokenInfoDTO;
         const request: EventStatusChangeRequest = {
           eventGID: selectedEvent.gid,

@@ -10,6 +10,8 @@ import { OperationWorkerDTO } from '../../types/eventTypes';
 import { ErrorModel } from '../../types/commonTypes';
 import GroupVolunteersDialog from '../../components/GroupVolunteersDialog';
 import GroupTasksDialog from '../../components/GroupTasksDialog';     
+import Cookies from 'js-cookie';
+import { getValidToken } from '../../services/commonService';
 export default function GroupsPage() {
   const [groups, setGroups] = useState<DetailGroup[]>([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -23,12 +25,12 @@ export default function GroupsPage() {
   const [selectedGroup, setSelectedGroup] = useState<DetailGroup | null>(null);
 
   const user: UserDTO | null = useMemo(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = Cookies.get('user');
     return storedUser ? JSON.parse(storedUser) : null;
   }, []);
 
   const operationWorker: OperationWorkerDTO | null = useMemo(() => {
-    const storedOperationWorker = localStorage.getItem('operationWorker');
+    const storedOperationWorker = Cookies.get('operationWorker');
     return storedOperationWorker ? JSON.parse(storedOperationWorker) : null;
   }, []);
 
@@ -37,8 +39,8 @@ export default function GroupsPage() {
 const fetchGroups = useCallback(async (page: number, rows: number) => {
   try {
     setLoading(true);
-    const tokenInfo = localStorage.getItem('token');
-    if (tokenInfo !== null) {
+    const tokenInfo = getValidToken();
+    if (tokenInfo !== null && tokenInfo !== undefined) {
       const token = JSON.parse(tokenInfo) as TokenInfoDTO;
       let groupsRes: DetailGroup[] = [];
       let totalCount: number = 0;

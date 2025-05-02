@@ -1,6 +1,7 @@
 import axios from "axios";
 import { LoginModel, TokenInfoDTO, UserDTO, GetTokenRequest, LoginResponse, GetAuthenticatorKeyResponse } from "../types/authTypes";
 import { OperationWorkerDTO } from "../types/eventTypes";
+import { getValidToken } from '../services/commonService';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -25,10 +26,17 @@ export async function getUserByName(name: string): Promise<UserDTO> {
   return response.data;
 }
 
-export async function getOperationWorkerByUserGID(userGid:string, token:string) {
+export async function getOperationWorkerByUserGID(userGid:string) {
+  const tokenInfoString = getValidToken();
+  
+  if (!tokenInfoString) {
+    throw new Error('No token found in cookies');
+  }
+
+  const tokenInfo: TokenInfoDTO = JSON.parse(tokenInfoString);
   const response = await axios.get<OperationWorkerDTO>(`${process.env.REACT_APP_API_BASE_URL}/operationworker/byUserGID/${userGid}`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${tokenInfo.token}`
     }
   });
 

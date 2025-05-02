@@ -10,7 +10,8 @@ import { Toast } from "primereact/toast";
 import { ErrorModel } from "../../types/commonTypes";
 import { EventStatusDeleted } from '../../types/constants';
 import EditOperationDialog from '../../components/EditOperationDialog'; 
-
+import Cookies from 'js-cookie';
+import { getValidToken } from '../../services/commonService';
 
 export default function OperationsPage() {
   const [events, setEvents] = useState<DetailEvent[]>([]);
@@ -23,12 +24,12 @@ export default function OperationsPage() {
   const toast = useRef<Toast>(null);
 
   const user: UserDTO | null = useMemo(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = Cookies.get('user');
     return storedUser ? JSON.parse(storedUser) : null;
   }, []);
 
   const operationWorker: OperationWorkerDTO | null = useMemo(() => {
-    const storedOperationWorker = localStorage.getItem('operationWorker');
+    const storedOperationWorker = Cookies.get('operationWorker');
     return storedOperationWorker ? JSON.parse(storedOperationWorker) : null;
   }, []);
 
@@ -41,8 +42,8 @@ export default function OperationsPage() {
   async function fetchEvents(page: number, rows: number) {
     try {
       setLoading(true);
-      const tokenInfo = localStorage.getItem('token');
-      if(tokenInfo !== null){
+      const tokenInfo = getValidToken();
+      if(tokenInfo !== null && tokenInfo !== undefined){
         const token = JSON.parse(tokenInfo) as TokenInfoDTO;
         const paginationQuery: EventPaginationQuery = {
           pageNumber: page + 1,
@@ -90,7 +91,7 @@ export default function OperationsPage() {
 
   const deleteEvent = async (gid: string) => {
     try {
-      const tokenInfo = localStorage.getItem('token');
+      const tokenInfo = getValidToken();
       if (!tokenInfo) return;
       const token = JSON.parse(tokenInfo) as TokenInfoDTO;
 

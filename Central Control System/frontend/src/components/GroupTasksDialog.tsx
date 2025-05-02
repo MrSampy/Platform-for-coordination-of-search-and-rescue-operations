@@ -9,6 +9,7 @@ import { Toast } from 'primereact/toast';
 import { DetailGroup, CreateOperationTaskDTO, OperationTaskStatusDTO } from '../types/groupTypes';
 import { TokenInfoDTO } from '../types/authTypes';
 import axios from 'axios';
+import { getValidToken } from '../services/commonService';
 
 interface GroupTasksDialogProps {
   visible: boolean;
@@ -28,7 +29,7 @@ export default function GroupTasksDialog({ visible, group, onHide }: GroupTasksD
 
   useEffect(() => {
     const loadData = async () => {
-      const tokenStr = localStorage.getItem('token');
+      const tokenStr = getValidToken();
       if (!tokenStr || !group) return;
 
       const token = JSON.parse(tokenStr) as TokenInfoDTO;
@@ -101,7 +102,7 @@ export default function GroupTasksDialog({ visible, group, onHide }: GroupTasksD
   };
 
   const handleSaveTasks = async () => {
-    const tokenStr = localStorage.getItem('token');
+    const tokenStr = getValidToken();
     if (!tokenStr) return;
     const token = JSON.parse(tokenStr) as TokenInfoDTO;
     const headers = { Authorization: `Bearer ${token.token}` };

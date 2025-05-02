@@ -10,6 +10,7 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { QRCodeCanvas } from 'qrcode.react';
 import '../styles/auth.css';
+import Cookies from 'js-cookie';
 
 const LoginPage = () => {
   const [model, setModel] = useState<LoginModel>({ username: "", password: "" });
@@ -40,14 +41,26 @@ const LoginPage = () => {
 
   const handleVerifyCode = async () => {
     try {
-      const tokenInfo = await getToken2fa({ username: model.username, code });
-      localStorage.setItem("token", JSON.stringify(tokenInfo));
+      const tokenInfo = await getToken2fa({ username: model.username, code });      
+      Cookies.set('token', JSON.stringify(tokenInfo), {
+        expires: new Date(tokenInfo.expiration), 
+        secure: false, 
+        sameSite: 'Strict',
+      });
 
       const user = await getUserByName(model.username);
-      localStorage.setItem("user", JSON.stringify(user));
+      Cookies.set('user', JSON.stringify(user), {
+        expires: new Date(tokenInfo.expiration), 
+        secure: false, 
+        sameSite: 'Strict',
+      });
 
-      const operationworker = await getOperationWorkerByUserGID(user.id, tokenInfo.token);
-      localStorage.setItem("operationWorker", JSON.stringify(operationworker));
+      const operationworker = await getOperationWorkerByUserGID(user.id);
+      Cookies.set('operationWorker', JSON.stringify(operationworker), {
+        expires: new Date(tokenInfo.expiration), 
+        secure: false, 
+        sameSite: 'Strict',
+      });
 
       navigate("/dashboard");
     } catch (err: any) {
