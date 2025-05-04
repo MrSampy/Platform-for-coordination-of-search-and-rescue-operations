@@ -6,6 +6,7 @@ using Gateway.DTO.DTOs.Volunteers.Create;
 using Gateway.DTO.DTOs.Volunteers.Request;
 using Gateway.DTO.DTOs.Volunteers.Update;
 using Gateway.DTO.Exceptions;
+using System.Reflection;
 
 namespace Gateway.Infrastructure.Services.Services
 {
@@ -20,7 +21,35 @@ namespace Gateway.Infrastructure.Services.Services
             _operationsGateway = operationsGateway;
             _mapper = mapper;
         }
+        public async Task<IEnumerable<VolunteerDTO>> GetVolunteers(VolunteersPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
+        {
+            if (string.IsNullOrEmpty(paginationQuery.SortBy))
+            {
+                return await _volunteersGateway.GetVolunteers(paginationQuery, cancellationToken, token);
+            }
+            else
+            {
+                var volunteers = await _volunteersGateway.GetVolunteers(new DTO.DTOs.Common.PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
 
+                var propertyInfo = typeof(VolunteerDTO).GetProperty(paginationQuery.SortBy,
+                    BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                if (propertyInfo != null)
+                {
+                    volunteers = paginationQuery.IsDescending.HasValue && paginationQuery.IsDescending.Value
+                        ? volunteers.OrderByDescending(e => propertyInfo.GetValue(e, null))
+                        : volunteers.OrderBy(e => propertyInfo.GetValue(e, null));
+                }
+
+                if (!paginationQuery.GetAll())
+                {
+                    volunteers = volunteers
+                        .Skip((paginationQuery.PageNumber - 1) * paginationQuery.PageSize)
+                        .Take(paginationQuery.PageSize);
+                }
+
+                return volunteers;
+            }
+        }
         public async Task UpdateVolunteerRating(UpdateVolunteerRatingRequest request, string token)
         {
             var volunteer = await _volunteersGateway.GetVolunteerByGID(request.VolunteerGID, CancellationToken.None, token);

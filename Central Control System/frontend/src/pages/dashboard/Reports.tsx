@@ -120,7 +120,6 @@ export default function Reports() {
             onPage={onPage}
             loading={loading}
             rowsPerPageOptions={[5, 10, 25, 50]}
-            tableStyle={{ minWidth: '90rem' }}
             >
             <Column field="name" header="Назва" style={{ width: '10%' }} />
             <Column field="longitude" header="Довгота" style={{ width: '5%' }} />
