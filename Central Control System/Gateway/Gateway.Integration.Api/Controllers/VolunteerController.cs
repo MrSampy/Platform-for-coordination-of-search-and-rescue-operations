@@ -40,6 +40,13 @@ namespace Gateway.Integration.Api.Controllers
             return Ok(await _volunteersService.GetVolunteersForEvent(request, cancellationToken, token));
         }
 
+        [HttpGet("get-rating-from-list/{gid}")]
+        public async Task<IActionResult> GetVolunteerRatingNumberInList(Guid gid, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GetVolunteerRatingNumberInList(gid, cancellationToken, token));
+        }
+
         [HttpGet("by-group/{groupGID}")]
         public async Task<IActionResult> GetVolunteersForGroup(Guid groupGID, CancellationToken cancellationToken = default)
         {

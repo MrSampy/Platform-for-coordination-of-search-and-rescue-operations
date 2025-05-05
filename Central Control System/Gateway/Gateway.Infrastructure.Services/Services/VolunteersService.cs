@@ -4,6 +4,7 @@ using Gateway.DTO.DTOs.Operations;
 using Gateway.DTO.DTOs.Volunteers;
 using Gateway.DTO.DTOs.Volunteers.Create;
 using Gateway.DTO.DTOs.Volunteers.Request;
+using Gateway.DTO.DTOs.Volunteers.Response;
 using Gateway.DTO.DTOs.Volunteers.Update;
 using Gateway.DTO.Exceptions;
 using System.Reflection;
@@ -21,6 +22,25 @@ namespace Gateway.Infrastructure.Services.Services
             _operationsGateway = operationsGateway;
             _mapper = mapper;
         }
+
+        public async Task<GetVolunteerRatingNumberInListResponse> GetVolunteerRatingNumberInList(Guid volunteerGID, CancellationToken cancellationToken, string token)
+        {
+            var volunteers = await _volunteersGateway.GetVolunteers(new DTO.DTOs.Common.PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+
+            if (!volunteers.Any(v => v.GID == volunteerGID))
+            {
+                throw new ServiceException("Volunteer not found");
+            }
+
+            var volunteersRating = volunteers.OrderByDescending(v => v.RatingNumber).ToList();
+
+            return new GetVolunteerRatingNumberInListResponse
+            {
+                RatingNumber = volunteersRating.FindIndex(v => v.GID == volunteerGID) + 1,
+                VolunteersCount = volunteersRating.Count
+            };
+        }
+
         public async Task<IEnumerable<VolunteerDTO>> GetVolunteers(VolunteersPaginationQuery paginationQuery, CancellationToken cancellationToken, string token)
         {
             if (string.IsNullOrEmpty(paginationQuery.SortBy))

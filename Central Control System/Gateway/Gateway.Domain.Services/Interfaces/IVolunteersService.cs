@@ -1,6 +1,7 @@
 ﻿using Gateway.DTO.DTOs.Volunteers;
 using Gateway.DTO.DTOs.Volunteers.Create;
 using Gateway.DTO.DTOs.Volunteers.Request;
+using Gateway.DTO.DTOs.Volunteers.Response;
 
 namespace Gateway.Domain.Services.Interfaces
 {
@@ -12,5 +13,6 @@ namespace Gateway.Domain.Services.Interfaces
         Task<IEnumerable<VolunteerDTO>> GetVolunteersForGroup(Guid groupGID, CancellationToken cancellationToken, string token);
         Task UpdateVolunteerRating(UpdateVolunteerRatingRequest request, string token);
         Task<IEnumerable<VolunteerDTO>> GetVolunteers(VolunteersPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<GetVolunteerRatingNumberInListResponse> GetVolunteerRatingNumberInList(Guid volunteerGID, CancellationToken cancellationToken, string token);
     }
 }
