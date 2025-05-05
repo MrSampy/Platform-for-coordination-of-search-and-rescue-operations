@@ -8,7 +8,7 @@ import 'primeflex/primeflex.css';
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
-import OperationsPage from './pages/dashboard/OperationsPage';
+import OperationsPage from './pages/dashboard/Operations';
 import OperationsMap from './pages/dashboard/OperationsMap';
 import CreateOperation from './pages/dashboard/CreateOperation';
 import Groups from './pages/dashboard/Groups';

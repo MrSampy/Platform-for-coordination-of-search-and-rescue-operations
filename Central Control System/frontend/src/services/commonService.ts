@@ -15,23 +15,26 @@ export function clearAllCookies() {
 
   export function getValidToken(): string {
     const tokenInfoString = Cookies.get('token');
-    if (!tokenInfoString) {
-      logoutAndRedirect(); 
-      throw new Error('No token found. Redirecting to login.');
-    }
-  
-    let tokenInfo: TokenInfoDTO;
     try {
-      tokenInfo = JSON.parse(tokenInfoString);
-    } catch {
-      logoutAndRedirect(); 
-      throw new Error('Invalid token format. Redirecting to login.');
+      if (!tokenInfoString) {
+        logoutAndRedirect(); 
+        throw new Error('No token found. Redirecting to login.');
+      }
+    
+      let tokenInfo: TokenInfoDTO;
+      try {
+        tokenInfo = JSON.parse(tokenInfoString);
+      } catch {
+        logoutAndRedirect(); 
+        throw new Error('Invalid token format. Redirecting to login.');
+      }
+    
+      if (new Date(tokenInfo.expiration) < new Date()) {
+        logoutAndRedirect(); 
+        throw new Error('Token is expired. Redirecting to login.');
+      }
+    } catch{
+      return '';
     }
-  
-    if (new Date(tokenInfo.expiration) < new Date()) {
-      logoutAndRedirect(); 
-      throw new Error('Token is expired. Redirecting to login.');
-    }
-  
     return tokenInfoString;
-  }
+}
