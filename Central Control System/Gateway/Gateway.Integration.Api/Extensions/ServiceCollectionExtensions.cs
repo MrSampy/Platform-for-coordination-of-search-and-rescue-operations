@@ -225,6 +225,10 @@ namespace Gateway.Integration.Api.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddTransient<IReportService, ReportService>();
+
+            services.AddTransient<IEfficiencyCalculationService, EfficiencyCalculationService>();
+
             services.AddTransient<IAuthService, AuthService>();
 
             services.AddTransient<IOperationsService, OperationsService>();

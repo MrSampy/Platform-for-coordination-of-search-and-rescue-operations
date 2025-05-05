@@ -20,11 +20,13 @@ namespace Gateway.Integration.Api.Controllers
     {
         private readonly IOperationsGateway _operationsGateway;
         private readonly IOperationsService _operationsService;
+        private readonly IReportService _reportService;
 
-        public EventController(IOperationsGateway operationsGateway, IOperationsService operationsService)
+        public EventController(IOperationsGateway operationsGateway, IOperationsService operationsService, IReportService reportService)
         {
             _operationsGateway = operationsGateway;
             _operationsService = operationsService;
+            _reportService = reportService;
         }
 
         [HttpGet]
@@ -58,7 +60,7 @@ namespace Gateway.Integration.Api.Controllers
         public async Task<IActionResult> GenerateEventReport(Guid gid, CancellationToken cancellationToken = default)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var response = await _operationsService.GenerateEventReport(gid, cancellationToken, token);
+            var response = await _reportService.GenerateEventReport(gid, cancellationToken, token);
             return File(response.Bytes, "application/pdf", response.FileName);
         }
 

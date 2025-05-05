@@ -58,6 +58,7 @@ namespace Gateway.DTO.Constants
         public static readonly Guid EventTypeLogistic = new Guid("914AC9E1-040A-4A54-90F8-34C6A354F53F");
 
         public static readonly Guid TaskStatusDoing = new Guid("C8DBA917-3F3A-4BD0-9D1A-3A52C3F4ACD2");
+        public static readonly Guid TaskStatusCompleted = new Guid("AFEC6D5D-4C6A-4A3F-9A9C-E3C3EFC2A9D4");
 
         public const string Admin = "Admin";
         public const string Coordinator = "Coordinator";
