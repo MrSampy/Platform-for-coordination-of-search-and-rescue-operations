@@ -172,8 +172,10 @@ namespace Gateway.Infrastructure.Services.Services
                 }
             }
 
-            var efficiency = _efficiencyCalculationService.CalculateEfficiency(eventDetail.EventType, volunteers.Count(), operationTasks.Where(t => t.TaskStatusGID == SharedConstants.TaskStatusCompleted).Count(),
-                operationTasks.Count(), resources.Select(r => r.AvailableQuantity).Sum(), resources.Select(r => r.RequiredQuantity).Sum());
+            var efficiency = await _efficiencyCalculationService.CalculateEfficiency(eventDetail.EventType, volunteers.Count(),
+                operationTasks.Where(t => t.TaskStatusGID == SharedConstants.TaskStatusCompleted).Count(),
+                operationTasks.Count(), resources.Select(r => r.AvailableQuantity).Sum(),
+                resources.Select(r => r.RequiredQuantity).Sum(), cancellationToken, token);
 
             document.Add(new Paragraph($"Efficiency: {efficiency}%.")
                     .SetFont(boldFont)

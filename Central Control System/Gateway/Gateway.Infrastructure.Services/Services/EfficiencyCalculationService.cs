@@ -1,16 +1,27 @@
 ﻿using Gateway.Domain.Services.Interfaces;
+using Gateway.DTO.Constants;
 
 namespace Gateway.Infrastructure.Services.Services
 {
     public class EfficiencyCalculationService : IEfficiencyCalculationService
     {
-        public double CalculateEfficiency(
+        private readonly IOperationsGateway _operationsGateway;
+        private readonly IVolunteersGateway _volunteersGateway;
+        public EfficiencyCalculationService(IOperationsGateway operationsGateway, IVolunteersGateway volunteersGateway)
+        {
+            _operationsGateway = operationsGateway;
+            _volunteersGateway = volunteersGateway;
+        }
+
+
+        public async Task<double> CalculateEfficiency(
             string eventType,
             int volunteersInEventCount,
             int completedTasksCount,
             int allTasksCount,
             decimal allAvaliableResources,
-            decimal allRequiredResources)
+            decimal allRequiredResources,
+            CancellationToken cancellationToken, string token)
         {
             var typeScore = eventType switch
             {
@@ -20,7 +31,7 @@ namespace Gateway.Infrastructure.Services.Services
                 _ => 1
             };
 
-            double V_max = 20;
+            double V_max = await CalculateAverageVolunteersCountInEventType(eventType, cancellationToken, token);
             double w1 = 0.15; // Тип операції
             double w2 = 0.2;  // Волонтери
             double w3 = 0.4;  // Завдання
@@ -43,5 +54,37 @@ namespace Gateway.Infrastructure.Services.Services
             return Math.Round(efficiency, 2);
         }
 
+        public async Task<double> CalculateAverageVolunteersCountInEventType(string eventType, CancellationToken cancellationToken, string token)
+        {
+            var count = SharedConstants.DEFAULT_VOLUNTEER_COUNT;
+
+            var eventTypeGID = SharedConstants.EventTypes
+                .FirstOrDefault(x => x.Name == eventType)?.GID;
+
+            if (eventTypeGID == null)
+            {
+                return count;
+            }
+
+            var events = await _operationsGateway.GetSortedEvents(new DTO.DTOs.Operations.Request.EventPaginationQuery { PageNumber = 0, PageSize = 0, EventTypeGID = eventTypeGID }, cancellationToken, token);
+
+            if (events == null || !events.Items.Any())
+            {
+                return count;
+            }
+
+            var eventGIDs = events.Items.Select(x => x.GID).ToList();
+
+            var volunteersInEvents = await _volunteersGateway.GetVolunteersEvents(new DTO.DTOs.Common.PaginationQuery { PageNumber = 0, PageSize = 0 }, cancellationToken, token);
+
+            var volunteersCount = volunteersInEvents
+                .Where(x => eventGIDs.Contains(x.EventGID))
+                .GroupBy(x => x.EventGID)
+                .Select(g => new { VolunteersCount = g.Count() })
+                .Average(v => v.VolunteersCount);
+
+
+            return volunteersCount;
+        }
     }
 }

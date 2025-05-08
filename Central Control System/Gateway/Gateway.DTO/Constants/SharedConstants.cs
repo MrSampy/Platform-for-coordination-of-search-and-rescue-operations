@@ -65,6 +65,8 @@ namespace Gateway.DTO.Constants
         public const string Dispatcher = "Dispatcher";
         public const string Volunteer = "Volunteer";
 
+        public const int DEFAULT_VOLUNTEER_COUNT = 10;
+
         public static readonly List<EventStatusDTO> EventStatuses = new List<EventStatusDTO>() {
             new EventStatusDTO { GID = new Guid("1B45017E-2781-4802-BB86-037C4A9811F9"), Name = "Створена" },
             new EventStatusDTO { GID = new Guid("7A41DB19-06F8-4334-BB0C-B886D92EC4B4"), Name = "Погоджена" },
