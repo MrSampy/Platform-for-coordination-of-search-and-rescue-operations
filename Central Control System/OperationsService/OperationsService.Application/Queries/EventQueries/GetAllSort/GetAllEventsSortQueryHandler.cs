@@ -47,6 +47,15 @@ namespace OperationsService.Application.Queries.EventQueries.GetAllSort
                 result = result.Where(e => e.EventTypeGID == request.PaginationQuery.EventTypeGID);
             }
 
+            if (request.PaginationQuery.SortByCreateDate)
+            {
+                result = result.OrderByDescending(e => e.CreatedAt);
+            }
+            else
+            {
+                result = result.OrderBy(e => e.CreatedAt);
+            }
+
             var totalCount = result.Count();
 
             if (!request.PaginationQuery.GetAll())

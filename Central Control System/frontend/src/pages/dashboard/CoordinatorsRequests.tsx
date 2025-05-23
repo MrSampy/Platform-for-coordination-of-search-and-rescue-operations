@@ -242,7 +242,7 @@ export default function CoordinatorsRequests() {
                 />
 
             <Dialog
-            header="Нове повідомлення"
+            header="Новий запит"
             visible={addDialogVisible}
             style={{ width: '40vw', maxWidth: '600px' }}
             className="p-fluid"
@@ -298,7 +298,7 @@ export default function CoordinatorsRequests() {
             </Dialog>
 
             <Dialog
-                header="Повідомлення"
+                header="Текст повідомлення"
                 visible={dialogVisible}
                 style={{ width: '50vw' }}
                 onHide={() => setDialogVisible(false)}

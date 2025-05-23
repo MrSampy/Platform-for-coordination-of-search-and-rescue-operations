@@ -8,5 +8,6 @@ namespace OperationsService.Application.DTOs.Requests
         public Guid? DispatcherGID { get; set; }
         public Guid? CoordinatorGID { get; set; }
         public Guid? EventTypeGID { get; set; }
+        public bool SortByCreateDate { get; set; } = true;
     }
 }
