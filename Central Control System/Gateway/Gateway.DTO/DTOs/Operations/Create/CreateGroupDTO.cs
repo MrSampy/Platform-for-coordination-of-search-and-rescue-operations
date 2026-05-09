@@ -1,0 +1,9 @@
+﻿namespace Gateway.DTO.DTOs.Operations.Create
+{
+    public class CreateGroupDTO
+    {
+        public required string Name { get; set; }
+        public required Guid EventGID { get; set; }
+        public Guid? LeaderGID { get; set; }
+    }
+}

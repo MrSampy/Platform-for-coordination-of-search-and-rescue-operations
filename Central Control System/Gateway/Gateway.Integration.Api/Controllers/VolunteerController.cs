@@ -1,0 +1,103 @@
+﻿using Gateway.Domain.Services.Interfaces;
+using Gateway.DTO.DTOs.Volunteers.Create;
+using Gateway.DTO.DTOs.Volunteers.Request;
+using Gateway.DTO.DTOs.Volunteers.Update;
+using Gateway.Integration.Api.Config;
+using Gateway.Integration.Api.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Gateway.Integration.Api.Controllers
+{
+    [Authorize]
+    [ApiController]
+    [Route("gateway.integration.api/[controller]")]
+    [RateLimit(MaxRequests = 10, TimeWindowInSeconds = 1)]
+    [RequiresAuthHeader]
+    [ApiExplorerSettings(GroupName = "Volunteer")]
+    public class VolunteerController : ControllerBase
+    {
+        private readonly IVolunteersGateway _volunteersGateway;
+        private readonly IVolunteersService _volunteersService;
+
+        public VolunteerController(IVolunteersGateway volunteersGateway, IVolunteersService volunteersService)
+        {
+            _volunteersGateway = volunteersGateway;
+            _volunteersService = volunteersService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVolunteers([FromQuery] VolunteersPaginationQuery paginationQuery, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GetVolunteers(paginationQuery, cancellationToken, token));
+        }
+
+        [HttpPost("by-event")]
+        public async Task<IActionResult> GetVolunteersForEvent([FromBody] VolunteersForEventRequest request, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GetVolunteersForEvent(request, cancellationToken, token));
+        }
+
+        [HttpGet("get-rating-from-list/{gid}")]
+        public async Task<IActionResult> GetVolunteerRatingNumberInList(Guid gid, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GetVolunteerRatingNumberInList(gid, cancellationToken, token));
+        }
+
+        [HttpGet("by-group/{groupGID}")]
+        public async Task<IActionResult> GetVolunteersForGroup(Guid groupGID, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GetVolunteersForGroup(groupGID, cancellationToken, token));
+        }
+
+        [HttpGet("{gid}")]
+        public async Task<IActionResult> GetVolunteerByGID(Guid gid, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersGateway.GetVolunteerByGID(gid, cancellationToken, token));
+        }
+
+        [HttpGet("byUserGID/{userGID}")]
+        public async Task<IActionResult> GeVolunteerByUserGID(Guid userGID, CancellationToken cancellationToken = default)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersService.GeVolunteerByUserGID(userGID, cancellationToken, token));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateVolunteer([FromBody] CreateVolunteerDTO volunteer)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            return Ok(await _volunteersGateway.CreateVolunteer(volunteer, token));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateVolunteer([FromBody] UpdateVolunteerDTO volunteer)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            await _volunteersGateway.UpdateVolunteer(volunteer, token);
+            return NoContent();
+        }
+
+        [HttpPut("update-rating")]
+        public async Task<IActionResult> UpdateVolunteerRating([FromBody] UpdateVolunteerRatingRequest request)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            await _volunteersService.UpdateVolunteerRating(request, token);
+            return NoContent();
+        }
+
+        [HttpDelete("{gid}")]
+        public async Task<IActionResult> DeleteVolunteer(Guid gid)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            await _volunteersGateway.DeleteVolunteer(gid, token);
+            return NoContent();
+        }
+    }
+
+}

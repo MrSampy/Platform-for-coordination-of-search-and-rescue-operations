@@ -1,0 +1,24 @@
+﻿using Gateway.DTO.DTOs.Common;
+using Gateway.DTO.DTOs.Operations;
+using Gateway.DTO.DTOs.Operations.Detail;
+using Gateway.DTO.DTOs.Operations.Request;
+
+namespace Gateway.Domain.Services.Interfaces
+{
+    public interface IOperationsService
+    {
+        Task<GetAllEntitesReponse<EventDetails>> GetEventsDetail(EventPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<GetAllEntitesReponse<GroupDetails>> GetGroupsDetails(GroupPaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<GetAllEntitesReponse<GroupDetails>> GetGroupsByDispatcherGID(GetGroupsByDispatcherGIDRequest request, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<OperationTaskDTO>> GetOperationTasksByGroupGID(Guid groupGID, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<OperationWorkerDTO>> GetWorkersByRole(GetOperationWorkersByRoleName request, CancellationToken cancellationToken, string token);
+        Task EventStatusChange(EventStatusChangeRequest request, string token);
+        Task<EventDTO> CreateEvent(CreateEventRequest request, string token);
+        Task<OperationWorkerDTO?> GetWorkerByUserGID(Guid userGID, CancellationToken cancellationToken, string token);
+        Task<GetAllEntitesReponse<MessageDetails>> GetMessages(MessagePaginationQuery paginationQuery, CancellationToken cancellationToken, string token);
+        Task<IEnumerable<GroupDetails>> GetGroupsByEventGID(Guid eventGID, CancellationToken cancellationToken, string token);
+        Task DeleteEvent(Guid gid, string token);
+        Task DeleteGroup(Guid gid, string token);
+
+    }
+}

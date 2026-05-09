@@ -1,0 +1,143 @@
+.side-menu {
+    background: var(--surface-card);
+    padding: 1rem;
+    margin: 1rem;
+    height: 95vh;
+    width: 15vw;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}
+
+.p-menu {
+    width: 100%;
+    border: none;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 2rem;
+    padding-top: 5rem;
+    overflow-y: auto;
+    background-color: #f9fafb;
+}
+
+.operation-table{
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+.p-inputtext,
+.p-dropdown,
+.p-multiselect,
+.p-inputtextarea {
+  background-color: #ffffff !important;
+}
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    background-color: #f9fafb;
+    position: relative;
+}
+
+.topbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 3rem;
+    width: calc(100% - 15vw);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 100;
+}
+.user-actions {
+    margin-top: 1.2rem;
+    padding: 0.7rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ccc;
+    border-radius: 10px;
+}
+.user-actions i {
+    font-size: 1.6rem;
+    color: #333;
+    cursor: pointer;
+}
+
+.user-actions i:hover {
+    color: #007ad9;
+}
+
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .clickable-row:hover {
+    background-color: #f0f0f0;
+  }
+
+  .p-confirm-dialog .p-confirm-dialog-reject {
+  background-color: #e0e0e0;
+  color: #000;
+  border: none;
+}
+
+.p-confirm-dialog .p-confirm-dialog-accept {
+  background-color: #258de6;
+  color: #fff;
+  border: none;
+}
+
+.custom-rounded {
+    border-radius: 12px;
+  }
+  
+  .menu-section {
+    margin-bottom: 1rem;
+  }
+  
+  .menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem 0.5rem;
+    font-weight: bold;
+    border-radius: 8px;
+    background-color: #f7f9fc;
+    transition: background-color 0.2s;
+  }
+  
+  .menu-header:hover {
+    background-color: #ebf2fb;
+  }
+  
+  .menu-items {
+    list-style: none;
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+  }
+  
+  .menu-item {
+    padding: 0.4rem 0;
+    cursor: pointer;
+    color: #333;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+  }
+  
+  .menu-item:hover {
+    background-color: #e6f0ff;
+  }
+  
+  .menu-item-active {
+    font-weight: bold;
+    color: #1a73e8;
+  }
+  

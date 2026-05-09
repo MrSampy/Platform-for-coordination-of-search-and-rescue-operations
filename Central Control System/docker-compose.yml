@@ -1,0 +1,106 @@
+services:
+  utilsservice:
+    container_name: utilsservice
+    build:
+      context: ./UtilsService/
+      dockerfile: Dockerfile
+    ports:
+      - "7089:8080" 
+      - "5031:8080"
+    depends_on:
+      - authservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
+  authservice:
+    container_name: authservice
+    build:
+      context: ./AuthService/
+      dockerfile: Dockerfile
+    ports:
+      - "5107:8080" 
+      - "7224:8080"
+    depends_on:
+      - postgresql-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
+  operationsservice:
+    container_name: operationsservice
+    build:
+      context: ./OperationsService/
+      dockerfile: Dockerfile
+    ports:
+      - "7088:8080" 
+      - "5160:8080"
+    depends_on:
+      - authservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
+  volunteerservice:
+    container_name: volunteerservice
+    build:
+      context: ./VolunteerService/
+      dockerfile: Dockerfile
+    ports:
+      - "7105:8080" 
+      - "5083:8080"
+    depends_on:
+      - authservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
+  gateway:
+    container_name: gateway
+    build:
+      context: ./Gateway/
+      dockerfile: Dockerfile
+    ports:
+      - "7038:8080" 
+      - "5065:8080"
+    depends_on:
+      volunteerservice:
+        condition: service_started
+      operationsservice:
+        condition: service_started
+      authservice:
+        condition: service_started
+      utilsservice:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - mynetwork
+  postgresql-server:
+    container_name: postgresql-server
+    build:
+      context: .
+      dockerfile: sql.Dockerfile
+    networks:
+      - mynetwork
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"     # for apps
+      - "15672:15672"   # management UI
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+networks:
+  mynetwork:
+    driver: bridge
